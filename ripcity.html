@@ -27,7 +27,7 @@
   .pos { position: absolute; }
 
   /* Top-left season label (in the subtitle rule row) */
-  #seasonWrap { top: 226px; left: 88px; }
+  #seasonWrap { top: 242px; left: 88px; }
   #season { font-size: 22px; letter-spacing: 0.02em; text-transform: uppercase; transform-origin: 0 50%; }
 
   /* Top-right date */
@@ -35,11 +35,11 @@
   #date { font-size: 60px; letter-spacing: 0.01em; text-transform: uppercase; transform-origin: 100% 50%; }
 
   /* Big headline (left-aligned, fills the page) */
-  #headlineWrap { top: 300px; left: 86px; width: 1748px; }
+  #headlineWrap { top: 300px; left: 50%; transform: translateX(-50%); width: 1748px; }
   #headline {
     font-size: 165px; line-height: 0.92; letter-spacing: 0.005em;
-    text-transform: uppercase; text-align: left;
-    transform-origin: 0 50%; will-change: transform, opacity;
+    text-transform: uppercase; text-align: center;
+    transform-origin: 50% 50%; will-change: transform, opacity;
   }
 
   /* Centered source / quote-title under the headline */
