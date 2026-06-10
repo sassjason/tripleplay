@@ -93,7 +93,7 @@
     document.body.style.background = "transparent";
   }
 
-  var items = [], idx = 0, curQuote = null;
+  var items = [], idx = 0, curQuote = null, curSize = null;
 
   function showError(msg) { elErr.style.display = "block"; elErr.textContent = "FEED ERROR: " + msg; }
 
@@ -152,9 +152,11 @@
 
   function showItem(it) {
     var q = "“" + it.quote + "”";
-    if (q === curQuote && elAttr.textContent === it.attribution) { return; }
+    // Include fontSize so a size-only edit (same text) still re-renders —
+    // otherwise changing only column G never updates the screen.
+    if (q === curQuote && elAttr.textContent === it.attribution && curSize === it.fontSize) { return; }
     var first = (curQuote === null);
-    curQuote = q;
+    curQuote = q; curSize = it.fontSize;
 
     // Per-slide quote size (from the XLS FontSize column). Blank/0 = CSS default.
     // Applies to the QUOTE only; attribution size is fixed by the layout.
