@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Moda Name Wall — Tripleplay HTML Resource</title>
+<style>
+  @font-face {
+    font-family: "United Sans Cond Heavy";
+    src: url("UnitedSansCdHv.otf") format("opentype");
+    font-weight: normal; font-style: normal;
+  }
+
+  html, body { margin: 0; padding: 0; background: #000; overflow: hidden; }
+
+  /* 1920x1080 stage. Black layout to match the testimonial cards. Background
+     can be swapped for a branded plate with ?plate=URL; default is solid black.
+     NOTE: visual styling (font, colors, motion) is placeholder until the
+     original creative MP4 is in hand to match against. */
+  #stage {
+    position: relative;
+    width: 1920px; height: 1080px;
+    background: #000;
+    background-size: cover; background-position: center;
+    font-family: "United Sans Cond Heavy", "Arial Narrow", sans-serif;
+    color: #ffffff;
+    -webkit-font-smoothing: antialiased;
+    display: flex; flex-direction: column;
+    overflow: hidden;
+  }
+
+  /* Optional overall wall title (via ?title=). Hidden when no title is supplied.
+     Per-tier titles below are separate and come from the feed. */
+  #header {
+    flex: 0 0 auto;
+    text-align: center;
+    padding: 48px 0 18px;
+    display: none;
+  }
+  #title {
+    text-transform: uppercase;
+    font-size: 84px; line-height: 1; letter-spacing: 0.03em;
+    text-shadow: 0 2px 14px rgba(0,0,0,0.55);
+  }
+  #subtitle {
+    text-transform: uppercase;
+    font-size: 32px; letter-spacing: 0.12em;
+    opacity: 0.8; margin-top: 12px;
+    display: none;
+  }
+  #rule {
+    width: 1100px; height: 3px; margin: 22px auto 0;
+    background: rgba(255,255,255,0.5);
+  }
+
+  /* The scrolling window: everything below the header. overflow hidden masks
+     the roll so names appear/disappear cleanly at the top and bottom edges. */
+  #viewport {
+    flex: 1 1 auto;
+    position: relative;
+    overflow: hidden;
+    /* soft fade at top and bottom so names ease in/out instead of hard-cutting */
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 90px, #000 calc(100% - 90px), transparent 100%);
+            mask-image: linear-gradient(to bottom, transparent 0, #000 90px, #000 calc(100% - 90px), transparent 100%);
+  }
+
+  /* #roll holds TWO identical copies of the full grouped content, one above the
+     other. Animating it up by exactly one copy's height (translateY -50%) loops
+     seamlessly: as the first copy scrolls off the top, the duplicate behind it
+     is already in place. */
+  #roll {
+    position: absolute; left: 0; right: 0; top: 0;
+    display: flex; flex-direction: column;
+    will-change: transform;
+  }
+  .content { display: flex; flex-direction: column; }
+
+  /* One tier = a title + a rule + its names laid out in columns. */
+  .group { padding: 0 80px; margin-bottom: 96px; }   /* gap between tiers (?tiergap=) */
+  .group-title {
+    text-align: center; text-transform: uppercase;
+    font-size: 56px; line-height: 1; letter-spacing: 0.08em;
+    text-shadow: 0 2px 12px rgba(0,0,0,0.55);
+  }
+  .group-rule {
+    width: 620px; height: 3px; margin: 22px auto 40px;
+    background: rgba(255,255,255,0.5);
+  }
+  .group-names {
+    display: flex; flex-direction: row;
+    align-items: flex-start; justify-content: center;
+    gap: 120px;                /* space between columns (?colgap=) */
+  }
+  .col { display: flex; flex-direction: column; }
+  .name {
+    font-size: 44px; line-height: 1.0;
+    letter-spacing: 0.01em;
+    text-align: center;
+    white-space: nowrap;
+    padding: 14px 0;           /* vertical space between names (?rowgap=) */
+    text-shadow: 0 2px 10px rgba(0,0,0,0.55);
+  }
+
+  #err {
+    position: absolute; left: 0; bottom: 0; right: 0;
+    background: rgba(200,0,0,0.85); color: #fff;
+    font-family: monospace; font-size: 22px; padding: 12px 20px;
+    text-transform: none; letter-spacing: normal; display: none; z-index: 10;
+  }
+</style>
+</head>
+<body>
+  <div id="stage">
+    <div id="header">
+      <div id="title"></div>
+      <div id="subtitle"></div>
+      <div id="rule"></div>
+    </div>
+    <div id="viewport"><div id="roll"></div></div>
+    <div id="err"></div>
+  </div>
+
+<script>
+  // ---- CONFIG (override via query string) ----------------------------------
+  // ?feed=URL  &plate=URL|none  &title=TEXT  &subtitle=TEXT
+  // &cols=3  &duration=ms (one full scroll cycle)  &size=px  &titlesize=px
+  // &colgap=px  &rowgap=px  &tiergap=px  &poll=ms (how often to re-read the feed)
+  var qs = new URLSearchParams(location.search);
+  var CONFIG = {
+    feed:      qs.get("feed")     || "signage-namewall-feed.xml",
+    plate:     qs.get("plate")    || "none",
+    title:     qs.get("title")    || "",
+    subtitle:  qs.get("subtitle") || "",
+    cols:      Math.max(1, parseInt(qs.get("cols") || "3", 10)),
+    duration:  parseInt(qs.get("duration") || "150000", 10),  // 2.5 min per cycle
+    size:      parseInt(qs.get("size")      || "0", 10),       // name size; 0 = stylesheet
+    titlesize: parseInt(qs.get("titlesize") || "0", 10),       // tier-title size; 0 = stylesheet
+    colgap:    parseInt(qs.get("colgap")  || "-1", 10),
+    rowgap:    parseInt(qs.get("rowgap")  || "-1", 10),
+    tiergap:   parseInt(qs.get("tiergap") || "-1", 10),
+    poll:      parseInt(qs.get("poll")    || "60000", 10)
+  };
+
+  var stage    = document.getElementById("stage");
+  var header   = document.getElementById("header");
+  var elTitle  = document.getElementById("title");
+  var elSub    = document.getElementById("subtitle");
+  var viewport = document.getElementById("viewport");
+  var roll     = document.getElementById("roll");
+  var elErr    = document.getElementById("err");
+
+  if (CONFIG.plate && CONFIG.plate.toLowerCase() !== "none") {
+    stage.style.backgroundImage = "url('" + CONFIG.plate + "')";
+  }
+  if (CONFIG.title) {
+    elTitle.textContent = CONFIG.title;
+    header.style.display = "block";
+    if (CONFIG.subtitle) { elSub.textContent = CONFIG.subtitle; elSub.style.display = "block"; }
+  }
+
+  function showError(msg) { elErr.style.display = "block"; elErr.textContent = "FEED ERROR: " + msg; }
+
+  // tiers: ordered array of { title: "...", names: ["...", ...] }
+  var tiers = [], lastKey = "", anim = null;
+
+  // ---- build the roll ------------------------------------------------------
+  // Each tier renders as a centered title + rule + that tier's names split into
+  // `cols` balanced columns shown side by side. Tiers stack top-to-bottom in
+  // feed order. The whole block is duplicated so the scroll loops seamlessly.
+  function buildColumns(names) {
+    var wrap = document.createElement("div");
+    wrap.className = "group-names";
+    if (CONFIG.colgap >= 0) wrap.style.gap = CONFIG.colgap + "px";
+    var per = Math.ceil(names.length / CONFIG.cols);
+    for (var c = 0; c < CONFIG.cols; c++) {
+      var col = document.createElement("div");
+      col.className = "col";
+      var slice = names.slice(c * per, (c + 1) * per);
+      for (var n = 0; n < slice.length; n++) {
+        var d = document.createElement("div");
+        d.className = "name";
+        d.textContent = slice[n];
+        if (CONFIG.size > 0)    d.style.fontSize = CONFIG.size + "px";
+        if (CONFIG.rowgap >= 0) d.style.padding = CONFIG.rowgap + "px 0";
+        col.appendChild(d);
+      }
+      wrap.appendChild(col);
+    }
+    return wrap;
+  }
+
+  function buildContent() {
+    var content = document.createElement("div");
+    content.className = "content";
+    for (var g = 0; g < tiers.length; g++) {
+      var section = document.createElement("div");
+      section.className = "group";
+      if (CONFIG.tiergap >= 0) section.style.marginBottom = CONFIG.tiergap + "px";
+      if (tiers[g].title) {
+        var h = document.createElement("div");
+        h.className = "group-title";
+        h.textContent = tiers[g].title;
+        if (CONFIG.titlesize > 0) h.style.fontSize = CONFIG.titlesize + "px";
+        var rule = document.createElement("div");
+        rule.className = "group-rule";
+        section.appendChild(h);
+        section.appendChild(rule);
+      }
+      section.appendChild(buildColumns(tiers[g].names));
+      content.appendChild(section);
+    }
+    return content;
+  }
+
+  function render() {
+    if (anim) { anim.cancel(); anim = null; }
+    roll.innerHTML = "";
+    if (!tiers.length) return;
+    roll.appendChild(buildContent());
+    roll.appendChild(buildContent());   // duplicate for the seamless loop
+
+    // If the whole list already fits in the window, just center it (no scroll).
+    var oneCopy = roll.children[0].offsetHeight;
+    if (oneCopy <= viewport.clientHeight) {
+      roll.style.top = Math.max(0, (viewport.clientHeight - oneCopy) / 2) + "px";
+      return;
+    }
+    roll.style.top = "0px";
+    anim = roll.animate(
+      [{ transform: "translateY(0)" }, { transform: "translateY(-50%)" }],
+      { duration: Math.max(5000, CONFIG.duration), iterations: Infinity, easing: "linear" }
+    );
+  }
+
+  // ---- feed ----------------------------------------------------------------
+  // Items are flat <item><name><group>. We bucket them into tiers by <group>,
+  // preserving the order each group first appears in the feed (= the order the
+  // builder wrote them: fewest years of service first, by default).
+  function parseFeed(xmlText) {
+    var doc = new DOMParser().parseFromString(xmlText, "application/xml");
+    if (doc.getElementsByTagName("parsererror").length) { throw new Error("XML not well-formed"); }
+    var nodes = doc.getElementsByTagName("item");
+    var order = [], byTitle = {};
+    for (var i = 0; i < nodes.length; i++) {
+      var nm = nodes[i].getElementsByTagName("name")[0];
+      var gp = nodes[i].getElementsByTagName("group")[0];
+      var name = nm ? nm.textContent.trim() : "";
+      if (!name) continue;
+      var title = gp ? gp.textContent.trim() : "";
+      if (!byTitle[title]) { byTitle[title] = { title: title, names: [] }; order.push(title); }
+      byTitle[title].names.push(name);
+    }
+    return order.map(function (t) { return byTitle[t]; });
+  }
+
+  function tiersKey(ts) {
+    return ts.map(function (t) { return t.title + "|" + t.names.join(","); }).join("||");
+  }
+
+  function loadFeed() {
+    var url = CONFIG.feed + (CONFIG.feed.indexOf("?") >= 0 ? "&" : "?") + "t=" + Date.now();
+    fetch(url, { cache: "no-store" })
+      .then(function (r) { if (!r.ok) throw new Error("HTTP " + r.status); return r.text(); })
+      .then(function (txt) {
+        var next = parseFeed(txt);
+        elErr.style.display = "none";
+        if (!next.length) { showError("feed has no names"); return; }
+        var key = tiersKey(next);
+        if (key === lastKey) return;   // unchanged: don't restart the scroll
+        lastKey = key; tiers = next;
+        render();
+      })
+      .catch(function (e) { showError(e.message + "  (" + CONFIG.feed + ")"); });
+  }
+
+  loadFeed();
+  setInterval(loadFeed, Math.max(15000, CONFIG.poll));  // pick up CSV updates
+
+  // OTF loads async; once ready, name widths/heights change, so rebuild to
+  // re-measure and keep the seam aligned.
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(function () { if (tiers.length) render(); });
+  }
+</script>
+</body>
+</html>
