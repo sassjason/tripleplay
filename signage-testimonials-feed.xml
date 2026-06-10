@@ -2,9 +2,9 @@
 <rss version="2.0">
   <channel>
     <title>Testimonials</title>
-    <lastBuildDate>2026-06-10T18:17:22Z</lastBuildDate>
+    <lastBuildDate>2026-06-10T18:18:37Z</lastBuildDate>
     <item>
-      <quote>Hello my name is Jason.</quote>
+      <quote>This text has been updated and should show at 85pt.</quote>
       <attribution>- Jason Sass / 6.21.1976 / Myself</attribution>
       <name>Jason Sass</name>
       <quoteDate>6.21.1976</quoteDate>
@@ -13,7 +13,7 @@
       <fontSize>85</fontSize>
     </item>
     <item>
-      <quote>This is my text to background tool.</quote>
+      <quote>This one should show up at 65pt.</quote>
       <attribution>- Devin Tucker / 2.08.25 / Trail Blazers vs Lakers</attribution>
       <name>Devin Tucker</name>
       <quoteDate>2.08.25</quoteDate>
@@ -22,7 +22,7 @@
       <fontSize>65</fontSize>
     </item>
     <item>
-      <quote>I belive it's working very well.</quote>
+      <quote>And this one should be the minimum size at 24pt.</quote>
       <attribution>- Matthew Gardner / 3.21.25 / Disney On Ice</attribution>
       <name>Matthew Gardner</name>
       <quoteDate>3.21.25</quoteDate>
