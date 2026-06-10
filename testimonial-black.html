@@ -25,12 +25,19 @@
      #quote / #attribution are free to be animated with their own transforms,
      so motion never fights the centering. */
   .pos { position: absolute; left: 50%; transform: translateX(-50%); }
-  #quoteWrap { top: 30%; width: 1400px; }
+  /* Fixed box: the quote auto-fits to the largest size that stays inside it,
+     so a short quote fills the space and a long one shrinks instead of
+     clipping at the bottom. */
+  #quoteWrap {
+    top: 26%; width: 1500px; height: 46%;
+    display: flex; align-items: center; justify-content: center;
+  }
   #attrWrap  { top: 80%; width: 1600px; }
 
   #quote {
+    width: 100%;
     text-align: center; text-transform: uppercase;
-    font-size: 66px; line-height: 1.18; letter-spacing: 0.01em;
+    font-size: 66px; line-height: 1.14; letter-spacing: 0.01em;
     transform-origin: 50% 50%; will-change: transform, opacity;
     text-shadow: 0 2px 14px rgba(0,0,0,0.55);
   }
@@ -93,7 +100,7 @@
     document.body.style.background = "transparent";
   }
 
-  var items = [], idx = 0, curQuote = null, curSize = null;
+  var items = [], idx = 0, curQuote = null;
 
   function showError(msg) { elErr.style.display = "block"; elErr.textContent = "FEED ERROR: " + msg; }
 
@@ -150,19 +157,32 @@
     setTimeout(function () { springIn(elAttr, false); }, 150); // attribution follows a beat later
   }
 
+  // ---- auto-fit: largest font size whose text stays inside the box ----------
+  // Short quotes fill the space; long quotes shrink instead of clipping.
+  var QUOTE_MIN = 28, QUOTE_MAX = 150;
+  function fitQuote() {
+    var box = elQuote.parentNode;                  // #quoteWrap (fixed width/height)
+    var maxH = box.clientHeight, maxW = box.clientWidth;
+    var lo = QUOTE_MIN, hi = QUOTE_MAX, best = QUOTE_MIN;
+    while (lo <= hi) {
+      var mid = (lo + hi) >> 1;
+      elQuote.style.fontSize = mid + "px";
+      if (elQuote.scrollHeight <= maxH && elQuote.scrollWidth <= maxW) { best = mid; lo = mid + 1; }
+      else { hi = mid - 1; }
+    }
+    elQuote.style.fontSize = best + "px";
+  }
+
   function showItem(it) {
     var q = "“" + it.quote + "”";
-    // Include fontSize so a size-only edit (same text) still re-renders —
-    // otherwise changing only column G never updates the screen.
-    if (q === curQuote && elAttr.textContent === it.attribution && curSize === it.fontSize) { return; }
+    if (q === curQuote && elAttr.textContent === it.attribution) { return; }
     var first = (curQuote === null);
-    curQuote = q; curSize = it.fontSize;
+    curQuote = q;
 
-    // Per-slide quote size (from the XLS FontSize column). Blank/0 = CSS default.
-    // Applies to the QUOTE only; attribution size is fixed by the layout.
     function swapAndEnter() {
-      elQuote.style.fontSize = (it.fontSize && it.fontSize > 0) ? it.fontSize + "px" : "";
-      setQuoteText(q); elAttr.textContent = it.attribution; enter(); scheduleNext();
+      setQuoteText(q); elAttr.textContent = it.attribution;
+      fitQuote();                       // auto-size the quote to fill its box
+      enter(); scheduleNext();
     }
 
     if (first || CONFIG.anim === "none") {
@@ -223,12 +243,10 @@
       var qn = nodes[i].getElementsByTagName("quote")[0];
       var an = nodes[i].getElementsByTagName("attribution")[0];
       var sn = nodes[i].getElementsByTagName("seconds")[0];
-      var fn = nodes[i].getElementsByTagName("fontSize")[0];
       out.push({
         quote: qn ? qn.textContent : "",
         attribution: an ? an.textContent : "",
-        seconds: sn ? parseInt(sn.textContent, 10) : 0,
-        fontSize: fn ? parseInt(fn.textContent, 10) : 0
+        seconds: sn ? parseInt(sn.textContent, 10) : 0
       });
     }
     return out;
@@ -250,6 +268,11 @@
 
   loadFeed();                           // shows first quote, which starts the dwell timer chain
   setInterval(loadFeed, CONFIG.poll);   // pick up XLS edits in the background
+
+  // The OTF loads async; once ready the text metrics change, so re-fit the quote.
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(function () { if (curQuote !== null) fitQuote(); });
+  }
 </script>
 </body>
 </html>
