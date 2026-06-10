@@ -2,7 +2,7 @@
 <rss version="2.0">
   <channel>
     <title>Testimonials</title>
-    <lastBuildDate>2026-06-10T18:18:37Z</lastBuildDate>
+    <lastBuildDate>2026-06-10T18:26:17Z</lastBuildDate>
     <item>
       <quote>This text has been updated and should show at 85pt.</quote>
       <attribution>- Jason Sass / 6.21.1976 / Myself</attribution>
@@ -10,7 +10,7 @@
       <quoteDate>6.21.1976</quoteDate>
       <source>Myself</source>
       <seconds>8</seconds>
-      <fontSize>85</fontSize>
+      <fontSize>120</fontSize>
     </item>
     <item>
       <quote>This one should show up at 65pt.</quote>
