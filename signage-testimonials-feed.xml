@@ -2,7 +2,7 @@
 <rss version="2.0">
   <channel>
     <title>Testimonials</title>
-    <lastBuildDate>2026-06-10T19:55:24Z</lastBuildDate>
+    <lastBuildDate>2026-06-10T20:02:32Z</lastBuildDate>
     <item>
       <quote>Hi Ethan. This is a test.</quote>
       <attribution>- Jason Sass / 6.21.1976 / Myself</attribution>
@@ -17,14 +17,6 @@
       <name>Devin Tucker</name>
       <quoteDate>2.08.25</quoteDate>
       <source>Trail Blazers vs Lakers</source>
-      <seconds>8</seconds>
-    </item>
-    <item>
-      <quote>Hi Ethan. This is a test to see how well this new tool adjusts font size depending on the amount of characters in the quote. If this is successful, this will really make this tool useful for Matthew and Devin to be able to update each cell worry free from how the text will render on the screen.</quote>
-      <attribution>- Matthew Gardner / 3.21.25 / Disney On Ice</attribution>
-      <name>Matthew Gardner</name>
-      <quoteDate>3.21.25</quoteDate>
-      <source>Disney On Ice</source>
       <seconds>8</seconds>
     </item>
   </channel>
