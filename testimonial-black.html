@@ -156,7 +156,12 @@
     var first = (curQuote === null);
     curQuote = q;
 
-    function swapAndEnter() { setQuoteText(q); elAttr.textContent = it.attribution; enter(); scheduleNext(); }
+    // Per-slide quote size (from the XLS FontSize column). Blank/0 = CSS default.
+    // Applies to the QUOTE only; attribution size is fixed by the layout.
+    function swapAndEnter() {
+      elQuote.style.fontSize = (it.fontSize && it.fontSize > 0) ? it.fontSize + "px" : "";
+      setQuoteText(q); elAttr.textContent = it.attribution; enter(); scheduleNext();
+    }
 
     if (first || CONFIG.anim === "none") {
       swapAndEnter();
@@ -216,10 +221,12 @@
       var qn = nodes[i].getElementsByTagName("quote")[0];
       var an = nodes[i].getElementsByTagName("attribution")[0];
       var sn = nodes[i].getElementsByTagName("seconds")[0];
+      var fn = nodes[i].getElementsByTagName("fontSize")[0];
       out.push({
         quote: qn ? qn.textContent : "",
         attribution: an ? an.textContent : "",
-        seconds: sn ? parseInt(sn.textContent, 10) : 0
+        seconds: sn ? parseInt(sn.textContent, 10) : 0,
+        fontSize: fn ? parseInt(fn.textContent, 10) : 0
       });
     }
     return out;
