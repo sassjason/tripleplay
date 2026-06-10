@@ -2,9 +2,9 @@
 <rss version="2.0">
   <channel>
     <title>Testimonials</title>
-    <lastBuildDate>2026-06-10T06:50:17Z</lastBuildDate>
+    <lastBuildDate>2026-06-10T16:09:15Z</lastBuildDate>
     <item>
-      <quote>This is mhy first line of text on this tool. I want to see how it renders out.</quote>
+      <quote>I'd like to test how this is working today.</quote>
       <attribution>- Jason Sass / 6.21.1976 / Myself</attribution>
       <name>Jason Sass</name>
       <quoteDate>6.21.1976</quoteDate>
@@ -12,7 +12,7 @@
       <seconds>8</seconds>
     </item>
     <item>
-      <quote>I believe this is working really well. I think Matthew Gardner and Devin will enjoy how flexible this really is.</quote>
+      <quote>I think it should be just fine.</quote>
       <attribution>- Devin Tucker / 2.08.25 / Trail Blazers vs Lakers</attribution>
       <name>Devin Tucker</name>
       <quoteDate>2.08.25</quoteDate>
@@ -20,7 +20,7 @@
       <seconds>10</seconds>
     </item>
     <item>
-      <quote>I can't imagine doing this any other way now, as it really speeds up the process of putting text on a static background.</quote>
+      <quote>Hopefully it still works.</quote>
       <attribution>- Matthew Gardner / 3.21.25 / Disney On Ice</attribution>
       <name>Matthew Gardner</name>
       <quoteDate>3.21.25</quoteDate>
