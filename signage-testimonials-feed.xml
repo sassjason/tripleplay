@@ -2,29 +2,13 @@
 <rss version="2.0">
   <channel>
     <title>Testimonials</title>
-    <lastBuildDate>2026-06-10T21:50:06Z</lastBuildDate>
+    <lastBuildDate>2026-06-10T21:51:03Z</lastBuildDate>
     <item>
-      <quote>Hi Robert. This is a test of the direct text to screen tool.</quote>
+      <quote>EVENT HAS BEEN DELAYED - PLEASE VISIT OUR WEBSITE @ ROSEQUARTER.COM AND/OR VISIT OUR SOCIAL CHANNELS FOR UPDATES</quote>
       <attribution>- Jason Sass / 6.21.1976 / Myself</attribution>
       <name>Jason Sass</name>
       <quoteDate>6.21.1976</quoteDate>
       <source>Myself</source>
-      <seconds>8</seconds>
-    </item>
-    <item>
-      <quote>Hi Robert. This is a test to see how well this new text to screen tool adjusts font size depending on the amount of characters in the quote.</quote>
-      <attribution>- Devin Tucker / 2.08.25 / Trail Blazers vs Lakers</attribution>
-      <name>Devin Tucker</name>
-      <quoteDate>2.08.25</quoteDate>
-      <source>Trail Blazers vs Lakers</source>
-      <seconds>8</seconds>
-    </item>
-    <item>
-      <quote>I WIN!</quote>
-      <attribution>- Matthew Gardner / 3.21.25 / Disney On Ice</attribution>
-      <name>Matthew Gardner</name>
-      <quoteDate>3.21.25</quoteDate>
-      <source>Disney On Ice</source>
       <seconds>8</seconds>
     </item>
   </channel>
