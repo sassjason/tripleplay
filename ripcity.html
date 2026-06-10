@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Rip City Daily — Tripleplay HTML Resource</title>
+<style>
+  @font-face {
+    font-family: "United Sans Cond Heavy";
+    src: url("UnitedSansCdHv.otf") format("opentype");
+    font-weight: normal; font-style: normal;
+  }
+
+  html, body { margin: 0; padding: 0; background: #fff; overflow: hidden; }
+
+  /* White newspaper plate; editable text is BLACK. */
+  #stage {
+    position: relative; width: 1920px; height: 1080px;
+    background-size: cover; background-position: center;
+    color: #000;
+    font-family: "United Sans Cond Heavy", "Arial Narrow", sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  /* Condensed grotesque for the small chrome (Trade Gothic in the source art;
+     Arial Narrow Bold is the closest web-safe fallback until we embed it). */
+  .tradegothic { font-family: "Trade Gothic LT Std", "Arial Narrow", sans-serif; font-weight: bold; }
+
+  .pos { position: absolute; }
+
+  /* Top-left season label (in the subtitle rule row) */
+  #seasonWrap { top: 226px; left: 88px; }
+  #season { font-size: 22px; letter-spacing: 0.02em; text-transform: uppercase; transform-origin: 0 50%; }
+
+  /* Top-right date */
+  #dateWrap { top: 96px; right: 88px; text-align: right; }
+  #date { font-size: 60px; letter-spacing: 0.01em; text-transform: uppercase; transform-origin: 100% 50%; }
+
+  /* Big headline (left-aligned, fills the page) */
+  #headlineWrap { top: 300px; left: 86px; width: 1748px; }
+  #headline {
+    font-size: 165px; line-height: 0.92; letter-spacing: 0.005em;
+    text-transform: uppercase; text-align: left;
+    transform-origin: 0 50%; will-change: transform, opacity;
+  }
+
+  /* Centered source / quote-title under the headline */
+  #sourceWrap { top: 854px; left: 0; width: 1920px; text-align: center; }
+  #source { font-size: 30px; font-style: italic; letter-spacing: 0.04em; text-transform: uppercase; transform-origin: 50% 50%; will-change: transform, opacity; }
+
+  #clock {
+    position: absolute; right: 48px; bottom: 42px; opacity: 0.8; display: none;
+    filter: drop-shadow(0 1px 3px rgba(0,0,0,0.25));
+  }
+  #err {
+    position: absolute; left: 0; bottom: 0; right: 0;
+    background: rgba(200,0,0,0.9); color: #fff;
+    font-family: monospace; font-size: 22px; padding: 12px 20px;
+    text-transform: none; letter-spacing: normal; display: none;
+  }
+</style>
+</head>
+<body>
+  <div id="stage">
+    <div class="pos" id="seasonWrap"><div id="season" class="tradegothic"></div></div>
+    <div class="pos" id="dateWrap"><div id="date"></div></div>
+    <div class="pos" id="headlineWrap"><div id="headline"></div></div>
+    <div class="pos" id="sourceWrap"><div id="source" class="tradegothic"></div></div>
+    <svg id="clock" width="48" height="48" viewBox="0 0 48 48" aria-hidden="true">
+      <circle cx="24" cy="24" r="20" fill="none" stroke="rgba(0,0,0,0.18)" stroke-width="4"></circle>
+      <circle id="clockProg" cx="24" cy="24" r="20" fill="none" stroke="#000" stroke-width="4"
+              stroke-linecap="round" transform="rotate(-90 24 24)"></circle>
+    </svg>
+    <div id="err"></div>
+  </div>
+
+<script>
+  var qs = new URLSearchParams(location.search);
+  var CONFIG = {
+    feed:    qs.get("feed")  || "signage-ripcity-feed.xml",
+    plate:   qs.get("plate") || "24IPTVEventSchedule_PLATE.png",
+    dwell:   parseInt(qs.get("dwell") || qs.get("rotate") || "8000", 10),
+    enterMs: parseInt(qs.get("enter") || "1000", 10),
+    poll:    parseInt(qs.get("poll")  || "10000", 10),
+    anim:   (qs.get("anim")  || "spring").toLowerCase(),
+    clock:  (qs.get("clock") || "1") !== "0"
+  };
+
+  var stage    = document.getElementById("stage");
+  var elHead   = document.getElementById("headline");
+  var elSource = document.getElementById("source");
+  var elDate   = document.getElementById("date");
+  var elSeason = document.getElementById("season");
+  var elErr    = document.getElementById("err");
+
+  if (CONFIG.plate && CONFIG.plate.toLowerCase() !== "none") {
+    stage.style.backgroundImage = "url('" + CONFIG.plate + "')";
+  } else { document.documentElement.style.background = "#fff"; }
+
+  var items = [], idx = 0, curKey = null;
+
+  function showError(msg) { elErr.style.display = "block"; elErr.textContent = "FEED ERROR: " + msg; }
+  function cancelAnims(el) { if (el.getAnimations) { el.getAnimations().forEach(function (a) { a.cancel(); }); } }
+
+  function springIn(el, big) {
+    cancelAnims(el);
+    var over = big ? 1.03 : 1.02, rise = big ? 34 : 20;
+    el.animate([
+      { opacity: 0, transform: "translateY(" + rise + "px) scale(0.93)" },
+      { opacity: 1, transform: "translateY(-7px) scale(" + over + ")", offset: 0.6 },
+      { opacity: 1, transform: "translateY(2px) scale(0.997)", offset: 0.82 },
+      { opacity: 1, transform: "translateY(0) scale(1)" }
+    ], { duration: big ? 720 : 560, easing: "ease-out", fill: "both" });
+  }
+  function fadeIn(el) { cancelAnims(el); el.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 450, fill: "both" }); }
+
+  function enter() {
+    if (CONFIG.anim === "none") { return; }
+    if (CONFIG.anim === "fade") { fadeIn(elHead); fadeIn(elSource); fadeIn(elDate); fadeIn(elSeason); return; }
+    springIn(elHead, true);
+    setTimeout(function () { springIn(elSource, false); }, 150);
+    fadeIn(elDate); fadeIn(elSeason);
+  }
+
+  // ---- countdown ring + per-slide dwell ------------------------------------
+  var clockSvg = document.getElementById("clock"), clockProg = document.getElementById("clockProg");
+  var CIRC = 2 * Math.PI * 20;
+  if (clockProg) { clockProg.style.strokeDasharray = CIRC; clockProg.style.strokeDashoffset = CIRC; }
+  function startClock(ms) {
+    if (!clockProg) return;
+    if (!CONFIG.clock || items.length <= 1) { clockSvg.style.display = "none"; return; }
+    clockSvg.style.display = "block";
+    cancelAnims(clockProg);
+    clockProg.animate([{ strokeDashoffset: CIRC }, { strokeDashoffset: 0 }], { duration: ms, easing: "linear", fill: "forwards" });
+  }
+  function currentDwell() {
+    if (!items.length) return CONFIG.dwell;
+    var s = items[idx % items.length].seconds;
+    return (s && s > 0) ? s * 1000 : CONFIG.dwell;
+  }
+
+  var nextTimer = null;
+  function scheduleNext() {
+    clearTimeout(nextTimer);
+    var total = CONFIG.enterMs + currentDwell();
+    startClock(total);
+    nextTimer = setTimeout(advance, total);
+  }
+  function advance() {
+    if (items.length <= 1) { scheduleNext(); return; }
+    idx++;
+    showItem(items[idx % items.length]);
+  }
+
+  function setAll(it) {
+    elHead.textContent   = "“" + it.headline + "”";   // layout owns the quotes
+    elSource.textContent = it.source ? ("–" + it.source) : "";
+    elDate.textContent   = it.date || "";
+    elSeason.textContent = it.season || "";
+  }
+
+  function showItem(it) {
+    var key = it.headline + "|" + it.source + "|" + it.date + "|" + it.season;
+    if (key === curKey) { return; }
+    var first = (curKey === null);
+    curKey = key;
+    function swapAndEnter() { setAll(it); enter(); scheduleNext(); }
+    if (first || CONFIG.anim === "none") { swapAndEnter(); }
+    else {
+      [elHead, elSource, elDate, elSeason].forEach(cancelAnims);
+      var outOpts = { duration: 220, easing: "ease-in", fill: "both" };
+      elSource.animate([{ opacity: 1 }, { opacity: 0 }], outOpts);
+      elDate.animate([{ opacity: 1 }, { opacity: 0 }], outOpts);
+      elSeason.animate([{ opacity: 1 }, { opacity: 0 }], outOpts);
+      elHead.animate([{ opacity: 1 }, { opacity: 0, transform: "scale(0.99)" }], outOpts).finished.then(swapAndEnter, swapAndEnter);
+    }
+  }
+
+  function renderCurrent() { if (items.length) { showItem(items[idx % items.length]); } }
+
+  function parseFeed(xmlText) {
+    var doc = new DOMParser().parseFromString(xmlText, "application/xml");
+    if (doc.getElementsByTagName("parsererror").length) { throw new Error("XML not well-formed"); }
+    var nodes = doc.getElementsByTagName("item"), out = [];
+    function g(n, tag) { var e = n.getElementsByTagName(tag)[0]; return e ? e.textContent : ""; }
+    for (var i = 0; i < nodes.length; i++) {
+      out.push({
+        headline: g(nodes[i], "headline"),
+        source:   g(nodes[i], "source"),
+        date:     g(nodes[i], "date"),
+        season:   g(nodes[i], "season"),
+        seconds:  parseInt(g(nodes[i], "seconds"), 10) || 0
+      });
+    }
+    return out;
+  }
+
+  function loadFeed() {
+    var url = CONFIG.feed + (CONFIG.feed.indexOf("?") >= 0 ? "&" : "?") + "t=" + Date.now();
+    fetch(url, { cache: "no-store" })
+      .then(function (r) { if (!r.ok) throw new Error("HTTP " + r.status); return r.text(); })
+      .then(function (txt) {
+        items = parseFeed(txt);
+        elErr.style.display = "none";
+        if (!items.length) showError("feed has no <item> elements");
+        if (idx >= items.length) { idx = 0; }
+        renderCurrent();
+      })
+      .catch(function (e) { showError(e.message + "  (" + CONFIG.feed + ")"); });
+  }
+
+  loadFeed();
+  setInterval(loadFeed, CONFIG.poll);
+</script>
+</body>
+</html>
