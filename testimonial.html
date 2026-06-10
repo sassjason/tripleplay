@@ -82,7 +82,7 @@
   // ?feed=URL&plate=URL&rotate=ms
   var qs = new URLSearchParams(location.search);
   var CONFIG = {
-    feed:   qs.get("feed")  || "signage-testimonials-feed.xml",
+    feed:   qs.get("feed")  || "https://raw.githubusercontent.com/sassjason/tripleplay/main/signage-testimonials-feed.xml",
     plate:  qs.get("plate") || "24IPTV_RQ_Message_1_PLATE.png",
     rotate: parseInt(qs.get("rotate") || "8000", 10),  // ms per quote
     poll:   parseInt(qs.get("poll")   || "10000", 10)  // ms between feed re-fetches
@@ -152,7 +152,9 @@
   }
 
   function loadFeed() {
-    fetch(CONFIG.feed, { cache: "no-store" })
+    // cache-bust so a CDN (GitHub raw/Pages) can't serve a stale feed
+    var url = CONFIG.feed + (CONFIG.feed.indexOf('?') >= 0 ? '&' : '?') + 't=' + Date.now();
+    fetch(url, { cache: "no-store" })
       .then(function (r) {
         if (!r.ok) throw new Error("HTTP " + r.status);
         return r.text();
