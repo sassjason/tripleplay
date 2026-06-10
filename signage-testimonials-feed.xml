@@ -2,9 +2,9 @@
 <rss version="2.0">
   <channel>
     <title>Testimonials</title>
-    <lastBuildDate>2026-06-10T22:18:53Z</lastBuildDate>
+    <lastBuildDate>2026-06-10T22:21:39Z</lastBuildDate>
     <item>
-      <quote>I hope you enjoy this new tool. This is a test of the text-to-background tool made for our internal suite 100-200 IPTV system.</quote>
+      <quote>I hope you enjoy this new tool. This is a test of the text-to-background tool made for our internal suite 100-200 IPTV system. This tool is updated via an .xls file, that then sends it's data to a GitHub repository and then turns it in to an html resrouces to be displayed in Tripleplay.</quote>
       <attribution>-  / 6/10/29 / Moda Center</attribution>
       <name></name>
       <quoteDate>6/10/29</quoteDate>
