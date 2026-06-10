@@ -2,7 +2,7 @@
 <rss version="2.0">
   <channel>
     <title>Testimonials</title>
-    <lastBuildDate>2026-06-10T18:36:19Z</lastBuildDate>
+    <lastBuildDate>2026-06-10T18:40:50Z</lastBuildDate>
     <item>
       <quote>This text has been updated and should show at 150pt.</quote>
       <attribution>- Jason Sass / 6.21.1976 / Myself</attribution>
@@ -13,7 +13,7 @@
       <fontSize>150</fontSize>
     </item>
     <item>
-      <quote>This one should show up at 100pt.</quote>
+      <quote>This one should show up at 100pt. And I want to see that it'll hold consistent, no matter how much text I add to it…it, just needs to look good on it's own.</quote>
       <attribution>- Devin Tucker / 2.08.25 / Trail Blazers vs Lakers</attribution>
       <name>Devin Tucker</name>
       <quoteDate>2.08.25</quoteDate>
@@ -22,13 +22,13 @@
       <fontSize>100</fontSize>
     </item>
     <item>
-      <quote>And this one should be the minimum size at 50pt.</quote>
+      <quote>This one is showing 100pt. I believe this is a decent size for quotes that will word-wrap muliple lines. But I need to be extra cautions that I allow for enough space that the uswer can type mutiple things and not have anything get cut off or cover the quote attribute.</quote>
       <attribution>- Matthew Gardner / 3.21.25 / Disney On Ice</attribution>
       <name>Matthew Gardner</name>
       <quoteDate>3.21.25</quoteDate>
       <source>Disney On Ice</source>
       <seconds>8</seconds>
-      <fontSize>50</fontSize>
+      <fontSize>100</fontSize>
     </item>
   </channel>
 </rss>
