@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Moda Testimonial — Tripleplay HTML Resource</title>
+<style>
+  @font-face {
+    font-family: "United Sans Cond Heavy";
+    src: url("UnitedSansCdHv.otf") format("opentype");
+    font-weight: normal; font-style: normal;
+  }
+
+  html, body { margin: 0; padding: 0; background: #000; overflow: hidden; }
+
+  #stage {
+    position: relative;
+    width: 1920px; height: 1080px;
+    background-size: cover; background-position: center;
+    font-family: "United Sans Cond Heavy", "Arial Narrow", sans-serif;
+    color: #ffffff;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Wrappers handle POSITION/centering (transform: translateX). The inner
+     #quote / #attribution are free to be animated with their own transforms,
+     so motion never fights the centering. */
+  .pos { position: absolute; left: 50%; transform: translateX(-50%); }
+  #quoteWrap { top: 30%; width: 1400px; }
+  #attrWrap  { top: 80%; width: 1600px; }
+
+  #quote {
+    text-align: center; text-transform: uppercase;
+    font-size: 66px; line-height: 1.18; letter-spacing: 0.01em;
+    transform-origin: 50% 50%; will-change: transform, opacity;
+    text-shadow: 0 2px 14px rgba(0,0,0,0.55);
+  }
+  #attribution {
+    text-align: center; text-transform: uppercase;
+    font-size: 40px; letter-spacing: 0.06em;
+    transform-origin: 50% 50%; will-change: transform, opacity;
+    text-shadow: 0 2px 12px rgba(0,0,0,0.55);
+  }
+
+  #clock {
+    position: absolute; right: 48px; bottom: 42px;
+    opacity: 0.85; display: none;
+    filter: drop-shadow(0 2px 6px rgba(0,0,0,0.55));
+  }
+
+  #err {
+    position: absolute; left: 0; bottom: 0; right: 0;
+    background: rgba(200,0,0,0.85); color: #fff;
+    font-family: monospace; font-size: 22px; padding: 12px 20px;
+    text-transform: none; letter-spacing: normal; display: none;
+  }
+</style>
+</head>
+<body>
+  <div id="stage">
+    <div class="pos" id="quoteWrap"><div id="quote"></div></div>
+    <div class="pos" id="attrWrap"><div id="attribution"></div></div>
+    <svg id="clock" width="54" height="54" viewBox="0 0 54 54" aria-hidden="true">
+      <circle cx="27" cy="27" r="23" fill="none" stroke="rgba(255,255,255,0.20)" stroke-width="4"></circle>
+      <circle id="clockProg" cx="27" cy="27" r="23" fill="none" stroke="#ffffff" stroke-width="4"
+              stroke-linecap="round" transform="rotate(-90 27 27)"></circle>
+    </svg>
+    <div id="err"></div>
+  </div>
+
+<script>
+  // ---- CONFIG (override via query string) ----------------------------------
+  // ?feed=URL &plate=URL|none &rotate=ms &poll=ms &anim=spring|words|fade|none
+  var qs = new URLSearchParams(location.search);
+  var CONFIG = {
+    feed:   qs.get("feed")  || "signage-testimonials-purple-feed.xml",
+    plate:  qs.get("plate") || "24IPTV_RQ_Message_Purple_PLATE.png",
+    dwell:   parseInt(qs.get("dwell") || qs.get("rotate") || "8000", 10), // default ms a quote sits (per-slide Seconds overrides)
+    enterMs: parseInt(qs.get("enter") || "1000", 10),                     // allowance for the entrance to finish
+    poll:    parseInt(qs.get("poll")  || "10000", 10),
+    anim:   (qs.get("anim")  || "spring").toLowerCase(),
+    clock:  (qs.get("clock") || "1") !== "0"                              // bottom-right countdown ring
+  };
+
+  var stage   = document.getElementById("stage");
+  var elQuote = document.getElementById("quote");
+  var elAttr  = document.getElementById("attribution");
+  var elErr   = document.getElementById("err");
+
+  if (CONFIG.plate && CONFIG.plate.toLowerCase() !== "none") {
+    stage.style.backgroundImage = "url('" + CONFIG.plate + "')";
+  } else {
+    document.documentElement.style.background = "transparent";
+    document.body.style.background = "transparent";
+  }
+
+  var items = [], idx = 0, curQuote = null;
+
+  function showError(msg) { elErr.style.display = "block"; elErr.textContent = "FEED ERROR: " + msg; }
+
+  // ---- animation styles ----------------------------------------------------
+  function cancelAnims(el) { if (el.getAnimations) { el.getAnimations().forEach(function (a) { a.cancel(); }); } }
+
+  // rubber-band: rise up, overshoot bigger, dip slightly, settle
+  function springIn(el, big) {
+    cancelAnims(el);
+    var over = big ? 1.045 : 1.025, rise = big ? 42 : 26;
+    el.animate([
+      { opacity: 0, transform: "translateY(" + rise + "px) scale(0.90)" },
+      { opacity: 1, transform: "translateY(-9px) scale(" + over + ")", offset: 0.6 },
+      { opacity: 1, transform: "translateY(3px) scale(0.995)", offset: 0.82 },
+      { opacity: 1, transform: "translateY(0) scale(1)" }
+    ], { duration: big ? 720 : 600, easing: "ease-out", fill: "both" });
+  }
+
+  function fadeIn(el) { cancelAnims(el); el.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 500, fill: "both" }); }
+
+  function wordsIn(el) {
+    var s = el.children;
+    for (var i = 0; i < s.length; i++) {
+      cancelAnims(s[i]);
+      s[i].animate([
+        { opacity: 0, transform: "translateY(26px) scale(0.96)" },
+        { opacity: 1, transform: "translateY(-5px)", offset: 0.7 },
+        { opacity: 1, transform: "translateY(0) scale(1)" }
+      ], { duration: 480, delay: Math.min(i * 42, 1500), easing: "ease-out", fill: "both" });
+    }
+  }
+
+  function setQuoteText(text) {
+    if (CONFIG.anim === "words") {
+      elQuote.innerHTML = "";
+      var w = text.split(" ");
+      for (var i = 0; i < w.length; i++) {
+        var sp = document.createElement("span");
+        sp.textContent = w[i] + (i < w.length - 1 ? " " : "");
+        sp.style.display = "inline-block";
+        sp.style.whiteSpace = "pre";
+        elQuote.appendChild(sp);
+      }
+    } else {
+      elQuote.textContent = text;
+    }
+  }
+
+  function enter() {
+    if (CONFIG.anim === "none") { return; }
+    if (CONFIG.anim === "fade") { fadeIn(elQuote); fadeIn(elAttr); return; }
+    if (CONFIG.anim === "words") { wordsIn(elQuote); setTimeout(function () { springIn(elAttr, false); }, 160); return; }
+    springIn(elQuote, true);                                   // spring (default)
+    setTimeout(function () { springIn(elAttr, false); }, 150); // attribution follows a beat later
+  }
+
+  function showItem(it) {
+    var q = "“" + it.quote + "”";
+    if (q === curQuote && elAttr.textContent === it.attribution) { return; }
+    var first = (curQuote === null);
+    curQuote = q;
+
+    function swapAndEnter() { setQuoteText(q); elAttr.textContent = it.attribution; enter(); scheduleNext(); }
+
+    if (first || CONFIG.anim === "none") {
+      swapAndEnter();
+    } else {
+      cancelAnims(elQuote); cancelAnims(elAttr);
+      var outOpts = { duration: 240, easing: "ease-in", fill: "both" };
+      elAttr.animate([{ opacity: 1 }, { opacity: 0 }], outOpts);
+      elQuote.animate([{ opacity: 1, transform: "scale(1)" }, { opacity: 0, transform: "scale(0.985)" }], outOpts)
+        .finished.then(swapAndEnter, swapAndEnter);
+    }
+  }
+
+  function renderCurrent() { if (items.length) { showItem(items[idx % items.length]); } }
+
+  // ---- countdown ring (bottom-right) ---------------------------------------
+  var clockSvg  = document.getElementById("clock");
+  var clockProg = document.getElementById("clockProg");
+  var CIRC = 2 * Math.PI * 23;
+  if (clockProg) { clockProg.style.strokeDasharray = CIRC; clockProg.style.strokeDashoffset = CIRC; }
+
+  function startClock(ms) {
+    if (!clockProg) return;
+    if (!CONFIG.clock || items.length <= 1) { clockSvg.style.display = "none"; return; }
+    clockSvg.style.display = "block";
+    cancelAnims(clockProg);
+    clockProg.animate([{ strokeDashoffset: CIRC }, { strokeDashoffset: 0 }],
+      { duration: ms, easing: "linear", fill: "forwards" });   // fills over this slide's time
+  }
+
+  // Per-slide dwell: the current item's Seconds (from the XLS), else the default.
+  function currentDwell() {
+    if (!items.length) return CONFIG.dwell;
+    var s = items[idx % items.length].seconds;
+    return (s && s > 0) ? s * 1000 : CONFIG.dwell;
+  }
+
+  // Rotation timer (re)starts each time a quote enters, so every quote sits for
+  // a full dwell AFTER it settles. The ring tracks the same window.
+  var nextTimer = null;
+  function scheduleNext() {
+    clearTimeout(nextTimer);
+    var total = CONFIG.enterMs + currentDwell();
+    startClock(total);
+    nextTimer = setTimeout(advance, total);
+  }
+  function advance() {
+    if (items.length <= 1) { scheduleNext(); return; }  // single quote: keep it sitting
+    idx++;
+    showItem(items[idx % items.length]);
+  }
+
+  function parseFeed(xmlText) {
+    var doc = new DOMParser().parseFromString(xmlText, "application/xml");
+    if (doc.getElementsByTagName("parsererror").length) { throw new Error("XML not well-formed"); }
+    var nodes = doc.getElementsByTagName("item"), out = [];
+    for (var i = 0; i < nodes.length; i++) {
+      var qn = nodes[i].getElementsByTagName("quote")[0];
+      var an = nodes[i].getElementsByTagName("attribution")[0];
+      var sn = nodes[i].getElementsByTagName("seconds")[0];
+      out.push({
+        quote: qn ? qn.textContent : "",
+        attribution: an ? an.textContent : "",
+        seconds: sn ? parseInt(sn.textContent, 10) : 0
+      });
+    }
+    return out;
+  }
+
+  function loadFeed() {
+    var url = CONFIG.feed + (CONFIG.feed.indexOf("?") >= 0 ? "&" : "?") + "t=" + Date.now();
+    fetch(url, { cache: "no-store" })
+      .then(function (r) { if (!r.ok) throw new Error("HTTP " + r.status); return r.text(); })
+      .then(function (txt) {
+        items = parseFeed(txt);
+        elErr.style.display = "none";
+        if (!items.length) showError("feed has no <item> elements");
+        if (idx >= items.length) { idx = 0; }
+        renderCurrent();
+      })
+      .catch(function (e) { showError(e.message + "  (" + CONFIG.feed + ")"); });
+  }
+
+  loadFeed();                           // shows first quote, which starts the dwell timer chain
+  setInterval(loadFeed, CONFIG.poll);   // pick up XLS edits in the background
+</script>
+</body>
+</html>
