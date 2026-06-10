@@ -2,33 +2,33 @@
 <rss version="2.0">
   <channel>
     <title>Testimonials</title>
-    <lastBuildDate>2026-06-10T18:26:17Z</lastBuildDate>
+    <lastBuildDate>2026-06-10T18:30:38Z</lastBuildDate>
     <item>
-      <quote>This text has been updated and should show at 85pt.</quote>
+      <quote>This text has been updated and should show at 300pt.</quote>
       <attribution>- Jason Sass / 6.21.1976 / Myself</attribution>
       <name>Jason Sass</name>
       <quoteDate>6.21.1976</quoteDate>
       <source>Myself</source>
       <seconds>8</seconds>
-      <fontSize>120</fontSize>
+      <fontSize>300</fontSize>
     </item>
     <item>
-      <quote>This one should show up at 65pt.</quote>
+      <quote>This one should show up at 100pt.</quote>
       <attribution>- Devin Tucker / 2.08.25 / Trail Blazers vs Lakers</attribution>
       <name>Devin Tucker</name>
       <quoteDate>2.08.25</quoteDate>
       <source>Trail Blazers vs Lakers</source>
       <seconds>8</seconds>
-      <fontSize>65</fontSize>
+      <fontSize>100</fontSize>
     </item>
     <item>
-      <quote>And this one should be the minimum size at 24pt.</quote>
+      <quote>And this one should be the minimum size at 50pt.</quote>
       <attribution>- Matthew Gardner / 3.21.25 / Disney On Ice</attribution>
       <name>Matthew Gardner</name>
       <quoteDate>3.21.25</quoteDate>
       <source>Disney On Ice</source>
       <seconds>8</seconds>
-      <fontSize>24</fontSize>
+      <fontSize>50</fontSize>
     </item>
   </channel>
 </rss>
