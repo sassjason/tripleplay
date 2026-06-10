@@ -2,14 +2,14 @@
 <rss version="2.0">
   <channel>
     <title>Rip City Daily</title>
-    <lastBuildDate>2026-06-10T16:21:05Z</lastBuildDate>
+    <lastBuildDate>2026-06-10T16:36:08Z</lastBuildDate>
     <item>
       <headline>Trail Blazers Come Away with the 7th, 14th Picks at 2024 NBA Draft Lottery</headline>
       <source>The Washington Post</source>
       <date>May 15</date>
       <season>Season 2024-25</season>
       <seconds>8</seconds>
-      <fontSize></fontSize>
+      <fontSize>165</fontSize>
     </item>
     <item>
       <headline>Replace with your next headline</headline>
@@ -17,7 +17,7 @@
       <date>May 16</date>
       <season>Season 2024-25</season>
       <seconds>8</seconds>
-      <fontSize></fontSize>
+      <fontSize>165</fontSize>
     </item>
   </channel>
 </rss>
