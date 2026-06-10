@@ -166,7 +166,8 @@
   function showError(msg) { elErr.style.display = "block"; elErr.textContent = "FEED ERROR: " + msg; }
 
   // tiers: ordered array of { title: "...", names: ["...", ...] }
-  var tiers = [], lastKey = "", anim = null;
+  var tiers = [], lastKey = "";
+  var rafId = null, scrollOffset = 0, lastTs = 0, loopH = 0, effSpeed = 0;
 
   // ---- build the roll ------------------------------------------------------
   // Each tier renders as a centered title + rule + that tier's names split into
@@ -217,12 +218,27 @@
     return content;
   }
 
+  function stopScroll() { if (rafId) { cancelAnimationFrame(rafId); rafId = null; } lastTs = 0; }
+
+  // rAF scroll loop: advance by (speed * elapsed) each frame and wrap at one
+  // content copy's height for a seamless loop. No Web Animations API dependency,
+  // so it runs on older embedded browsers (Tripleplay player) too.
+  function step(ts) {
+    if (!lastTs) { lastTs = ts; rafId = requestAnimationFrame(step); return; }
+    var dt = (ts - lastTs) / 1000; lastTs = ts;
+    if (dt > 0.25) dt = 0.25;                 // clamp after a stall/throttle
+    scrollOffset += effSpeed * dt;
+    if (loopH > 0) { while (scrollOffset >= loopH) scrollOffset -= loopH; }
+    roll.style.transform = "translateY(" + (-scrollOffset) + "px)";
+    rafId = requestAnimationFrame(step);
+  }
+
   function render() {
-    if (anim) { anim.cancel(); anim = null; }
+    stopScroll();
     roll.innerHTML = "";
+    roll.style.transform = "translateY(0)";
     if (!tiers.length) return;
     roll.appendChild(buildContent());
-    roll.appendChild(buildContent());   // duplicate for the seamless loop
 
     // If the whole list already fits in the window, just center it (no scroll).
     var oneCopy = roll.children[0].offsetHeight;
@@ -230,15 +246,13 @@
       roll.style.top = Math.max(0, (viewport.clientHeight - oneCopy) / 2) + "px";
       return;
     }
+    roll.appendChild(buildContent());   // duplicate for the seamless loop
     roll.style.top = "0px";
-    // translateY(-50%) advances exactly one content copy (oneCopy px). Drive that
-    // by a constant speed so the rate is the same regardless of name count; a
-    // ?duration= overrides it with a fixed loop time.
-    var durMs = CONFIG.duration > 0 ? CONFIG.duration : (oneCopy / CONFIG.speed) * 1000;
-    anim = roll.animate(
-      [{ transform: "translateY(0)" }, { transform: "translateY(-50%)" }],
-      { duration: Math.max(5000, durMs), iterations: Infinity, easing: "linear" }
-    );
+    loopH = oneCopy;                    // wrap point = one copy's height
+    // constant px/sec; ?duration= (ms) forces one full loop into a fixed time
+    effSpeed = CONFIG.duration > 0 ? (loopH / (CONFIG.duration / 1000)) : CONFIG.speed;
+    scrollOffset = 0;
+    rafId = requestAnimationFrame(step);
   }
 
   // ---- feed ----------------------------------------------------------------
