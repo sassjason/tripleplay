@@ -2,7 +2,7 @@
 <rss version="2.0">
   <channel>
     <title>Testimonials</title>
-    <lastBuildDate>2026-06-10T18:13:15Z</lastBuildDate>
+    <lastBuildDate>2026-06-10T18:17:22Z</lastBuildDate>
     <item>
       <quote>Hello my name is Jason.</quote>
       <attribution>- Jason Sass / 6.21.1976 / Myself</attribution>
@@ -10,7 +10,7 @@
       <quoteDate>6.21.1976</quoteDate>
       <source>Myself</source>
       <seconds>8</seconds>
-      <fontSize>90</fontSize>
+      <fontSize>85</fontSize>
     </item>
     <item>
       <quote>This is my text to background tool.</quote>
@@ -19,7 +19,7 @@
       <quoteDate>2.08.25</quoteDate>
       <source>Trail Blazers vs Lakers</source>
       <seconds>8</seconds>
-      <fontSize>66</fontSize>
+      <fontSize>65</fontSize>
     </item>
     <item>
       <quote>I belive it's working very well.</quote>
