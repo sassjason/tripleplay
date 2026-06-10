@@ -41,6 +41,12 @@
     text-shadow: 0 2px 12px rgba(0,0,0,0.55);
   }
 
+  #clock {
+    position: absolute; right: 48px; bottom: 42px;
+    opacity: 0.85; display: none;
+    filter: drop-shadow(0 2px 6px rgba(0,0,0,0.55));
+  }
+
   #err {
     position: absolute; left: 0; bottom: 0; right: 0;
     background: rgba(200,0,0,0.85); color: #fff;
@@ -53,6 +59,11 @@
   <div id="stage">
     <div class="pos" id="quoteWrap"><div id="quote"></div></div>
     <div class="pos" id="attrWrap"><div id="attribution"></div></div>
+    <svg id="clock" width="54" height="54" viewBox="0 0 54 54" aria-hidden="true">
+      <circle cx="27" cy="27" r="23" fill="none" stroke="rgba(255,255,255,0.20)" stroke-width="4"></circle>
+      <circle id="clockProg" cx="27" cy="27" r="23" fill="none" stroke="#ffffff" stroke-width="4"
+              stroke-linecap="round" transform="rotate(-90 27 27)"></circle>
+    </svg>
     <div id="err"></div>
   </div>
 
@@ -63,10 +74,11 @@
   var CONFIG = {
     feed:   qs.get("feed")  || "signage-testimonials-feed.xml",
     plate:  qs.get("plate") || "24IPTV_RQ_Message_1_PLATE.png",
-    dwell:   parseInt(qs.get("dwell") || qs.get("rotate") || "8000", 10), // ms a quote SITS, after it settles
+    dwell:   parseInt(qs.get("dwell") || qs.get("rotate") || "8000", 10), // default ms a quote sits (per-slide Seconds overrides)
     enterMs: parseInt(qs.get("enter") || "1000", 10),                     // allowance for the entrance to finish
     poll:    parseInt(qs.get("poll")  || "10000", 10),
-    anim:   (qs.get("anim")  || "spring").toLowerCase()
+    anim:   (qs.get("anim")  || "spring").toLowerCase(),
+    clock:  (qs.get("clock") || "1") !== "0"                              // bottom-right countdown ring
   };
 
   var stage   = document.getElementById("stage");
@@ -159,12 +171,36 @@
 
   function renderCurrent() { if (items.length) { showItem(items[idx % items.length]); } }
 
-  // Rotation is driven by a timer that (re)starts each time a quote enters, so
-  // every quote sits for a full dwell AFTER it settles - even timing throughout.
+  // ---- countdown ring (bottom-right) ---------------------------------------
+  var clockSvg  = document.getElementById("clock");
+  var clockProg = document.getElementById("clockProg");
+  var CIRC = 2 * Math.PI * 23;
+  if (clockProg) { clockProg.style.strokeDasharray = CIRC; clockProg.style.strokeDashoffset = CIRC; }
+
+  function startClock(ms) {
+    if (!clockProg) return;
+    if (!CONFIG.clock || items.length <= 1) { clockSvg.style.display = "none"; return; }
+    clockSvg.style.display = "block";
+    cancelAnims(clockProg);
+    clockProg.animate([{ strokeDashoffset: CIRC }, { strokeDashoffset: 0 }],
+      { duration: ms, easing: "linear", fill: "forwards" });   // fills over this slide's time
+  }
+
+  // Per-slide dwell: the current item's Seconds (from the XLS), else the default.
+  function currentDwell() {
+    if (!items.length) return CONFIG.dwell;
+    var s = items[idx % items.length].seconds;
+    return (s && s > 0) ? s * 1000 : CONFIG.dwell;
+  }
+
+  // Rotation timer (re)starts each time a quote enters, so every quote sits for
+  // a full dwell AFTER it settles. The ring tracks the same window.
   var nextTimer = null;
   function scheduleNext() {
     clearTimeout(nextTimer);
-    nextTimer = setTimeout(advance, CONFIG.enterMs + CONFIG.dwell);
+    var total = CONFIG.enterMs + currentDwell();
+    startClock(total);
+    nextTimer = setTimeout(advance, total);
   }
   function advance() {
     if (items.length <= 1) { scheduleNext(); return; }  // single quote: keep it sitting
@@ -179,7 +215,12 @@
     for (var i = 0; i < nodes.length; i++) {
       var qn = nodes[i].getElementsByTagName("quote")[0];
       var an = nodes[i].getElementsByTagName("attribution")[0];
-      out.push({ quote: qn ? qn.textContent : "", attribution: an ? an.textContent : "" });
+      var sn = nodes[i].getElementsByTagName("seconds")[0];
+      out.push({
+        quote: qn ? qn.textContent : "",
+        attribution: an ? an.textContent : "",
+        seconds: sn ? parseInt(sn.textContent, 10) : 0
+      });
     }
     return out;
   }
