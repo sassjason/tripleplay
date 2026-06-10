@@ -63,9 +63,10 @@
   var CONFIG = {
     feed:   qs.get("feed")  || "signage-testimonials-feed.xml",
     plate:  qs.get("plate") || "24IPTV_RQ_Message_1_PLATE.png",
-    rotate: parseInt(qs.get("rotate") || "8000", 10),
-    poll:   parseInt(qs.get("poll")   || "10000", 10),
-    anim:  (qs.get("anim")  || "spring").toLowerCase()
+    dwell:   parseInt(qs.get("dwell") || qs.get("rotate") || "8000", 10), // ms a quote SITS, after it settles
+    enterMs: parseInt(qs.get("enter") || "1000", 10),                     // allowance for the entrance to finish
+    poll:    parseInt(qs.get("poll")  || "10000", 10),
+    anim:   (qs.get("anim")  || "spring").toLowerCase()
   };
 
   var stage   = document.getElementById("stage");
@@ -143,7 +144,7 @@
     var first = (curQuote === null);
     curQuote = q;
 
-    function swapAndEnter() { setQuoteText(q); elAttr.textContent = it.attribution; enter(); }
+    function swapAndEnter() { setQuoteText(q); elAttr.textContent = it.attribution; enter(); scheduleNext(); }
 
     if (first || CONFIG.anim === "none") {
       swapAndEnter();
@@ -157,7 +158,19 @@
   }
 
   function renderCurrent() { if (items.length) { showItem(items[idx % items.length]); } }
-  function rotate() { idx++; renderCurrent(); }
+
+  // Rotation is driven by a timer that (re)starts each time a quote enters, so
+  // every quote sits for a full dwell AFTER it settles - even timing throughout.
+  var nextTimer = null;
+  function scheduleNext() {
+    clearTimeout(nextTimer);
+    nextTimer = setTimeout(advance, CONFIG.enterMs + CONFIG.dwell);
+  }
+  function advance() {
+    if (items.length <= 1) { scheduleNext(); return; }  // single quote: keep it sitting
+    idx++;
+    showItem(items[idx % items.length]);
+  }
 
   function parseFeed(xmlText) {
     var doc = new DOMParser().parseFromString(xmlText, "application/xml");
@@ -185,8 +198,7 @@
       .catch(function (e) { showError(e.message + "  (" + CONFIG.feed + ")"); });
   }
 
-  loadFeed();
-  setInterval(rotate, CONFIG.rotate);   // rotate quotes (animated)
+  loadFeed();                           // shows first quote, which starts the dwell timer chain
   setInterval(loadFeed, CONFIG.poll);   // pick up XLS edits in the background
 </script>
 </body>
