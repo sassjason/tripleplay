@@ -2,14 +2,14 @@
 <rss version="2.0">
   <channel>
     <title>Testimonials (Purple)</title>
-    <lastBuildDate>2026-06-10T22:29:17Z</lastBuildDate>
+    <lastBuildDate>2026-06-10T22:30:26Z</lastBuildDate>
     <item>
       <quote>This is a purple-background testimonial - edit me.</quote>
       <attribution>- Fan Name / 4.10.25 / Trail Blazers</attribution>
       <name>Fan Name</name>
       <quoteDate>4.10.25</quoteDate>
       <source>Trail Blazers</source>
-      <seconds>8</seconds>
+      <seconds>10</seconds>
     </item>
     <item>
       <quote>Add or remove rows just like the black set.</quote>
@@ -17,7 +17,7 @@
       <name>Another Fan</name>
       <quoteDate>4.12.25</quoteDate>
       <source>Trail Blazers</source>
-      <seconds>8</seconds>
+      <seconds>10</seconds>
     </item>
   </channel>
 </rss>
