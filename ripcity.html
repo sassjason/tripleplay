@@ -151,6 +151,9 @@
   }
 
   function setAll(it) {
+    // Per-slide headline size (from the XLS FontSize column). Blank/0 = CSS
+    // default. Applies to the HEADLINE only; source/date/season stay fixed.
+    elHead.style.fontSize = (it.fontSize && it.fontSize > 0) ? it.fontSize + "px" : "";
     elHead.textContent   = "“" + it.headline + "”";   // layout owns the quotes
     elSource.textContent = it.source ? ("–" + it.source) : "";
     elDate.textContent   = it.date || "";
@@ -187,7 +190,8 @@
         source:   g(nodes[i], "source"),
         date:     g(nodes[i], "date"),
         season:   g(nodes[i], "season"),
-        seconds:  parseInt(g(nodes[i], "seconds"), 10) || 0
+        seconds:  parseInt(g(nodes[i], "seconds"), 10) || 0,
+        fontSize: parseInt(g(nodes[i], "fontSize"), 10) || 0
       });
     }
     return out;
