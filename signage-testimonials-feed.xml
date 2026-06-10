@@ -2,16 +2,16 @@
 <rss version="2.0">
   <channel>
     <title>Testimonials</title>
-    <lastBuildDate>2026-06-10T05:14:54Z</lastBuildDate>
+    <lastBuildDate>2026-06-10T05:18:54Z</lastBuildDate>
     <item>
-      <quote>This is a test.</quote>
+      <quote>My name is Jason.</quote>
       <attribution>- Jason Sass / 6.21.1976 / Myself</attribution>
       <name>Jason Sass</name>
       <quoteDate>6.21.1976</quoteDate>
       <source>Myself</source>
     </item>
     <item>
-      <quote>This is only a test.</quote>
+      <quote>Your name is Devin.</quote>
       <attribution>- Devin Tucker / 2.08.25 / Trail Blazers vs Lakers</attribution>
       <name>Devin Tucker</name>
       <quoteDate>2.08.25</quoteDate>
