@@ -161,7 +161,8 @@
   }
 
   function showItem(it) {
-    var key = it.headline + "|" + it.source + "|" + it.date + "|" + it.season;
+    // fontSize is part of the key so a size-only edit (same text) still re-renders.
+    var key = it.headline + "|" + it.source + "|" + it.date + "|" + it.season + "|" + it.fontSize;
     if (key === curKey) { return; }
     var first = (curKey === null);
     curKey = key;
