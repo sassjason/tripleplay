@@ -58,9 +58,25 @@
     flex: 1 1 auto;
     position: relative;
     overflow: hidden;
-    /* soft fade at top and bottom so names ease in/out instead of hard-cutting */
-    -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 90px, #000 calc(100% - 90px), transparent 100%);
-            mask-image: linear-gradient(to bottom, transparent 0, #000 90px, #000 calc(100% - 90px), transparent 100%);
+    /* soft fade at the top so names ease in. The bottom is handled by the footer
+       scrim, so names stay crisp until they reach the logo band. */
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 90px, #000 100%);
+            mask-image: linear-gradient(to bottom, transparent 0, #000 90px, #000 100%);
+  }
+
+  /* Fixed bottom logo. Names scroll UP from behind it; the gradient scrim fades
+     them into black as they emerge, keeping the wordmark legible on top. */
+  #footer {
+    position: absolute; left: 0; right: 0; bottom: 0;
+    height: 300px; z-index: 5;
+    display: flex; align-items: flex-end; justify-content: center;
+    background: linear-gradient(to top, rgba(0,0,0,0.97) 0%, rgba(0,0,0,0.92) 38%, rgba(0,0,0,0) 100%);
+    pointer-events: none;
+  }
+  #footer img {
+    width: 1040px; max-width: 72%; height: auto;
+    margin-bottom: 46px;
+    filter: drop-shadow(0 2px 10px rgba(0,0,0,0.6));
   }
 
   /* #roll holds TWO identical copies of the full grouped content, one above the
@@ -116,6 +132,7 @@
       <div id="rule"></div>
     </div>
     <div id="viewport"><div id="roll"></div></div>
+    <div id="footer"><img id="logo" alt=""></div>
     <div id="err"></div>
   </div>
 
@@ -129,7 +146,8 @@
   var qs = new URLSearchParams(location.search);
   var CONFIG = {
     feed:      qs.get("feed")     || "signage-namewall-feed.xml",
-    plate:     qs.get("plate")    || "none",
+    plate:     qs.get("plate")    || "AU_FG_Texture-2.jpg",   // brand bg; ?plate=none for black
+    logo:      qs.get("logo")     || "RCRD_2C_Wordmark_onDarkBkgd.png", // bottom logo; ?logo=none to hide
     title:     qs.get("title")    || "",
     subtitle:  qs.get("subtitle") || "",
     cols:      Math.max(1, parseInt(qs.get("cols") || "4", 10)),
@@ -157,6 +175,12 @@
 
   if (CONFIG.plate && CONFIG.plate.toLowerCase() !== "none") {
     stage.style.backgroundImage = "url('" + CONFIG.plate + "')";
+  }
+  var logoEl = document.getElementById("logo");
+  if (CONFIG.logo && CONFIG.logo.toLowerCase() !== "none") {
+    logoEl.src = CONFIG.logo;
+  } else {
+    document.getElementById("footer").style.display = "none";
   }
   if (CONFIG.title) {
     elTitle.textContent = CONFIG.title;
