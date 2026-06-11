@@ -135,7 +135,7 @@
     cols:      Math.max(1, parseInt(qs.get("cols") || "4", 10)),
     // Constant scroll SPEED in px/sec. With a fixed loop time, more names = faster
     // scroll; driving by speed keeps the rate readable no matter how many names.
-    speed:     Math.max(5, parseFloat(qs.get("speed") || "55.44")),
+    speed:     Math.max(5, parseFloat(qs.get("speed") || "60.98")),
     // Optional hard override: force one full loop into this many ms (ignores speed).
     duration:  qs.has("duration") ? parseInt(qs.get("duration"), 10) : 0,
     size:      parseInt(qs.get("size")      || "0", 10),       // name size; 0 = stylesheet
@@ -143,7 +143,8 @@
     colgap:    parseInt(qs.get("colgap")  || "-1", 10),
     rowgap:    parseInt(qs.get("rowgap")  || "-1", 10),
     tiergap:   parseInt(qs.get("tiergap") || "-1", 10),
-    poll:      parseInt(qs.get("poll")    || "60000", 10)
+    poll:      parseInt(qs.get("poll")    || "60000", 10),
+    debug:     (qs.get("debug") || "0") !== "0"   // ?debug=1 shows the one-cycle time
   };
 
   var stage    = document.getElementById("stage");
@@ -252,6 +253,25 @@
     // constant px/sec; ?duration= (ms) forces one full loop into a fixed time
     effSpeed = CONFIG.duration > 0 ? (loopH / (CONFIG.duration / 1000)) : CONFIG.speed;
     scrollOffset = 0;
+
+    // One full cycle = one content copy scrolled past = loopH / speed.
+    var cycleSec = effSpeed > 0 ? (loopH / effSpeed) : 0;
+    if (window.console) {
+      console.log("namewall: 1 cycle = " + cycleSec.toFixed(2) + "s (" + (cycleSec / 60).toFixed(2) +
+                  " min), height=" + Math.round(loopH) + "px @ " + effSpeed.toFixed(2) + "px/s");
+    }
+    if (CONFIG.debug) {
+      var dbg = document.getElementById("dbg");
+      if (!dbg) {
+        dbg = document.createElement("div"); dbg.id = "dbg";
+        dbg.style.cssText = "position:absolute;left:0;top:0;z-index:99;background:rgba(0,110,0,0.9);" +
+          "color:#fff;font:bold 34px monospace;padding:10px 18px;white-space:nowrap;";
+        document.body.appendChild(dbg);
+      }
+      dbg.textContent = "1 CYCLE = " + cycleSec.toFixed(1) + "s  (" + (cycleSec / 60).toFixed(2) +
+                        " min)   " + Math.round(loopH) + "px @ " + effSpeed.toFixed(2) + " px/s";
+    }
+
     rafId = requestAnimationFrame(step);
   }
 
