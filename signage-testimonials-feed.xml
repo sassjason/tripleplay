@@ -2,13 +2,21 @@
 <rss version="2.0">
   <channel>
     <title>Testimonials</title>
-    <lastBuildDate>2026-06-15T19:33:12Z</lastBuildDate>
+    <lastBuildDate>2026-06-15T19:54:19Z</lastBuildDate>
     <item>
-      <quote>Jason Jason Jason</quote>
-      <attribution>- Freddy / 6.11.26 / Moda Center</attribution>
-      <name>Freddy</name>
-      <quoteDate>6.11.26</quoteDate>
-      <source>Moda Center</source>
+      <quote>We traveled from California to see Alex Warren. We were treated so kindly from all the staff… Everyone we had contact with went above and beyond!!!</quote>
+      <attribution>- Michelle / 6.12.26 / Alex Warren</attribution>
+      <name>Michelle</name>
+      <quoteDate>6.12.26</quoteDate>
+      <source>Alex Warren</source>
+      <seconds>10</seconds>
+    </item>
+    <item>
+      <quote>The staff from the parking lot to inside the concession stand were all extremely polite and helpful. This was my first visit with my daughter and I was nervous about finding my seat but they directed me kindly and didn’t make me feel like I was asking too many questions.</quote>
+      <attribution>- Magan / 6.12.26 / Alex Warren</attribution>
+      <name>Magan</name>
+      <quoteDate>6.12.26</quoteDate>
+      <source>Alex Warren</source>
       <seconds>10</seconds>
     </item>
   </channel>
