@@ -5,37 +5,37 @@
 <title>Signage Carousel — Tripleplay HTML Resource</title>
 <!--
   signage-carousel.html
-  ONE page that cycles through every layout (black / purple / newspaper) with a
-  smooth crossfade. Point the Tripleplay channel at THIS file instead of the
-  individual layouts. Because Tripleplay then loads a single resource and never
-  swaps pages, the hard "dip to black" between layouts is gone - the only
-  transition is the dissolve this page controls.
+  ONE page that cycles through every layout (black / purple / newspaper) AND every
+  uploaded still image, with a smooth crossfade. Point the Tripleplay channel at
+  THIS file. Because Tripleplay then loads a single resource and never swaps pages -
+  and because the stills live INSIDE this page rather than as separate Tripleplay
+  media items - there is no hard "dip to black" and no codec/hardware-plane cut.
+  Every transition is the dissolve this page controls.
 
-  How it works:
-    - Each layout is loaded ONCE into its own iframe, up front, and kept in the
-      DOM. The iframes render while hidden (opacity 0), so a switch is a pure
-      crossfade between already-painted pages: no load, no black frame.
-    - Each layout self-rotates its own items (its internal timer runs because the
-      iframe is never reloaded), so quotes/headlines still cycle within a layout.
-    - Layouts whose feed has no active items are skipped automatically, and the
-      active set is re-checked each lap - so turning a feed on/off in the
-      spreadsheet adds/drops it from rotation without touching this file.
+  What it shows is driven by media-manifest.json (managed by Media-Admin):
+    - layouts[]: the spreadsheet-driven pages; shown when enabled AND their feed
+      has active rows. "Muted" (enabled:false) layouts are skipped.
+    - items[]:   uploaded stills; shown when enabled. "Muted" stills are skipped.
+  The manifest is re-read every lap, so muting/adding/deleting in the admin shows
+  up on the screens within a lap without touching this file.
 
   Query overrides (optional):
-    ?fade=800   crossfade ms        ?peritem=11000  ms per item (match the layouts)
-    ?min=12000  floor ms per layout ?poll=60000     ms between active-set re-checks
+    ?fade=800   crossfade ms        ?peritem=11000  ms per layout item (match layouts)
+    ?min=12000  floor ms per slide  ?poll=60000     ms re-check when nothing is active
+    ?manifest=media-manifest.json
 -->
 <style>
   html, body { margin: 0; padding: 0; width: 100%; height: 100%; background: #000; overflow: hidden; }
 
   #deck { position: absolute; inset: 0; }
 
-  /* Each layout fills a 1920x1080 stage, same as when run standalone. */
+  /* Every slide (iframe layout OR img still) fills a 1920x1080 stage. */
   .layer {
     position: absolute; top: 0; left: 0; width: 1920px; height: 1080px; border: 0;
     opacity: 0; transition: opacity var(--fade, 800ms) ease-in-out; will-change: opacity;
   }
   .layer.on { opacity: 1; }
+  img.layer { object-fit: cover; }
 
   #cerr {
     position: absolute; left: 0; bottom: 0; right: 0;
@@ -52,98 +52,153 @@
   var qs = new URLSearchParams(location.search);
   var CONFIG = {
     fadeMs:    parseInt(qs.get("fade")    || "800", 10),
-    perItemMs: parseInt(qs.get("peritem") || "11000", 10), // matches a layout's enter+dwell (1s + Seconds)
-    minMs:     parseInt(qs.get("min")     || "12000", 10), // floor so a 1-item layout still gets a fair turn
-    poll:      parseInt(qs.get("poll")    || "60000", 10)  // how often to re-check which feeds have content
+    perItemMs: parseInt(qs.get("peritem") || "11000", 10),
+    minMs:     parseInt(qs.get("min")     || "12000", 10),
+    poll:      parseInt(qs.get("poll")    || "60000", 10),
+    manifest:  qs.get("manifest") || "media-manifest.json"
   };
   document.documentElement.style.setProperty("--fade", CONFIG.fadeMs + "ms");
 
-  // The layouts to cycle, in order. Each points at a page we already ship and the
-  // feed that decides whether it has content right now.
-  var LAYOUTS = [
-    { name: "black",  src: "testimonial-black.html",  feed: "signage-testimonials-feed.xml" },
-    { name: "purple", src: "testimonial-purple.html", feed: "signage-testimonials-purple-feed.xml" },
-    { name: "news",   src: "ripcity.html",            feed: "signage-ripcity-feed.xml" }
+  // Used if the manifest is missing or has no layouts[].
+  var DEFAULT_LAYOUTS = [
+    { name: "black",  src: "testimonial-black.html",  feed: "signage-testimonials-feed.xml",        enabled: true },
+    { name: "purple", src: "testimonial-purple.html", feed: "signage-testimonials-purple-feed.xml", enabled: true },
+    { name: "news",   src: "ripcity.html",            feed: "signage-ripcity-feed.xml",             enabled: true }
   ];
 
   var deck = document.getElementById("deck");
   var cerr = document.getElementById("cerr");
   function showErr(m) { cerr.style.display = "block"; cerr.textContent = "CAROUSEL: " + m; }
 
-  // Build every iframe ONCE so all pages are preloaded and painted off-screen.
-  // Each layout starts paused (shown=false) and is told show/hide as it fades in/out,
-  // so it never swaps a quote mid-dissolve.
-  LAYOUTS.forEach(function (L) {
+  // ---- layout iframes (created once per src, kept resident) -----------------
+  var layoutObjs = {};                 // src -> { el, loaded, shown }
+  function ensureLayout(src) {
+    if (layoutObjs[src]) return layoutObjs[src];
     var f = document.createElement("iframe");
     f.className = "layer";
     f.setAttribute("scrolling", "no");
-    L.el = f; L.loaded = false; L.shown = false;
-    f.addEventListener("load", function () { L.loaded = true; syncLayer(L); });
-    f.src = L.src;
+    var o = { el: f, loaded: false, shown: false, src: src };
+    f.addEventListener("load", function () { o.loaded = true; syncLayer(o); });
+    f.src = src;
     deck.appendChild(f);
-  });
-
-  // Push the current on/off-screen state to a layout (no-op until its iframe loads,
-  // then re-pushed from the load handler - so this is race-safe).
-  function syncLayer(L) {
-    if (!L.loaded) { return; }
-    try { L.el.contentWindow.postMessage({ sig: L.shown ? "show" : "hide" }, "*"); } catch (e) {}
+    layoutObjs[src] = o;
+    return o;
+  }
+  // Tell a layout whether it's on screen so it pauses/rotates accordingly (race-safe:
+  // re-pushed from the iframe's load handler once it's ready).
+  function syncLayer(o) {
+    if (!o.loaded) return;
+    try { o.el.contentWindow.postMessage({ sig: o.shown ? "show" : "hide" }, "*"); } catch (e) {}
   }
 
-  function countItems(xmlText) {
-    try {
-      var d = new DOMParser().parseFromString(xmlText, "application/xml");
-      if (d.getElementsByTagName("parsererror").length) return 0;
-      return d.getElementsByTagName("item").length;
-    } catch (e) { return 0; }
+  // ---- image layers (created once per file, kept resident) ------------------
+  var imgPool = {};                    // file -> { el, ready }
+  function ensureImage(item) {
+    var m = imgPool[item.file];
+    if (m) return m;
+    var img = document.createElement("img");
+    img.className = "layer";
+    img.alt = "";
+    m = { el: img, ready: false };
+    img.addEventListener("load",  function () { m.ready = true; });
+    img.addEventListener("error", function () { m.ready = false; });
+    img.src = item.file;               // e.g. "media/promo.png" (relative to this page)
+    imgPool[item.file] = m;
+    deck.appendChild(img);
+    return m;
   }
-  function fetchCount(L) {
-    var url = L.feed + (L.feed.indexOf("?") >= 0 ? "&" : "?") + "t=" + Date.now();
-    return fetch(url, { cache: "no-store" })
-      .then(function (r) { return r.ok ? r.text() : ""; })
-      .then(function (t) { return countItems(t); })
-      .catch(function () { return 0; });
-  }
-  // Which layouts have active content right now (>0 items in their feed).
-  function refreshActive() {
-    return Promise.all(LAYOUTS.map(fetchCount)).then(function (counts) {
-      LAYOUTS.forEach(function (L, i) { L.count = counts[i]; });
-      return LAYOUTS.filter(function (L) { return L.count > 0; });
+  // Drop image elements no longer in the (enabled) set - but never yank the one
+  // currently on screen; it's removed on a later lap once it's no longer current.
+  function pruneImages(keepFiles) {
+    Object.keys(imgPool).forEach(function (f) {
+      if (keepFiles.indexOf(f) >= 0) return;
+      var m = imgPool[f];
+      if (cur && cur.el === m.el) return;
+      try { deck.removeChild(m.el); } catch (e) {}
+      delete imgPool[f];
     });
   }
 
-  // Crossfade: the incoming layer rises to full opacity ON TOP of the outgoing one,
-  // which stays opaque underneath until the fade finishes. Both fully cover the
-  // screen throughout, so the background never shows -> a clean dissolve, no black.
+  // ---- feed item count (decides if a layout has anything to show) -----------
+  function fetchCount(layout) {
+    var url = layout.feed + (layout.feed.indexOf("?") >= 0 ? "&" : "?") + "t=" + Date.now();
+    return fetch(url, { cache: "no-store" })
+      .then(function (r) { return r.ok ? r.text() : ""; })
+      .then(function (t) {
+        try {
+          var d = new DOMParser().parseFromString(t, "application/xml");
+          if (d.getElementsByTagName("parsererror").length) return 0;
+          return d.getElementsByTagName("item").length;
+        } catch (e) { return 0; }
+      })
+      .catch(function () { return 0; });
+  }
+
+  function fetchManifest() {
+    var url = CONFIG.manifest + (CONFIG.manifest.indexOf("?") >= 0 ? "&" : "?") + "t=" + Date.now();
+    return fetch(url, { cache: "no-store" })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (j) { return j || {}; })
+      .catch(function () { return {}; });
+  }
+
+  // ---- crossfade: incoming rises on top of the outgoing (no black mid-fade) --
   var cur = null, z = 1;
-  function showLayer(L) {
-    if (cur === L) return;
+  function show(slide) {
+    if (cur && cur.el === slide.el) return;
     var prev = cur;
-    L.el.style.zIndex = (++z);
-    L.shown = true; syncLayer(L);             // resume incoming on a fresh dwell, settled quote on screen
-    L.el.classList.add("on");
+    slide.el.style.zIndex = (++z);
+    if (slide.kind === "layout") { slide.o.shown = true; syncLayer(slide.o); }  // resume incoming
+    slide.el.classList.add("on");
     if (prev) {
-      prev.shown = false; syncLayer(prev);    // pause outgoing so it won't swap mid-fade
-      setTimeout(function () { prev.el.classList.remove("on"); }, CONFIG.fadeMs + 60);
+      if (prev.kind === "layout") { prev.o.shown = false; syncLayer(prev.o); }  // pause outgoing
+      var pe = prev.el;
+      setTimeout(function () { pe.classList.remove("on"); }, CONFIG.fadeMs + 60);
     }
-    cur = L;
+    cur = slide;
   }
 
   var idx = 0;
-  function tick(active) {
-    if (!active.length) { showErr("no active feeds - nothing to show"); setTimeout(loop, CONFIG.poll); return; }
+  function tick(slides) {
+    if (!slides.length) { showErr("nothing enabled - add a still or unmute a layout"); setTimeout(loop, CONFIG.poll); return; }
     cerr.style.display = "none";
-    if (idx >= active.length) idx = 0;
-    var L = active[idx];
-    showLayer(L);
-    // Hold the layout long enough to cycle through all its items once.
-    var dwell = Math.max(CONFIG.minMs, L.count * CONFIG.perItemMs);
+    if (idx >= slides.length) idx = 0;
+    var s = slides[idx];
+    show(s);
     idx++;
-    if (idx >= active.length) { setTimeout(loop, dwell); }      // end of a lap -> re-check content
-    else { setTimeout(function () { tick(active); }, dwell); }
+    if (idx >= slides.length) setTimeout(loop, s.dwellMs);   // end of a lap -> re-read manifest
+    else setTimeout(function () { tick(slides); }, s.dwellMs);
   }
+
   function loop() {
-    refreshActive().then(function (active) { idx = 0; tick(active); });
+    fetchManifest().then(function (mf) {
+      var layoutDefs = (mf.layouts && mf.layouts.length) ? mf.layouts : DEFAULT_LAYOUTS;
+      layoutDefs.forEach(function (l) { ensureLayout(l.src); });
+
+      var enabledLayouts = layoutDefs.filter(function (l) { return l.enabled !== false; });
+      var mediaItems = (mf.items || []).filter(function (i) { return i.enabled !== false && i.file; });
+      mediaItems.forEach(ensureImage);
+      pruneImages(mediaItems.map(function (i) { return i.file; }));
+
+      Promise.all(enabledLayouts.map(fetchCount)).then(function (counts) {
+        var slides = [];
+        enabledLayouts.forEach(function (l, i) {
+          if (counts[i] > 0) {
+            slides.push({ kind: "layout", o: ensureLayout(l.src), el: layoutObjs[l.src].el,
+                          dwellMs: Math.max(CONFIG.minMs, counts[i] * CONFIG.perItemMs) });
+          }
+        });
+        mediaItems.forEach(function (it) {
+          var m = imgPool[it.file];
+          if (m && m.ready) {
+            slides.push({ kind: "image", el: m.el,
+                          dwellMs: Math.max(2000, (parseInt(it.seconds, 10) || 10) * 1000) });
+          }
+        });
+        idx = 0;
+        tick(slides);
+      });
+    });
   }
 
   loop();
