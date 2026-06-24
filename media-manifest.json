@@ -12,7 +12,7 @@
       "name": "Purple testimonials",
       "src": "testimonial-purple.html",
       "feed": "signage-testimonials-purple-feed.xml",
-      "enabled": false
+      "enabled": true
     },
     {
       "name": "Rip City Daily",
