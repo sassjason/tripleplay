@@ -2,11 +2,25 @@
 <rss version="2.0">
   <channel>
     <title>Rip City Daily</title>
-    <lastBuildDate>2026-06-24T17:27:21Z</lastBuildDate>
+    <lastBuildDate>2026-06-24T17:33:00Z</lastBuildDate>
     <item>
       <headline>Portland Trail Blazers Name Micah Nori Head Coach</headline>
       <source>Portland Trail Blazers</source>
-      <date>June 24</date>
+      <date>June 23</date>
+      <season>Season 2024-25</season>
+      <seconds>10</seconds>
+    </item>
+    <item>
+      <headline>Meet the new Blazers coach who fans call the 'Ted Lasso of the NBA'</headline>
+      <source>KOIN</source>
+      <date>June 23</date>
+      <season>Season 2024-25</season>
+      <seconds>10</seconds>
+    </item>
+    <item>
+      <headline>Chris Finch defends Micah Nori's Trail Blazers contract, calls him 'perfect match' for Portland</headline>
+      <source>The Oregonian</source>
+      <date>June 23</date>
       <season>Season 2024-25</season>
       <seconds>10</seconds>
     </item>
