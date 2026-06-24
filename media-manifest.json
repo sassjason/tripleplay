@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "note": "Managed by Media-Admin. 'enabled:false' = muted (hidden from the screens, file kept). The carousel reads this live. You can hand-edit it, but the admin tool is easier.",
+  "layouts": [
+    { "name": "Black testimonials",  "src": "testimonial-black.html",  "feed": "signage-testimonials-feed.xml",        "enabled": true },
+    { "name": "Purple testimonials", "src": "testimonial-purple.html", "feed": "signage-testimonials-purple-feed.xml", "enabled": true },
+    { "name": "Rip City Daily",      "src": "ripcity.html",            "feed": "signage-ripcity-feed.xml",             "enabled": true }
+  ],
+  "items": []
+}
