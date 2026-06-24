@@ -2,21 +2,21 @@
 <rss version="2.0">
   <channel>
     <title>Testimonials (Purple)</title>
-    <lastBuildDate>2026-06-24T17:27:21Z</lastBuildDate>
+    <lastBuildDate>2026-06-24T17:33:00Z</lastBuildDate>
     <item>
-      <quote>Testing our new text-to-background tool.</quote>
-      <attribution>- Fan Name / 4.10.25 / Trail Blazers</attribution>
-      <name>Fan Name</name>
-      <quoteDate>4.10.25</quoteDate>
-      <source>Trail Blazers</source>
+      <quote>Excellent rodeo with great cowboys of color! It was during Juneteenth celebrations and really brought the community out!</quote>
+      <attribution>- Nena / 6.21.26 / 8 Seconds Rodeo</attribution>
+      <name>Nena</name>
+      <quoteDate>6.21.26</quoteDate>
+      <source>8 Seconds Rodeo</source>
       <seconds>10</seconds>
     </item>
     <item>
-      <quote>Add or remove rows just like the black set.</quote>
-      <attribution>- Another Fan / 4.12.25 / Trail Blazers</attribution>
-      <name>Another Fan</name>
-      <quoteDate>4.12.25</quoteDate>
-      <source>Trail Blazers</source>
+      <quote>We had a blast at the 8 Second Rodeo! Everyone was having a great time and DJs, singers, and the riders were amazing. All of it was such a celebration of Black culture! We loved it!</quote>
+      <attribution>- Lisa / 6.21.26 / 8 Seconds Rodeo</attribution>
+      <name>Lisa</name>
+      <quoteDate>6.21.26</quoteDate>
+      <source>8 Seconds Rodeo</source>
       <seconds>10</seconds>
     </item>
   </channel>
