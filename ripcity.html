@@ -50,7 +50,7 @@
 
   /* Centered source / quote-title under the headline */
   #sourceWrap { top: 854px; left: 0; width: 1920px; text-align: center; }
-  #source { font-size: 30px; font-style: italic; letter-spacing: 0.04em; text-transform: uppercase; transform-origin: 50% 50%; will-change: transform, opacity; }
+  #source { font-size: 45px; font-style: italic; letter-spacing: 0.04em; text-transform: uppercase; transform-origin: 50% 50%; will-change: transform, opacity; }
 
   #clock {
     position: absolute; right: 48px; bottom: 42px; opacity: 0.8; display: none;
@@ -151,9 +151,10 @@
     return (s && s > 0) ? s * 1000 : CONFIG.dwell;
   }
 
-  var nextTimer = null;
+  var nextTimer = null, paused = false;   // paused: set by the carousel while this layout is faded out
   function scheduleNext() {
     clearTimeout(nextTimer);
+    if (paused) { return; }                // don't rotate while off-screen (prevents a mid-dissolve swap)
     var total = CONFIG.enterMs + currentDwell();
     startClock(total);
     nextTimer = setTimeout(advance, total);
@@ -246,6 +247,16 @@
 
   loadFeed();
   setInterval(loadFeed, CONFIG.poll);
+
+  // Carousel sync (postMessage from signage-carousel.html). Pausing while faded out,
+  // and starting a fresh dwell on fade-in, keeps a settled headline on screen through
+  // the dissolve instead of swapping mid-fade. No effect when this page runs on its own.
+  window.addEventListener("message", function (e) {
+    var d = e && e.data;
+    if (!d || !d.sig) { return; }
+    if (d.sig === "show")      { paused = false; clearTimeout(nextTimer); scheduleNext(); }
+    else if (d.sig === "hide") { paused = true;  clearTimeout(nextTimer); }
+  });
 
   // The OTF loads async; once ready the text metrics change, so re-fit the headline.
   if (document.fonts && document.fonts.ready) {
