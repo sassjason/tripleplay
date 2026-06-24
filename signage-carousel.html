@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Signage Carousel — Tripleplay HTML Resource</title>
+<!--
+  signage-carousel.html
+  ONE page that cycles through every layout (black / purple / newspaper) with a
+  smooth crossfade. Point the Tripleplay channel at THIS file instead of the
+  individual layouts. Because Tripleplay then loads a single resource and never
+  swaps pages, the hard "dip to black" between layouts is gone - the only
+  transition is the dissolve this page controls.
+
+  How it works:
+    - Each layout is loaded ONCE into its own iframe, up front, and kept in the
+      DOM. The iframes render while hidden (opacity 0), so a switch is a pure
+      crossfade between already-painted pages: no load, no black frame.
+    - Each layout self-rotates its own items (its internal timer runs because the
+      iframe is never reloaded), so quotes/headlines still cycle within a layout.
+    - Layouts whose feed has no active items are skipped automatically, and the
+      active set is re-checked each lap - so turning a feed on/off in the
+      spreadsheet adds/drops it from rotation without touching this file.
+
+  Query overrides (optional):
+    ?fade=800   crossfade ms        ?peritem=11000  ms per item (match the layouts)
+    ?min=12000  floor ms per layout ?poll=60000     ms between active-set re-checks
+-->
+<style>
+  html, body { margin: 0; padding: 0; width: 100%; height: 100%; background: #000; overflow: hidden; }
+
+  #deck { position: absolute; inset: 0; }
+
+  /* Each layout fills a 1920x1080 stage, same as when run standalone. */
+  .layer {
+    position: absolute; top: 0; left: 0; width: 1920px; height: 1080px; border: 0;
+    opacity: 0; transition: opacity var(--fade, 800ms) ease-in-out; will-change: opacity;
+  }
+  .layer.on { opacity: 1; }
+
+  #cerr {
+    position: absolute; left: 0; bottom: 0; right: 0;
+    background: rgba(200,0,0,0.9); color: #fff;
+    font-family: monospace; font-size: 22px; padding: 12px 20px; display: none;
+  }
+</style>
+</head>
+<body>
+  <div id="deck"></div>
+  <div id="cerr"></div>
+
+<script>
+  var qs = new URLSearchParams(location.search);
+  var CONFIG = {
+    fadeMs:    parseInt(qs.get("fade")    || "800", 10),
+    perItemMs: parseInt(qs.get("peritem") || "11000", 10), // matches a layout's enter+dwell (1s + Seconds)
+    minMs:     parseInt(qs.get("min")     || "12000", 10), // floor so a 1-item layout still gets a fair turn
+    poll:      parseInt(qs.get("poll")    || "60000", 10)  // how often to re-check which feeds have content
+  };
+  document.documentElement.style.setProperty("--fade", CONFIG.fadeMs + "ms");
+
+  // The layouts to cycle, in order. Each points at a page we already ship and the
+  // feed that decides whether it has content right now.
+  var LAYOUTS = [
+    { name: "black",  src: "testimonial-black.html",  feed: "signage-testimonials-feed.xml" },
+    { name: "purple", src: "testimonial-purple.html", feed: "signage-testimonials-purple-feed.xml" },
+    { name: "news",   src: "ripcity.html",            feed: "signage-ripcity-feed.xml" }
+  ];
+
+  var deck = document.getElementById("deck");
+  var cerr = document.getElementById("cerr");
+  function showErr(m) { cerr.style.display = "block"; cerr.textContent = "CAROUSEL: " + m; }
+
+  // Build every iframe ONCE so all pages are preloaded and painted off-screen.
+  LAYOUTS.forEach(function (L) {
+    var f = document.createElement("iframe");
+    f.className = "layer";
+    f.setAttribute("scrolling", "no");
+    f.src = L.src;
+    L.el = f;
+    deck.appendChild(f);
+  });
+
+  function countItems(xmlText) {
+    try {
+      var d = new DOMParser().parseFromString(xmlText, "application/xml");
+      if (d.getElementsByTagName("parsererror").length) return 0;
+      return d.getElementsByTagName("item").length;
+    } catch (e) { return 0; }
+  }
+  function fetchCount(L) {
+    var url = L.feed + (L.feed.indexOf("?") >= 0 ? "&" : "?") + "t=" + Date.now();
+    return fetch(url, { cache: "no-store" })
+      .then(function (r) { return r.ok ? r.text() : ""; })
+      .then(function (t) { return countItems(t); })
+      .catch(function () { return 0; });
+  }
+  // Which layouts have active content right now (>0 items in their feed).
+  function refreshActive() {
+    return Promise.all(LAYOUTS.map(fetchCount)).then(function (counts) {
+      LAYOUTS.forEach(function (L, i) { L.count = counts[i]; });
+      return LAYOUTS.filter(function (L) { return L.count > 0; });
+    });
+  }
+
+  // Crossfade: the incoming layer rises to full opacity ON TOP of the outgoing one,
+  // which stays opaque underneath until the fade finishes. Both fully cover the
+  // screen throughout, so the background never shows -> a clean dissolve, no black.
+  var cur = null, z = 1;
+  function showLayer(L) {
+    if (cur === L) return;
+    var prev = cur;
+    L.el.style.zIndex = (++z);
+    L.el.classList.add("on");
+    if (prev) { setTimeout(function () { prev.el.classList.remove("on"); }, CONFIG.fadeMs + 60); }
+    cur = L;
+  }
+
+  var idx = 0;
+  function tick(active) {
+    if (!active.length) { showErr("no active feeds - nothing to show"); setTimeout(loop, CONFIG.poll); return; }
+    cerr.style.display = "none";
+    if (idx >= active.length) idx = 0;
+    var L = active[idx];
+    showLayer(L);
+    // Hold the layout long enough to cycle through all its items once.
+    var dwell = Math.max(CONFIG.minMs, L.count * CONFIG.perItemMs);
+    idx++;
+    if (idx >= active.length) { setTimeout(loop, dwell); }      // end of a lap -> re-check content
+    else { setTimeout(function () { tick(active); }, dwell); }
+  }
+  function loop() {
+    refreshActive().then(function (active) { idx = 0; tick(active); });
+  }
+
+  loop();
+</script>
+</body>
+</html>
