@@ -71,14 +71,24 @@
   function showErr(m) { cerr.style.display = "block"; cerr.textContent = "CAROUSEL: " + m; }
 
   // Build every iframe ONCE so all pages are preloaded and painted off-screen.
+  // Each layout starts paused (shown=false) and is told show/hide as it fades in/out,
+  // so it never swaps a quote mid-dissolve.
   LAYOUTS.forEach(function (L) {
     var f = document.createElement("iframe");
     f.className = "layer";
     f.setAttribute("scrolling", "no");
+    L.el = f; L.loaded = false; L.shown = false;
+    f.addEventListener("load", function () { L.loaded = true; syncLayer(L); });
     f.src = L.src;
-    L.el = f;
     deck.appendChild(f);
   });
+
+  // Push the current on/off-screen state to a layout (no-op until its iframe loads,
+  // then re-pushed from the load handler - so this is race-safe).
+  function syncLayer(L) {
+    if (!L.loaded) { return; }
+    try { L.el.contentWindow.postMessage({ sig: L.shown ? "show" : "hide" }, "*"); } catch (e) {}
+  }
 
   function countItems(xmlText) {
     try {
@@ -110,8 +120,12 @@
     if (cur === L) return;
     var prev = cur;
     L.el.style.zIndex = (++z);
+    L.shown = true; syncLayer(L);             // resume incoming on a fresh dwell, settled quote on screen
     L.el.classList.add("on");
-    if (prev) { setTimeout(function () { prev.el.classList.remove("on"); }, CONFIG.fadeMs + 60); }
+    if (prev) {
+      prev.shown = false; syncLayer(prev);    // pause outgoing so it won't swap mid-fade
+      setTimeout(function () { prev.el.classList.remove("on"); }, CONFIG.fadeMs + 60);
+    }
     cur = L;
   }
 
