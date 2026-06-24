@@ -100,7 +100,15 @@
     document.body.style.background = "transparent";
   }
 
-  var items = [], idx = 0, curQuote = null;
+  var items = [], idx = 0, curQuote = null, bootstrapped = false;
+
+  // Tripleplay re-serves the page on each channel cycle (~10s) - sooner than the
+  // first rotation fires - so a plain idx=0 start would show only the first quote
+  // forever. Persist the last-shown index per feed and resume on the NEXT one each
+  // load, so the page advances whether rotation is driven by the reload or the timer.
+  var IDX_KEY = "sigIdx:" + CONFIG.feed;
+  function saveIdx(i) { try { localStorage.setItem(IDX_KEY, String(i)); } catch (e) {} }
+  function loadIdx() { try { var v = parseInt(localStorage.getItem(IDX_KEY), 10); return isNaN(v) ? -1 : v; } catch (e) { return -1; } }
 
   function showError(msg) { elErr.style.display = "block"; elErr.textContent = "FEED ERROR: " + msg; }
 
@@ -178,6 +186,7 @@
     if (q === curQuote && elAttr.textContent === it.attribution) { return; }
     var first = (curQuote === null);
     curQuote = q;
+    saveIdx(idx % items.length);   // remember what's on screen so the next page load resumes after it
 
     function swapAndEnter() {
       setQuoteText(q); elAttr.textContent = it.attribution;
@@ -260,6 +269,11 @@
         items = parseFeed(txt);
         elErr.style.display = "none";
         if (!items.length) showError("feed has no <item> elements");
+        if (!bootstrapped && items.length) {        // first load after a (re)start: pick up where we left off
+          bootstrapped = true;
+          var prev = loadIdx();
+          idx = (prev >= 0) ? ((prev + 1) % items.length) : 0;
+        }
         if (idx >= items.length) { idx = 0; }
         renderCurrent();
       })
