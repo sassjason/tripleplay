@@ -27,7 +27,7 @@
   .pos { position: absolute; }
 
   /* Top-left season label (in the subtitle rule row) */
-  #seasonWrap { top: 242px; left: 88px; }
+  #seasonWrap { top: 240px; left: 88px; }
   #season { font-size: 22px; letter-spacing: 0.02em; text-transform: uppercase; transform-origin: 0 50%; }
 
   /* Top-right date */
@@ -101,7 +101,15 @@
     stage.style.backgroundImage = "url('" + CONFIG.plate + "')";
   } else { document.documentElement.style.background = "#fff"; }
 
-  var items = [], idx = 0, curKey = null;
+  var items = [], idx = 0, curKey = null, bootstrapped = false;
+
+  // Tripleplay re-serves the page on each channel cycle (~10s) - sooner than the
+  // first rotation fires - so a plain idx=0 start would show only the first headline
+  // forever. Persist the last-shown index per feed and resume on the NEXT one each
+  // load, so the page advances whether rotation is driven by the reload or the timer.
+  var IDX_KEY = "sigIdx:" + CONFIG.feed;
+  function saveIdx(i) { try { localStorage.setItem(IDX_KEY, String(i)); } catch (e) {} }
+  function loadIdx() { try { var v = parseInt(localStorage.getItem(IDX_KEY), 10); return isNaN(v) ? -1 : v; } catch (e) { return -1; } }
 
   function showError(msg) { elErr.style.display = "block"; elErr.textContent = "FEED ERROR: " + msg; }
   function cancelAnims(el) { if (el.getAnimations) { el.getAnimations().forEach(function (a) { a.cancel(); }); } }
@@ -185,6 +193,7 @@
     if (key === curKey) { return; }
     var first = (curKey === null);
     curKey = key;
+    saveIdx(idx % items.length);   // remember what's on screen so the next page load resumes after it
     function swapAndEnter() { setAll(it); enter(); scheduleNext(); }
     if (first || CONFIG.anim === "none") { swapAndEnter(); }
     else {
@@ -224,6 +233,11 @@
         items = parseFeed(txt);
         elErr.style.display = "none";
         if (!items.length) showError("feed has no <item> elements");
+        if (!bootstrapped && items.length) {        // first load after a (re)start: pick up where we left off
+          bootstrapped = true;
+          var prev = loadIdx();
+          idx = (prev >= 0) ? ((prev + 1) % items.length) : 0;
+        }
         if (idx >= items.length) { idx = 0; }
         renderCurrent();
       })
