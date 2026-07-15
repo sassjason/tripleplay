@@ -38,13 +38,13 @@
     width: 100%;
     text-align: center; text-transform: uppercase;
     font-size: 66px; line-height: 1.14; letter-spacing: 0.01em;
-    transform-origin: 50% 50%; will-change: transform, opacity;
+    will-change: opacity;
     text-shadow: 0 2px 14px rgba(0,0,0,0.55);
   }
   #attribution {
     text-align: center; text-transform: uppercase;
     font-size: 40px; letter-spacing: 0.06em;
-    transform-origin: 50% 50%; will-change: transform, opacity;
+    will-change: opacity;
     text-shadow: 0 2px 12px rgba(0,0,0,0.55);
   }
 
@@ -84,7 +84,7 @@
     dwell:   parseInt(qs.get("dwell") || qs.get("rotate") || "8000", 10), // default ms a quote sits (per-slide Seconds overrides)
     enterMs: parseInt(qs.get("enter") || "1000", 10),                     // allowance for the entrance to finish
     poll:    parseInt(qs.get("poll")  || "10000", 10),
-    anim:   (qs.get("anim")  || "spring").toLowerCase(),
+    anim:   (qs.get("anim")  || "fade").toLowerCase(),
     clock:  (qs.get("clock") || "1") !== "0"                              // bottom-right countdown ring
   };
 
@@ -115,54 +115,11 @@
   // ---- animation styles ----------------------------------------------------
   function cancelAnims(el) { if (el.getAnimations) { el.getAnimations().forEach(function (a) { a.cancel(); }); } }
 
-  // rubber-band: rise up, overshoot bigger, dip slightly, settle
-  function springIn(el, big) {
-    cancelAnims(el);
-    var over = big ? 1.045 : 1.025, rise = big ? 42 : 26;
-    el.animate([
-      { opacity: 0, transform: "translateY(" + rise + "px) scale(0.90)" },
-      { opacity: 1, transform: "translateY(-9px) scale(" + over + ")", offset: 0.6 },
-      { opacity: 1, transform: "translateY(3px) scale(0.995)", offset: 0.82 },
-      { opacity: 1, transform: "translateY(0) scale(1)" }
-    ], { duration: big ? 720 : 600, easing: "ease-out", fill: "both" });
-  }
-
-  function fadeIn(el) { cancelAnims(el); el.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 500, fill: "both" }); }
-
-  function wordsIn(el) {
-    var s = el.children;
-    for (var i = 0; i < s.length; i++) {
-      cancelAnims(s[i]);
-      s[i].animate([
-        { opacity: 0, transform: "translateY(26px) scale(0.96)" },
-        { opacity: 1, transform: "translateY(-5px)", offset: 0.7 },
-        { opacity: 1, transform: "translateY(0) scale(1)" }
-      ], { duration: 480, delay: Math.min(i * 42, 1500), easing: "ease-out", fill: "both" });
-    }
-  }
-
-  function setQuoteText(text) {
-    if (CONFIG.anim === "words") {
-      elQuote.innerHTML = "";
-      var w = text.split(" ");
-      for (var i = 0; i < w.length; i++) {
-        var sp = document.createElement("span");
-        sp.textContent = w[i] + (i < w.length - 1 ? " " : "");
-        sp.style.display = "inline-block";
-        sp.style.whiteSpace = "pre";
-        elQuote.appendChild(sp);
-      }
-    } else {
-      elQuote.textContent = text;
-    }
-  }
+  function fadeIn(el) { cancelAnims(el); el.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 400, easing: "ease-in-out", fill: "both" }); }
 
   function enter() {
     if (CONFIG.anim === "none") { return; }
-    if (CONFIG.anim === "fade") { fadeIn(elQuote); fadeIn(elAttr); return; }
-    if (CONFIG.anim === "words") { wordsIn(elQuote); setTimeout(function () { springIn(elAttr, false); }, 160); return; }
-    springIn(elQuote, true);                                   // spring (default)
-    setTimeout(function () { springIn(elAttr, false); }, 150); // attribution follows a beat later
+    fadeIn(elQuote); fadeIn(elAttr);
   }
 
   // ---- auto-fit: largest font size whose text stays inside the box ----------
@@ -189,8 +146,9 @@
     saveIdx(idx % items.length);   // remember what's on screen so the next page load resumes after it
 
     function swapAndEnter() {
-      setQuoteText(q); elAttr.textContent = it.attribution;
-      fitQuote();                       // auto-size the quote to fill its box
+      elQuote.style.opacity = "0"; elAttr.style.opacity = "0";  // hide during font-fit to avoid visible resize flash
+      elQuote.textContent = q; elAttr.textContent = it.attribution;
+      fitQuote();
       enter(); scheduleNext();
     }
 
