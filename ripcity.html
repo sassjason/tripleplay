@@ -45,12 +45,12 @@
     width: 100%;
     font-size: 165px; line-height: 0.92; letter-spacing: 0.005em;
     text-transform: uppercase; text-align: center;
-    transform-origin: 50% 50%; will-change: transform, opacity;
+    will-change: opacity;
   }
 
   /* Centered source / quote-title under the headline */
   #sourceWrap { top: 854px; left: 0; width: 1920px; text-align: center; }
-  #source { font-size: 45px; font-style: italic; letter-spacing: 0.04em; text-transform: uppercase; transform-origin: 50% 50%; will-change: transform, opacity; }
+  #source { font-size: 45px; font-style: italic; letter-spacing: 0.04em; text-transform: uppercase; will-change: opacity; }
 
   #clock {
     position: absolute; right: 48px; bottom: 42px; opacity: 0.8; display: none;
@@ -86,7 +86,7 @@
     dwell:   parseInt(qs.get("dwell") || qs.get("rotate") || "8000", 10),
     enterMs: parseInt(qs.get("enter") || "1000", 10),
     poll:    parseInt(qs.get("poll")  || "10000", 10),
-    anim:   (qs.get("anim")  || "spring").toLowerCase(),
+    anim:   (qs.get("anim")  || "fade").toLowerCase(),
     clock:  (qs.get("clock") || "1") !== "0"
   };
 
@@ -114,24 +114,11 @@
   function showError(msg) { elErr.style.display = "block"; elErr.textContent = "FEED ERROR: " + msg; }
   function cancelAnims(el) { if (el.getAnimations) { el.getAnimations().forEach(function (a) { a.cancel(); }); } }
 
-  function springIn(el, big) {
-    cancelAnims(el);
-    var over = big ? 1.03 : 1.02, rise = big ? 34 : 20;
-    el.animate([
-      { opacity: 0, transform: "translateY(" + rise + "px) scale(0.93)" },
-      { opacity: 1, transform: "translateY(-7px) scale(" + over + ")", offset: 0.6 },
-      { opacity: 1, transform: "translateY(2px) scale(0.997)", offset: 0.82 },
-      { opacity: 1, transform: "translateY(0) scale(1)" }
-    ], { duration: big ? 720 : 560, easing: "ease-out", fill: "both" });
-  }
-  function fadeIn(el) { cancelAnims(el); el.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 450, fill: "both" }); }
+  function fadeIn(el) { cancelAnims(el); el.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 400, easing: "ease-in-out", fill: "both" }); }
 
   function enter() {
     if (CONFIG.anim === "none") { return; }
-    if (CONFIG.anim === "fade") { fadeIn(elHead); fadeIn(elSource); fadeIn(elDate); fadeIn(elSeason); return; }
-    springIn(elHead, true);
-    setTimeout(function () { springIn(elSource, false); }, 150);
-    fadeIn(elDate); fadeIn(elSeason);
+    fadeIn(elHead); fadeIn(elSource); fadeIn(elDate); fadeIn(elSeason);
   }
 
   // ---- countdown ring + per-slide dwell ------------------------------------
@@ -195,7 +182,10 @@
     var first = (curKey === null);
     curKey = key;
     saveIdx(idx % items.length);   // remember what's on screen so the next page load resumes after it
-    function swapAndEnter() { setAll(it); enter(); scheduleNext(); }
+    function swapAndEnter() {
+      [elHead, elSource, elDate, elSeason].forEach(function(el) { el.style.opacity = "0"; });  // hide during font-fit to avoid visible resize flash
+      setAll(it); enter(); scheduleNext();
+    }
     if (first || CONFIG.anim === "none") { swapAndEnter(); }
     else {
       [elHead, elSource, elDate, elSeason].forEach(cancelAnims);
