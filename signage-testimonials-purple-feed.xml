@@ -2,13 +2,29 @@
 <rss version="2.0">
   <channel>
     <title>Testimonials (Purple)</title>
-    <lastBuildDate>2026-07-15T20:27:30Z</lastBuildDate>
+    <lastBuildDate>2026-07-20T23:22:57Z</lastBuildDate>
     <item>
       <quote>Pre-paid Parking pass is the way to go! Parked in the Garden Garage - was an easy entrance process, easy to find seats, bathrooms, food, and merch, absolute blast with my daughter!</quote>
       <attribution>- Aaron / 7.11.26 / Forrest Frank</attribution>
       <name>Aaron</name>
       <quoteDate>7.11.26</quoteDate>
       <source>Forrest Frank</source>
+      <seconds>10</seconds>
+    </item>
+    <item>
+      <quote>Everything was seamless and easy, staff were so kind and helpful - felt safe there. Show was incredible, and seats were great.</quote>
+      <attribution>- Malak / 7.18.26 / Joji</attribution>
+      <name>Malak</name>
+      <quoteDate>7.18.26</quoteDate>
+      <source>Joji</source>
+      <seconds>10</seconds>
+    </item>
+    <item>
+      <quote>It was a life changing experience and I will forever remember this day!!</quote>
+      <attribution>- Rose / 7.18.26 / Joji</attribution>
+      <name>Rose</name>
+      <quoteDate>7.18.26</quoteDate>
+      <source>Joji</source>
       <seconds>10</seconds>
     </item>
   </channel>
