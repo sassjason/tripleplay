@@ -2,7 +2,7 @@
 <rss version="2.0">
   <channel>
     <title>Testimonials (Purple)</title>
-    <lastBuildDate>2026-08-18T23:00:03Z</lastBuildDate>
+    <lastBuildDate>2026-08-25T22:26:11Z</lastBuildDate>
     <item>
       <quote>We absolutely had the best time ever. Security people were nice and very professional. Benson Boone was phenomenal! Our entire experience left us wanting more. 10/10 we highly recommend.</quote>
       <attribution>- Teresa / 8.11.26 / Benson Boone</attribution>
@@ -17,6 +17,14 @@
       <name>Daisy</name>
       <quoteDate>8.11.26</quoteDate>
       <source>Benson Boone</source>
+      <seconds>10</seconds>
+    </item>
+    <item>
+      <quote>Such an amazing experience! Daniel Caesar was incredible live, and the energy from the crowd made the whole night unforgettable. One of the best concerts I’ve been to! Definitely an unforgettable night.</quote>
+      <attribution>- Destiny / 8.18.26 / Daniel Caesar</attribution>
+      <name>Destiny</name>
+      <quoteDate>8.18.26</quoteDate>
+      <source>Daniel Caesar</source>
       <seconds>10</seconds>
     </item>
   </channel>
