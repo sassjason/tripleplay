@@ -2,13 +2,13 @@
 <rss version="2.0">
   <channel>
     <title>Testimonials</title>
-    <lastBuildDate>2026-08-18T23:00:03Z</lastBuildDate>
+    <lastBuildDate>2026-08-25T22:26:11Z</lastBuildDate>
     <item>
-      <quote>Everyone from the moment you walked in the door was so sweet and welcoming. I am sure they see so many different artists every day but they were so interested in our outfits and learning about the musician from the merch to the stage! Everyone was so kind here and made the experience the best night my mom and I have had!</quote>
-      <attribution>- Anela / 8.3.26 / Megan Moroney</attribution>
-      <name>Anela</name>
-      <quoteDate>8.3.26</quoteDate>
-      <source>Megan Moroney</source>
+      <quote>The parking garage option was the best!! The workers from the parking garage to the yummy food concessions and finding our seats!!! It was an awesome experience</quote>
+      <attribution>- Rosie / 8.18.26 / Daniel Caesar</attribution>
+      <name>Rosie</name>
+      <quoteDate>8.18.26</quoteDate>
+      <source>Daniel Caesar</source>
       <seconds>10</seconds>
     </item>
     <item>
@@ -17,6 +17,14 @@
       <name>Rachel</name>
       <quoteDate>8.3.26</quoteDate>
       <source>Megan Moroney</source>
+      <seconds>10</seconds>
+    </item>
+    <item>
+      <quote>I have Celiac disease and I appreciated being able to have food options available to my needs!!!!!</quote>
+      <attribution>- Lorena / 8.18.26 / Daniel Caesar</attribution>
+      <name>Lorena</name>
+      <quoteDate>8.18.26</quoteDate>
+      <source>Daniel Caesar</source>
       <seconds>10</seconds>
     </item>
   </channel>
