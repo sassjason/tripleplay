@@ -26,6 +26,7 @@
 -->
 <style>
   html, body { margin: 0; padding: 0; width: 100%; height: 100%; background: #000; overflow: hidden; }
+  body { opacity: 0; transition: opacity 1000ms ease-in-out; }
 
   #deck { position: absolute; inset: 0; }
 
@@ -143,10 +144,11 @@
   }
 
   // ---- crossfade: incoming rises on top of the outgoing (no black mid-fade) --
-  var cur = null, z = 1;
+  var cur = null, z = 1, bodyFadedIn = false;
   function show(slide) {
     if (cur && cur.el === slide.el) return;
     var prev = cur;
+    if (!bodyFadedIn) { bodyFadedIn = true; document.body.style.opacity = "1"; }
     slide.el.style.zIndex = (++z);
     if (slide.kind === "layout") { slide.o.shown = true; syncLayer(slide.o); }  // resume incoming
     slide.el.classList.add("on");
