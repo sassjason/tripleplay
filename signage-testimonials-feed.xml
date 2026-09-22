@@ -2,29 +2,37 @@
 <rss version="2.0">
   <channel>
     <title>Testimonials</title>
-    <lastBuildDate>2026-09-18T03:15:46Z</lastBuildDate>
+    <lastBuildDate>2026-09-22T23:12:22Z</lastBuildDate>
     <item>
-      <quote>The staff working at the show were extremely friendly, from the parking garage to the wait in line for the General Admission Floor area. Whenever I had a question and asked a staff member, they answered it politely and with care.</quote>
-      <attribution>- Jean /  / Weezer</attribution>
-      <name>Jean</name>
+      <quote>Great family fun and easy navigating. Parking was a breeze. Highly recommend any event at Moda.</quote>
+      <attribution>- Quintin /  / Hot Wheels</attribution>
+      <name>Quintin</name>
       <quoteDate></quoteDate>
-      <source>Weezer</source>
+      <source>Hot Wheels</source>
       <seconds>10</seconds>
     </item>
     <item>
-      <quote>Loved how fast and efficient everything was ran, took less than 10 minutes to get through the door!</quote>
-      <attribution>- Tayler /  / Tame Impala</attribution>
-      <name>Tayler</name>
+      <quote>Security was excellent- my daughter uses a medical device and can’t go through scanner. It’s been an issue at other venues, but they were excellent with her. Thank you!</quote>
+      <attribution>- Devin /  / Hot Wheels</attribution>
+      <name>Devin</name>
       <quoteDate></quoteDate>
-      <source>Tame Impala</source>
+      <source>Hot Wheels</source>
       <seconds>10</seconds>
     </item>
     <item>
-      <quote>Tame Impala was absolutely incredible! The visuals, sound, lighting, and overall production created such an immersive experience. Kevin Parker sounded amazing, and the energy throughout the entire show was unforgettable.</quote>
-      <attribution>- Anna /  / Tame Impala</attribution>
-      <name>Anna</name>
+      <quote>I saw Journey here about 45 years ago and it is still just as good now as it was then. The sound is excellent and the venue is easy to navigate.</quote>
+      <attribution>- Paul /  / Journey</attribution>
+      <name>Paul</name>
       <quoteDate></quoteDate>
-      <source>Tame Impala</source>
+      <source>Journey</source>
+      <seconds>10</seconds>
+    </item>
+    <item>
+      <quote>Attending the Journey concert was such a great experience and brought back so many memories!</quote>
+      <attribution>- Teresa /  / Journey</attribution>
+      <name>Teresa</name>
+      <quoteDate></quoteDate>
+      <source>Journey</source>
       <seconds>10</seconds>
     </item>
   </channel>
