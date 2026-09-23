@@ -21,5 +21,14 @@
       "enabled": true
     }
   ],
-  "items": []
+  "items": [
+    {
+      "id": "20260923114138-fetchImage.jpg",
+      "file": "media/fetchImage.jpg",
+      "name": "fetchImage.jpg",
+      "seconds": 10,
+      "enabled": true,
+      "added": "2026-09-23T18:41:38Z"
+    }
+  ]
 }
