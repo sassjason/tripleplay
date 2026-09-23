@@ -178,7 +178,8 @@
       layoutDefs.forEach(function (l) { ensureLayout(l.src); });
 
       var enabledLayouts = layoutDefs.filter(function (l) { return l.enabled !== false; });
-      var mediaItems = (mf.items || []).filter(function (i) { return i.enabled !== false && i.file; });
+      // Pinned items are always included regardless of their enabled flag.
+      var mediaItems = (mf.items || []).filter(function (i) { return (i.enabled !== false || i.pinned === true) && i.file; });
       mediaItems.forEach(ensureImage);
       pruneImages(mediaItems.map(function (i) { return i.file; }));
 
@@ -186,8 +187,11 @@
         var slides = [];
         enabledLayouts.forEach(function (l, i) {
           if (counts[i] > 0) {
-            slides.push({ kind: "layout", o: ensureLayout(l.src), el: layoutObjs[l.src].el,
-                          dwellMs: Math.max(CONFIG.minMs, counts[i] * CONFIG.perItemMs) });
+            // dwellSeconds on a layout entry overrides the per-item calculation (used for list-style layouts).
+            var dwell = (l.dwellSeconds > 0)
+              ? Math.max(CONFIG.minMs, l.dwellSeconds * 1000)
+              : Math.max(CONFIG.minMs, counts[i] * CONFIG.perItemMs);
+            slides.push({ kind: "layout", o: ensureLayout(l.src), el: layoutObjs[l.src].el, dwellMs: dwell });
           }
         });
         mediaItems.forEach(function (it) {
