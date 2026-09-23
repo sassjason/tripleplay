@@ -2,7 +2,24 @@
 <rss version="2.0">
   <channel>
     <title>Upcoming Events</title>
-    <lastBuildDate>2026-09-23T17:45:29Z</lastBuildDate>
-
+    <lastBuildDate>2026-09-23T18:42:56Z</lastBuildDate>
+    <item>
+      <name>Kehlani</name>
+      <date>SAT SEP 26</date>
+      <time></time>
+      <venue>Theater of the Clouds</venue>
+      <dateiso>2026-09-26</dateiso>
+      <home>false</home>
+      <city>KEHLANI</city>
+    </item>
+    <item>
+      <name>Chance the Rapper</name>
+      <date>SUN SEP 27</date>
+      <time></time>
+      <venue>Theater of the Clouds</venue>
+      <dateiso>2026-09-27</dateiso>
+      <home>false</home>
+      <city>CHANCE THE RAPPER</city>
+    </item>
   </channel>
 </rss>
