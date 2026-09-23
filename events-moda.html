@@ -48,6 +48,9 @@
     border-radius: 18px;
     padding: 0 38px 0 22px;
     margin-bottom: 18px;
+    position: relative;
+    z-index: 10;
+    background: #5d5b5e;
   }
 
   #hlogo {
@@ -92,11 +95,25 @@
     font-family: "United Sans Cond", "Arial Narrow", sans-serif;
   }
 
-  /* ── GRID ────────────────────────────────────────────────────────── */
+  /* ── GRID / PAGING ───────────────────────────────────────────────── */
   #grid {
     flex: 1;
-    display: flex;
     min-height: 0;
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* Tall track that holds all pages stacked vertically; JS translates it upward */
+  #grid-track {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* One page = 2 columns + divider, fills #grid height */
+  .grid-page {
+    display: flex;
+    width: 100%;
   }
 
   .col {
@@ -106,7 +123,8 @@
     min-height: 0;
   }
 
-  #vdiv {
+  /* Vertical dashed divider between columns */
+  .vdiv {
     flex-shrink: 0;
     width: 1px;
     margin: 0 36px;
@@ -142,7 +160,6 @@
     );
   }
 
-  /* Event poster image — all normalized to same size */
   .eimg {
     flex-shrink: 0;
     width: 210px;
@@ -165,7 +182,6 @@
     font-family: "United Sans Cond", "Arial Narrow", sans-serif;
   }
 
-  /* Name + venue stacked */
   .etextstack {
     flex: 1;
     display: flex;
@@ -199,6 +215,9 @@
     font-family: "United Sans Cond", "Arial Narrow", sans-serif;
   }
 
+  /* Lift the @ symbol 2px so it sits optically level with the caps */
+  .at { position: relative; top: -2px; display: inline-block; }
+
   .etime {
     flex-shrink: 0;
     font-size: 42px;
@@ -214,6 +233,23 @@
   .etime:empty { display: none; }
 
   .erow.empty { visibility: hidden; }
+
+  /* Page indicator dots (only visible when >1 page) */
+  #dots {
+    position: absolute;
+    bottom: 6px;
+    right: 0;
+    display: flex;
+    gap: 8px;
+    z-index: 5;
+  }
+  .dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.28);
+    transition: background .3s;
+  }
+  .dot.on { background: #fff; }
 
   #err {
     position: fixed; left: 0; bottom: 0; right: 0;
@@ -245,9 +281,8 @@
   </div>
 
   <div id="grid">
-    <div class="col" id="col-l"></div>
-    <div id="vdiv"></div>
-    <div class="col" id="col-r"></div>
+    <div id="grid-track"></div>
+    <div id="dots"></div>
   </div>
 
 </div>
@@ -257,7 +292,13 @@
 (function () {
   var qs   = new URLSearchParams(location.search);
   var FEED = qs.get('feed') || 'signage-events-moda-feed.xml';
-  var POLL = 300000;
+  var POLL     = 300000;   // re-fetch feed every 5 min
+  var PAGE_SIZE = 8;
+  var PAGE_MS   = 15000;   // 15 seconds per page
+
+  var pageTimer = null;
+  var pageIdx   = 0;
+  var numPages  = 0;
 
   function g(item, tag) {
     var el = item.getElementsByTagName(tag)[0];
@@ -266,7 +307,8 @@
 
   function parseFeed(xml) {
     var doc = new DOMParser().parseFromString(xml, 'application/xml');
-    if (doc.getElementsByTagName('parseerror').length || doc.getElementsByTagName('parsererror').length) throw new Error('XML parse error');
+    if (doc.getElementsByTagName('parseerror').length || doc.getElementsByTagName('parsererror').length)
+      throw new Error('XML parse error');
     var items = doc.getElementsByTagName('item');
     var out = [];
     for (var i = 0; i < items.length; i++) {
@@ -293,9 +335,11 @@
   }
 
   function venueLabel(venue) {
-    if (/moda\s*center/i.test(venue)) return '@ MODA CENTER';
-    if (/coliseum|veterans/i.test(venue)) return '@ VETERANS MEMORIAL COLISEUM';
-    return '@ ' + venue.toUpperCase();
+    var label;
+    if (/moda\s*center/i.test(venue))      label = 'MODA CENTER';
+    else if (/coliseum|veterans/i.test(venue)) label = 'VETERANS MEMORIAL COLISEUM';
+    else                                    label = venue.toUpperCase();
+    return '<span class="at">@</span> ' + label;
   }
 
   function shrinkNames() {
@@ -335,7 +379,7 @@
 
     var venue = document.createElement('div');
     venue.className = 'evenue';
-    venue.textContent = venueLabel(ev.venue);
+    venue.innerHTML = venueLabel(ev.venue);
 
     stack.appendChild(name);
     stack.appendChild(venue);
@@ -351,26 +395,99 @@
     return row;
   }
 
-  function render(events) {
-    var colL = document.getElementById('col-l');
-    var colR = document.getElementById('col-r');
-    var hm   = document.getElementById('hmonth');
-    colL.innerHTML = ''; colR.innerHTML = '';
+  function buildPage(pageEvents, gridH) {
+    var page = document.createElement('div');
+    page.className = 'grid-page';
+    page.style.height = gridH + 'px';
 
-    var shown = events.slice(0, 8);
-    if (shown.length > 0) {
-      hm.textContent = monthLabel(shown[0].date);
-    }
+    var colL = document.createElement('div');
+    colL.className = 'col';
+    var vd = document.createElement('div');
+    vd.className = 'vdiv';
+    var colR = document.createElement('div');
+    colR.className = 'col';
 
-    var left  = shown.slice(0, 4);
-    var right = shown.slice(4, 8);
+    var left  = pageEvents.slice(0, 4);
+    var right = pageEvents.slice(4, 8);
     while (left.length  < 4) left.push(null);
     while (right.length < 4) right.push(null);
 
     left.forEach(function (ev)  { colL.appendChild(makeRow(ev)); });
     right.forEach(function (ev) { colR.appendChild(makeRow(ev)); });
 
+    page.appendChild(colL);
+    page.appendChild(vd);
+    page.appendChild(colR);
+    return page;
+  }
+
+  function updateDots(total, current) {
+    var dots = document.getElementById('dots');
+    dots.style.display = total > 1 ? 'flex' : 'none';
+    dots.innerHTML = '';
+    for (var i = 0; i < total; i++) {
+      var d = document.createElement('div');
+      d.className = 'dot' + (i === current ? ' on' : '');
+      dots.appendChild(d);
+    }
+  }
+
+  function showPage(idx, animate) {
+    var track = document.getElementById('grid-track');
+    var grid  = document.getElementById('grid');
+    var gridH = grid.clientHeight;
+    if (!animate) {
+      track.style.transition = 'none';
+      track.style.transform  = 'translateY(0)';
+      track.offsetHeight;           // flush layout
+      track.style.transition = '';
+    } else {
+      track.style.transform = 'translateY(-' + (idx * gridH) + 'px)';
+      setTimeout(shrinkNames, 850);
+    }
+    updateDots(numPages, idx);
+  }
+
+  function advancePage() {
+    pageIdx = (pageIdx + 1) % numPages;
+    var track = document.getElementById('grid-track');
+    var grid  = document.getElementById('grid');
+    track.style.transform = 'translateY(-' + (pageIdx * grid.clientHeight) + 'px)';
+    setTimeout(shrinkNames, 850);
+    updateDots(numPages, pageIdx);
+  }
+
+  function render(events) {
+    var track = document.getElementById('grid-track');
+    var grid  = document.getElementById('grid');
+    var hm    = document.getElementById('hmonth');
+
+    clearInterval(pageTimer);
+    track.innerHTML = '';
+    pageIdx  = 0;
+    numPages = 0;
+
+    if (!events.length) { updateDots(0, 0); return; }
+
+    hm.textContent = monthLabel(events[0].date);
+
+    var pages = [];
+    for (var i = 0; i < events.length; i += PAGE_SIZE) {
+      pages.push(events.slice(i, i + PAGE_SIZE));
+    }
+    numPages = pages.length;
+
+    var gridH = grid.clientHeight;
+    track.style.height = (numPages * gridH) + 'px';
+
+    pages.forEach(function (pg) { track.appendChild(buildPage(pg, gridH)); });
+
+    showPage(0, false);
     shrinkNames();
+
+    if (numPages > 1) {
+      pageTimer = setInterval(advancePage, PAGE_MS);
+    }
   }
 
   function showErr(msg) {
