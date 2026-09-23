@@ -120,8 +120,31 @@
     });
   }
 
+  // ---- schedule check (date and/or time window) ------------------------------
+  function isScheduledNow(layout) {
+    var now = new Date();
+    if (layout.scheduleStart) {
+      if (now < new Date(layout.scheduleStart + 'T00:00:00')) return false;
+    }
+    if (layout.scheduleEnd) {
+      if (now > new Date(layout.scheduleEnd + 'T23:59:59')) return false;
+    }
+    if (layout.timeStart && layout.timeEnd) {
+      var cur = now.getHours() * 60 + now.getMinutes();
+      var p = layout.timeStart.split(':');
+      var s = parseInt(p[0], 10) * 60 + parseInt(p[1], 10);
+      p = layout.timeEnd.split(':');
+      var e = parseInt(p[0], 10) * 60 + parseInt(p[1], 10);
+      if (cur < s || cur > e) return false;
+    }
+    return true;
+  }
+
   // ---- feed item count (decides if a layout has anything to show) -----------
+  // Layouts without a feed property are self-contained (e.g. events calendars) —
+  // treat them as always active (count = 1) and use dwellSeconds for timing.
   function fetchCount(layout) {
+    if (!layout.feed) return Promise.resolve(1);
     var url = layout.feed + (layout.feed.indexOf("?") >= 0 ? "&" : "?") + "t=" + Date.now();
     return fetch(url, { cache: "no-store" })
       .then(function (r) { return r.ok ? r.text() : ""; })
@@ -177,7 +200,7 @@
       var layoutDefs = (mf.layouts && mf.layouts.length) ? mf.layouts : DEFAULT_LAYOUTS;
       layoutDefs.forEach(function (l) { ensureLayout(l.src); });
 
-      var enabledLayouts = layoutDefs.filter(function (l) { return l.enabled !== false; });
+      var enabledLayouts = layoutDefs.filter(function (l) { return l.enabled !== false && isScheduledNow(l); });
       // Pinned items are always included regardless of their enabled flag.
       var mediaItems = (mf.items || []).filter(function (i) { return (i.enabled !== false || i.pinned === true) && i.file; });
       mediaItems.forEach(ensureImage);
@@ -187,10 +210,14 @@
         var slides = [];
         enabledLayouts.forEach(function (l, i) {
           if (counts[i] > 0) {
-            // dwellSeconds on a layout entry overrides the per-item calculation (used for list-style layouts).
-            var dwell = (l.dwellSeconds > 0)
-              ? Math.max(CONFIG.minMs, l.dwellSeconds * 1000)
-              : Math.max(CONFIG.minMs, counts[i] * CONFIG.perItemMs);
+            var dwell;
+            if (l.dwellSeconds > 0) {
+              dwell = Math.max(CONFIG.minMs, l.dwellSeconds * 1000);
+            } else if (!l.feed) {
+              dwell = Math.max(CONFIG.minMs, 45000);  // self-contained layouts default 45s
+            } else {
+              dwell = Math.max(CONFIG.minMs, counts[i] * CONFIG.perItemMs);
+            }
             slides.push({ kind: "layout", o: ensureLayout(l.src), el: layoutObjs[l.src].el, dwellMs: dwell });
           }
         });
