@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Winterhawks Game Schedule</title>
+<style>
+  @font-face {
+    font-family: "United Sans Cond";
+    src: url("UnitedSansCdHv.otf") format("opentype");
+    font-weight: 800;
+    font-style: normal;
+  }
+  @font-face {
+    font-family: "United Sans Cond";
+    src: url("UnitedSansCdBd.otf") format("opentype");
+    font-weight: 700;
+    font-style: normal;
+  }
+  @font-face {
+    font-family: "United Sans Cond";
+    src: url("UnitedSansCdMd.otf") format("opentype");
+    font-weight: 500;
+    font-style: normal;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    width: 1920px; height: 1080px;
+    overflow: hidden; background: #fff;
+  }
+
+  #stage {
+    width: 1920px; height: 1080px;
+    background: #fff;
+    font-family: "United Sans Cond", "Arial Narrow", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    display: flex; flex-direction: column;
+    padding: 50px 65px 40px;
+  }
+
+  /* ── HEADER ─────────────────────────────────────────────────────── */
+  #hbar {
+    flex-shrink: 0;
+    display: flex; align-items: center;
+    height: 118px;
+    border: 2px solid #111;
+    border-radius: 18px;
+    padding: 0 38px 0 22px;
+    margin-bottom: 18px;
+  }
+
+  #hlogo {
+    flex-shrink: 0;
+    width: 76px; height: 76px;
+    display: flex; align-items: center; justify-content: center;
+    margin-right: 24px;
+  }
+  #hlogo img { width: 76px; height: 76px; object-fit: contain; }
+
+  #htitle {
+    flex: 1;
+    font-size: 72px;
+    font-weight: 800;
+    color: #111;
+    text-transform: uppercase;
+    letter-spacing: .02em;
+    line-height: 1;
+    font-family: "United Sans Cond", "Arial Narrow", sans-serif;
+  }
+
+  #hslashes {
+    flex-shrink: 0;
+    display: flex; align-items: center; gap: 9px;
+    margin: 0 52px;
+  }
+  .slash {
+    width: 12px; height: 58px;
+    background: #e13a3e;
+    transform: skewX(-22deg);
+  }
+
+  #hmonth {
+    flex-shrink: 0;
+    font-size: 72px;
+    font-weight: 800;
+    color: #111;
+    text-transform: uppercase;
+    letter-spacing: .02em;
+    line-height: 1;
+    text-align: right;
+    min-width: 200px;
+    font-family: "United Sans Cond", "Arial Narrow", sans-serif;
+  }
+
+  /* ── GRID ────────────────────────────────────────────────────────── */
+  #grid {
+    flex: 1;
+    display: flex;
+    min-height: 0;
+  }
+
+  .col {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+
+  #vdiv {
+    flex-shrink: 0;
+    width: 1px;
+    margin: 0 44px;
+    background-image: repeating-linear-gradient(
+      to bottom,
+      #e13a3e 0, #e13a3e 4px,
+      transparent 4px, transparent 9px
+    );
+  }
+
+  /* ── ROWS ────────────────────────────────────────────────────────── */
+  .erow {
+    flex: 1;
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding-left: 24px;
+    min-height: 0;
+  }
+
+  .erow:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    height: 1px;
+    background-image: repeating-linear-gradient(
+      to right,
+      #e13a3e 0, #e13a3e 4px,
+      transparent 4px, transparent 9px
+    );
+  }
+
+  .edate {
+    flex-shrink: 0;
+    min-width: 110px;
+    font-size: 82px;
+    font-weight: 800;
+    color: #111;
+    line-height: 1;
+    letter-spacing: -.01em;
+    font-family: "United Sans Cond", "Arial Narrow", sans-serif;
+  }
+
+  .evsAt {
+    flex-shrink: 0;
+    font-size: 50px;
+    font-weight: 500;
+    color: rgba(0,0,0,.4);
+    letter-spacing: .01em;
+    margin: 0 16px 0 10px;
+    font-family: "United Sans Cond", "Arial Narrow", sans-serif;
+  }
+
+  .elogo {
+    flex-shrink: 0;
+    width: 68px; height: 68px;
+    object-fit: contain;
+    margin-right: 20px;
+  }
+
+  .ecity {
+    flex: 1;
+    font-size: 58px;
+    font-weight: 700;
+    color: #111;
+    text-transform: uppercase;
+    letter-spacing: .01em;
+    line-height: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-family: "United Sans Cond", "Arial Narrow", sans-serif;
+  }
+
+  .etime {
+    flex-shrink: 0;
+    font-size: 48px;
+    font-weight: 800;
+    color: #111;
+    text-transform: uppercase;
+    letter-spacing: .01em;
+    line-height: 1;
+    margin-left: 12px;
+    font-family: "United Sans Cond", "Arial Narrow", sans-serif;
+  }
+
+  .erow.empty { visibility: hidden; }
+
+  #err {
+    position: fixed; left: 0; bottom: 0; right: 0;
+    background: rgba(180,0,0,.9); color: #fff;
+    font-family: monospace; font-size: 20px;
+    padding: 10px 18px; display: none;
+  }
+</style>
+</head>
+<body>
+<div id="stage">
+
+  <div id="hbar">
+    <div id="hlogo">
+      <img src="logos/winterhawks.png" width="76" height="76" alt="Portland Winterhawks">
+    </div>
+    <div id="htitle">Game Schedule</div>
+    <div id="hslashes">
+      <div class="slash"></div>
+      <div class="slash"></div>
+      <div class="slash"></div>
+      <div class="slash"></div>
+      <div class="slash"></div>
+    </div>
+    <div id="hmonth"></div>
+  </div>
+
+  <div id="grid">
+    <div class="col" id="col-l"></div>
+    <div id="vdiv"></div>
+    <div class="col" id="col-r"></div>
+  </div>
+
+</div>
+<div id="err"></div>
+
+<script>
+(function () {
+  var qs   = new URLSearchParams(location.search);
+  var FEED = qs.get('feed')  || 'signage-events-feed.xml';
+  var SPORT= qs.get('sport') || 'whl';
+  var POLL = 300000;
+
+  function g(item, tag) {
+    var el = item.getElementsByTagName(tag)[0];
+    return el ? el.textContent.trim() : '';
+  }
+
+  function parseFeed(xml) {
+    var doc = new DOMParser().parseFromString(xml, 'application/xml');
+    if (doc.getElementsByTagName('parsererror').length) throw new Error('XML parse error');
+    var items = doc.getElementsByTagName('item');
+    var out = [];
+    for (var i = 0; i < items.length; i++) {
+      var it = items[i];
+      var name = g(it, 'name');
+      var city = g(it, 'city');
+      if (!city) {
+        var up = name.toUpperCase();
+        var vi = up.indexOf(' VS ');
+        var ai = up.indexOf(' AT ');
+        if (vi >= 0) city = name.substring(vi + 4).trim();
+        else if (ai >= 0) city = name.substring(ai + 4).trim();
+        else city = name;
+      }
+      out.push({
+        date:  g(it, 'date'),
+        time:  g(it, 'time'),
+        home:  g(it, 'home') !== 'false',
+        logo:  g(it, 'logo'),
+        city:  city
+      });
+    }
+    return out;
+  }
+
+  function dayNum(dateStr) {
+    var parts = dateStr.split(' ');
+    return parts[parts.length - 1];
+  }
+
+  function monthLabel(dateStr) {
+    var parts = dateStr.split(' ');
+    return (parts[1] || '').replace(/\.$/,'') + '.';
+  }
+
+  function makeRow(ev) {
+    var row = document.createElement('div');
+    if (!ev) { row.className = 'erow empty'; return row; }
+    row.className = 'erow';
+
+    var num = dayNum(ev.date);
+    var date = document.createElement('div');
+    date.className = 'edate';
+    date.textContent = num;
+
+    var vsAt = document.createElement('div');
+    vsAt.className = 'evsAt';
+    vsAt.textContent = ev.home ? 'vs' : '@';
+
+    var logo = document.createElement('img');
+    logo.className = 'elogo';
+    logo.width = 68; logo.height = 68;
+    logo.alt = ev.city;
+    logo.src = 'logos/' + SPORT + '/' + ev.logo.toUpperCase() + '.png';
+    logo.onerror = function () { this.style.display = 'none'; };
+
+    var city = document.createElement('div');
+    city.className = 'ecity';
+    city.textContent = ev.city.toUpperCase();
+
+    var time = document.createElement('div');
+    time.className = 'etime';
+    time.textContent = ev.time;
+
+    row.appendChild(date);
+    row.appendChild(vsAt);
+    row.appendChild(logo);
+    row.appendChild(city);
+    row.appendChild(time);
+    return row;
+  }
+
+  function render(events) {
+    var colL = document.getElementById('col-l');
+    var colR = document.getElementById('col-r');
+    var hm   = document.getElementById('hmonth');
+    colL.innerHTML = ''; colR.innerHTML = '';
+
+    var shown = events.slice(0, 8);
+    if (shown.length > 0) {
+      hm.textContent = monthLabel(shown[0].date);
+    }
+
+    var left  = shown.slice(0, 4);
+    var right = shown.slice(4, 8);
+    while (left.length  < 4) left.push(null);
+    while (right.length < 4) right.push(null);
+
+    left.forEach(function (ev)  { colL.appendChild(makeRow(ev)); });
+    right.forEach(function (ev) { colR.appendChild(makeRow(ev)); });
+  }
+
+  function showErr(msg) {
+    var el = document.getElementById('err');
+    el.textContent = 'FEED: ' + msg;
+    el.style.display = 'block';
+  }
+
+  function load() {
+    fetch(FEED + '?t=' + Date.now(), { cache: 'no-store' })
+      .then(function (r) {
+        if (!r.ok) throw new Error('HTTP ' + r.status);
+        return r.text();
+      })
+      .then(function (xml) {
+        document.getElementById('err').style.display = 'none';
+        render(parseFeed(xml));
+      })
+      .catch(function (e) { showErr(e.message); });
+  }
+
+  load();
+  setInterval(load, POLL);
+
+  window.addEventListener('message', function (e) {
+    if (e && e.data && e.data.sig === 'show') load();
+  });
+
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(load);
+  }
+}());
+</script>
+</body>
+</html>
