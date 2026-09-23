@@ -29,6 +29,14 @@
       "seconds": 10,
       "enabled": true,
       "added": "2026-09-23T18:41:38Z"
+    },
+    {
+      "id": "20260923114152-fetchImage2.jpg",
+      "file": "media/fetchImage2.jpg",
+      "name": "fetchImage2.jpg",
+      "seconds": 10,
+      "enabled": true,
+      "added": "2026-09-23T18:41:52Z"
     }
   ]
 }
