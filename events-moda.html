@@ -2,52 +2,44 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Moda Event Schedule Preview</title>
+<title>Moda Event Schedule</title>
 <style>
   @font-face {
     font-family: "United Sans Cond";
     src: url("UnitedSansCdHv.otf") format("opentype");
     font-weight: 800;
+    font-style: normal;
   }
   @font-face {
     font-family: "United Sans Cond";
     src: url("UnitedSansCdBd.otf") format("opentype");
     font-weight: 700;
+    font-style: normal;
   }
   @font-face {
     font-family: "United Sans Cond";
     src: url("UnitedSansCdMd.otf") format("opentype");
     font-weight: 500;
+    font-style: normal;
   }
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  body {
-    background: #111;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-  }
-
-  #wrapper {
-    width: 1920px;
-    height: 1080px;
-    transform-origin: top left;
-    position: absolute;
+  html, body {
+    width: 1920px; height: 1080px;
+    overflow: hidden; background: #5d5b5e;
   }
 
   #stage {
-    width: 1920px;
-    height: 1080px;
+    width: 1920px; height: 1080px;
     background: #5d5b5e;
     font-family: "United Sans Cond", "Arial Narrow", sans-serif;
     -webkit-font-smoothing: antialiased;
-    display: flex;
-    flex-direction: column;
+    display: flex; flex-direction: column;
     padding: 50px 65px 40px;
   }
 
-  /* ── HEADER ─────────────────────────────────────────── */
+  /* ── HEADER ─────────────────────────────────────────────────────── */
   #hbar {
     flex-shrink: 0;
     display: flex; align-items: center;
@@ -76,6 +68,7 @@
     text-transform: uppercase;
     letter-spacing: .02em;
     line-height: 1;
+    font-family: "United Sans Cond", "Arial Narrow", sans-serif;
   }
 
   #hslashes {
@@ -83,7 +76,11 @@
     display: flex; align-items: center; gap: 9px;
     margin: 0 52px;
   }
-  .slash { width: 12px; height: 58px; background: #e13a3e; transform: skewX(-22deg); }
+  .slash {
+    width: 12px; height: 58px;
+    background: #e13a3e;
+    transform: skewX(-22deg);
+  }
 
   #hmonth {
     flex-shrink: 0;
@@ -95,9 +92,10 @@
     line-height: 1;
     text-align: right;
     min-width: 200px;
+    font-family: "United Sans Cond", "Arial Narrow", sans-serif;
   }
 
-  /* ── GRID / PAGING ───────────────────────────────────── */
+  /* ── GRID / PAGING ───────────────────────────────────────────────── */
   #grid {
     flex: 1;
     min-height: 0;
@@ -105,16 +103,27 @@
     position: relative;
   }
 
+  /* Tall track that holds all pages stacked vertically; JS translates it upward */
   #grid-track {
     position: absolute;
     top: 0; left: 0; right: 0;
     transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
-  .grid-page { display: flex; width: 100%; }
+  /* One page = 2 columns + divider, fills #grid height */
+  .grid-page {
+    display: flex;
+    width: 100%;
+  }
 
-  .col { flex: 1; display: flex; flex-direction: column; min-height: 0; }
+  .col {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
 
+  /* Vertical dashed divider between columns */
   .vdiv {
     flex-shrink: 0;
     width: 1px;
@@ -128,7 +137,7 @@
     );
   }
 
-  /* ── ROWS ────────────────────────────────────────────── */
+  /* ── ROWS ────────────────────────────────────────────────────────── */
   .erow {
     flex: 1;
     position: relative;
@@ -158,10 +167,8 @@
     object-fit: cover;
     border-radius: 5px;
     display: block;
-    background: #333;
-    overflow: hidden;
+    background: #444;
   }
-
 
   .edate {
     flex-shrink: 0;
@@ -172,6 +179,7 @@
     line-height: 1;
     letter-spacing: -.01em;
     text-align: center;
+    font-family: "United Sans Cond", "Arial Narrow", sans-serif;
   }
 
   .etextstack {
@@ -194,6 +202,7 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    font-family: "United Sans Cond", "Arial Narrow", sans-serif;
   }
 
   .evenue {
@@ -203,8 +212,10 @@
     text-transform: uppercase;
     letter-spacing: .03em;
     line-height: 1;
+    font-family: "United Sans Cond", "Arial Narrow", sans-serif;
   }
 
+  /* Lift the @ symbol 2px so it sits optically level with the caps */
   .at { position: relative; top: -2px; display: inline-block; }
 
   .etime {
@@ -217,86 +228,13 @@
     line-height: 1;
     text-align: right;
     min-width: 130px;
+    font-family: "United Sans Cond", "Arial Narrow", sans-serif;
   }
+  .etime:empty { display: none; }
 
   .erow.empty { visibility: hidden; }
 
-  /* ── MATCHUP CARD ────────────────────────────────────── */
-  .matchup {
-    display: flex;
-    align-items: stretch;
-    background: #0c0c14;
-    position: relative;
-    overflow: hidden;
-  }
-  .m-left, .m-right {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    overflow: hidden;
-  }
-  .m-right { background: rgba(255,255,255,.03); }
-  .m-vs {
-    flex-shrink: 0;
-    width: 28px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    z-index: 2;
-  }
-  .m-vs::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: rgba(255,255,255,.07);
-    transform: skewX(-10deg);
-  }
-  .m-vs span {
-    font-size: 12px;
-    font-weight: 800;
-    color: rgba(255,255,255,.65);
-    letter-spacing: .12em;
-    text-transform: uppercase;
-    writing-mode: vertical-lr;
-    text-orientation: mixed;
-    position: relative;
-    z-index: 1;
-    font-family: "United Sans Cond", "Arial Narrow", sans-serif;
-  }
-  .matchup img.mlogo {
-    width: 92px;
-    height: 92px;
-    object-fit: contain;
-    filter: drop-shadow(0 2px 10px rgba(0,0,0,.7));
-  }
-
-  /* ── LIVE SCORE OVERLAY ──────────────────────────────── */
-  .ls-bar {
-    position: absolute;
-    bottom: 0; left: 0; right: 0;
-    background: rgba(0,0,0,.78);
-    padding: 4px 8px;
-    display: flex;
-    align-items: center;
-    gap: 7px;
-    font-size: 11px;
-    font-weight: 800;
-    color: #fff;
-    text-transform: uppercase;
-    letter-spacing: .07em;
-    z-index: 4;
-    font-family: "United Sans Cond", "Arial Narrow", sans-serif;
-  }
-  .ls-live { color: #ff4040; }
-  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.35} }
-  .ls-bar.is-live .ls-live { animation: blink 1.3s ease-in-out infinite; }
-  .ls-sep { opacity: .35; }
-  .ls-score { margin-left: auto; letter-spacing: .04em; }
-
-  /* ── PAGE DOTS ───────────────────────────────────────── */
+  /* Page indicator dots (only visible when >1 page) */
   #dots {
     position: absolute;
     bottom: 6px;
@@ -305,27 +243,41 @@
     gap: 8px;
     z-index: 5;
   }
-  .dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,.28); transition: background .3s; }
+  .dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.28);
+    transition: background .3s;
+  }
   .dot.on { background: #fff; }
+
+  #err {
+    position: fixed; left: 0; bottom: 0; right: 0;
+    background: rgba(180,0,0,.9); color: #fff;
+    font-family: monospace; font-size: 20px;
+    padding: 10px 18px; display: none;
+  }
 </style>
 </head>
 <body>
-<div id="wrapper">
 <div id="stage">
 
   <div id="hbar">
     <div id="hlogo">
-      <svg viewBox="896 254 83 93" width="76" height="76">
+      <svg viewBox="896 254 83 93" width="76" height="76" aria-label="Portland Trail Blazers">
         <path fill="#fff" d="M969.87,275.9c-.7-.7-1.43-1.36-2.17-1.99l-19.46,19.46c.96.27,1.86.78,2.62,1.53h0s0,0,0,0c2.35,2.35,2.35,6.16,0,8.51h0l-36.04,36.04h4.22l33.93-33.93c3.5-3.51,3.52-9.18.03-12.7l2.11-2.11c4.65,4.68,4.64,12.25-.03,16.92l-31.82,31.82h4.22l29.71-29.71c5.84-5.84,5.85-15.29.03-21.14l2.11-2.11c6.98,7.02,6.97,18.36-.03,25.37h0l-27.59,27.6h4.22l25.48-25.48h0c8.17-8.17,8.18-21.41.03-29.59l2.11-2.11c9.31,9.35,9.3,24.48-.03,33.81h0l-23.37,23.37h4.22l21.26-21.26h0c10.5-10.5,10.51-27.52.03-38.03l2.13-2.13c11.65,11.69,11.64,30.61-.03,42.28l-19.14,19.14h4.22l17.02-17.02h0c12.85-12.86,12.85-33.68,0-46.53h0Z"/>
         <path fill="#fff" d="M923.51,322.38c.7.7,1.43,1.36,2.17,1.99l19.46-19.46c-.96-.27-1.86-.78-2.62-1.53h0s0,0,0,0c-2.35-2.35-2.35-6.16,0-8.51h0l36.09-36.09h-4.22l-33.98,33.98h0c-3.51,3.51-3.52,9.18-.03,12.7l-2.11,2.11c-4.65-4.68-4.64-12.25.03-16.92h0l31.87-31.87h-4.22l-29.75,29.75c-5.84,5.84-5.85,15.29-.03,21.14l-2.11,2.11c-6.98-7.02-6.97-18.36.03-25.37h0l27.64-27.64h-4.22l-25.53,25.53h0c-8.17,8.17-8.18,21.41-.03,29.59l-2.11,2.11c-9.31-9.35-9.3-24.48.03-33.81h0l23.42-23.42h-4.22l-21.31,21.31h0c-10.5,10.5-10.51,27.52-.03,38.03l-2.12,2.12c-11.65-11.69-11.64-30.61.03-42.28l19.18-19.18h-4.22l-17.07,17.07h0c-12.85,12.86-12.85,33.68,0,46.53h0Z"/>
       </svg>
     </div>
     <div id="htitle">Event Schedule</div>
     <div id="hslashes">
-      <div class="slash"></div><div class="slash"></div><div class="slash"></div>
-      <div class="slash"></div><div class="slash"></div>
+      <div class="slash"></div>
+      <div class="slash"></div>
+      <div class="slash"></div>
+      <div class="slash"></div>
+      <div class="slash"></div>
     </div>
-    <div id="hmonth" style="font-size:52px;letter-spacing:.01em;">SEPT — OCT</div>
+    <div id="hmonth"></div>
   </div>
 
   <div id="grid">
@@ -334,422 +286,240 @@
   </div>
 
 </div>
-</div>
+<div id="err"></div>
 
 <script>
-// ── September – October 2026 — all venues: Moda Center, VMC, Theater of the Clouds
-//    Concerts + Trail Blazers home games + Winterhawks home games. 27 events = 4 pages.
-var RQ  = 'https://cdn.prod.website-files.com/62aa5d3f408f1681bc0ddb81/';
-var WH  = 'https://media.chl.ca/wp-content/uploads/sites/67/2023/11/20112551/POR.png';
-// Local NBA primary icons extracted from NBA 2026-27 official logo sheets
-var M   = 'media/';
-var BLZ = 'https://a.espncdn.com/i/teamlogos/nba/500/por.png';
-var GSW = M + 'nba-gsw.png';
-var MEM = M + 'nba-mem.png';
-var PHX = M + 'nba-phx.png';
-// game: { home, away, homeColor } — triggers matchup card instead of event photo
-var EVENTS = [
-  // ── September ───────────────────────────────────────────────────────
-  { month: 9, day: '26', name: 'Kehlani',
-    venue: 'Theater of the Clouds', time: '7:00 PM',
-    img: RQ + '6a15cffaccbaa81f10df6e27_kehlaniweb.jpg' },
-  { month: 9, day: '27', name: 'Chance the Rapper',
-    venue: 'Theater of the Clouds', time: '8:00 PM',
-    img: RQ + '6a06019c422a0362927891ff_chane%20web.avif' },
+(function () {
+  var qs   = new URLSearchParams(location.search);
+  var FEED = qs.get('feed') || 'signage-events-moda-feed.xml';
+  var POLL     = 300000;   // re-fetch feed every 5 min
+  var PAGE_SIZE = 8;
+  var PAGE_MS   = 15000;   // 15 seconds per page
 
-  // ── October ─────────────────────────────────────────────────────────
-  { day: '1',  name: 'Bilmuri',
-    venue: 'Theater of the Clouds', time: '7:00 PM',
-    img: RQ + '698cf5e221e3d0076657ac50_Bilmuri%20Web.avif' },
-  { day: '1',  name: 'Jungle',
-    venue: 'Veterans Memorial Coliseum', time: '8:00 PM',
-    img: RQ + '69c18c3f920be9c3b2e8bd98_jungle%20web%202.avif' },
-  { day: '2',  name: 'Winterhawks vs Chiefs',
-    venue: 'Veterans Memorial Coliseum', time: '7:00 PM',
-    game: { home: WH, away: RQ+'62aa5d3f408f16edce0ddcbb_whl-spokane-chiefs.svg', homeColor:'0,40,104' } },
-  { day: '2',  name: 'SOMBR',
-    venue: 'Moda Center', time: '7:30 PM',
-    img: RQ + '69dce424cd43b679f3242105_SOMBR.avif' },
-  { day: '3',  name: 'Tyler Childers',
-    venue: 'Moda Center', time: '6:30 PM',
-    img: RQ + '692e38e1879c1b04c83055af_Childer%20Web.avif' },
-  { day: '5',  name: 'The Neighbourhood',
-    venue: 'Moda Center', time: '7:00 PM',
-    img: RQ + '6904f9b3bbd3f3a82c049564_The%20Neighbourhood%20Web.jpg' },
-  { day: '6',  name: 'Disney Descendants',
-    venue: 'Moda Center', time: '7:00 PM',
-    img: RQ + '6a3088439d624bf9428df558_descendantsweb.jpg' },
-  { day: '7',  name: 'Blazers vs Warriors',
-    venue: 'Moda Center', time: '7:00 PM',
-    game: { home: BLZ, away: GSW, homeColor:'198,17,65', gameKey:'POR-2026-10-07' } },
+  var pageTimer = null;
+  var pageIdx   = 0;
+  var numPages  = 0;
 
-  // ── Page 2 ──────────────────────────────────────────────────────────
-  { day: '9',  name: 'Winterhawks vs Wild',
-    venue: 'Veterans Memorial Coliseum', time: '7:00 PM',
-    game: { home: WH, away: RQ+'6555a9ed91256169c3795f3a_62aa5d3f408f1630d60dddf1_whl-everett-silvertips.avif', homeColor:'0,40,104' } },
-  { day: '9',  name: 'Carin Leon',
-    venue: 'Moda Center', time: '8:00 PM',
-    img: RQ + '6a889191e77978c3e51e6ae5_carinleonwebsite.jpg' },
-  { day: '10', name: 'Matt Rife',
-    venue: 'Moda Center', time: '8:00 PM',
-    img: RQ + '6a985ca21f7aad73342085e3_Matt%20Rife%20Web.jpg' },
-  { day: '12', name: 'Blazers vs Lions',
-    venue: 'Moda Center', time: '1:00 PM',
-    game: { home: BLZ, away: RQ+'6a7b6dd49aebb57fbde4fbf3_LL.avif', homeColor:'198,17,65', gameKey:'POR-2026-10-12' } },
-  { day: '15', name: 'Disney On Ice',
-    venue: 'Veterans Memorial Coliseum', time: '7:00 PM',
-    img: RQ + '6a51787a12b02f0dbb5f924a_jump%20in%20disney%20web.jpg' },
-  { day: '16', name: 'MANÁ',
-    venue: 'Moda Center', time: '8:30 PM',
-    img: RQ + '692d283d4127e535ffa19844_manaweb.avif' },
-  { day: '17', name: 'Doja Cat',
-    venue: 'Moda Center', time: '7:30 PM',
-    img: RQ + '698cf5ff8ba92ec8db5baf9f_Doja%20Cat%20Web.avif' },
-  { day: '20', name: 'Shaboozey',
-    venue: 'Theater of the Clouds', time: '8:00 PM',
-    img: RQ + '69f0b4fd4425dbd79f665f81_shaboozey.avif' },
+  function g(item, tag) {
+    var el = item.getElementsByTagName(tag)[0];
+    return el ? el.textContent.trim() : '';
+  }
 
-  // ── Page 3 ──────────────────────────────────────────────────────────
-  { day: '21', name: 'Blazers vs Suns',
-    venue: 'Moda Center', time: '7:00 PM',
-    game: { home: BLZ, away: PHX, homeColor:'198,17,65', gameKey:'POR-2026-10-21' } },
-  { day: '24', name: 'Chuy Lizarraga',
-    venue: 'Theater of the Clouds', time: '8:00 PM',
-    img: RQ + '6a87736d077cce7e007ddec6_Chuy%20Web.jpg' },
-  { day: '25', name: 'Logic & G-Eazy',
-    venue: 'Theater of the Clouds', time: '7:00 PM',
-    img: RQ + '6a679fa60dc0a2b1638c4559_G-Eazy%20Logic%20Web.jpg' },
-  { day: '27', name: 'Dermot Kennedy',
-    venue: 'Theater of the Clouds', time: '8:00 PM',
-    img: RQ + '69c19be6a3d27a197e1d8a42_Dermot%20Kennedy%20Web.avif' },
-  { day: '28', name: 'Winterhawks vs Giants',
-    venue: 'Veterans Memorial Coliseum', time: '7:00 PM',
-    game: { home: WH, away: RQ+'62aa5d3f408f1683770ddbb4_whl-vancouver-giants.svg', homeColor:'0,40,104' } },
-  { day: '29', name: 'Blazers vs Grizzlies',
-    venue: 'Moda Center', time: '7:00 PM',
-    game: { home: BLZ, away: MEM, homeColor:'198,17,65', gameKey:'POR-2026-10-29' } },
-  { day: '29', name: 'Bryson Tiller',
-    venue: 'Veterans Memorial Coliseum', time: '7:30 PM',
-    img: RQ + '6a1dacc41bada09f568ff55a_brysontillerweb.jpg' },
-  { day: '30', name: 'Gorillaz',
-    venue: 'Moda Center', time: '7:00 PM',
-    img: RQ + '69a61619d9b89c11c8a9089e_Gorillaz%20Web.avif' },
+  function parseFeed(xml) {
+    var doc = new DOMParser().parseFromString(xml, 'application/xml');
+    if (doc.getElementsByTagName('parseerror').length || doc.getElementsByTagName('parsererror').length)
+      throw new Error('XML parse error');
+    var items = doc.getElementsByTagName('item');
+    var out = [];
+    for (var i = 0; i < items.length; i++) {
+      var it = items[i];
+      out.push({
+        date:  g(it, 'date'),
+        time:  g(it, 'time'),
+        name:  g(it, 'name'),
+        venue: g(it, 'venue'),
+        image: g(it, 'image')
+      });
+    }
+    return out;
+  }
 
-  // ── Page 4 ──────────────────────────────────────────────────────────
-  { day: '31', name: 'Winterhawks vs Rockets',
-    venue: 'Veterans Memorial Coliseum', time: '3:00 PM',
-    game: { home: WH, away: RQ+'62aa5d3f408f1638340ddde4_whl-kelowna-rockets.svg', homeColor:'0,40,104' } }
-];
+  function dayNum(dateStr) {
+    var parts = dateStr.split(' ');
+    return parts[parts.length - 1];
+  }
 
-var PAGE_SIZE = 8;
-var PAGE_MS   = 15000;  // 15 seconds per page — set to 3000 here to see transition faster while testing
-var pageTimer = null;
-var pageIdx   = 0;
-var numPages  = 0;
+  function monthLabel(dateStr) {
+    var parts = dateStr.split(' ');
+    return (parts[1] || '').replace(/\.$/,'') + '.';
+  }
 
-function venueLabel(venue) {
-  var label;
-  if (/moda\s*center/i.test(venue))          label = 'MODA CENTER';
-  else if (/coliseum|veterans/i.test(venue)) label = 'VETERANS MEMORIAL COLISEUM';
-  else if (/theater|clouds/i.test(venue))    label = 'THEATER OF THE CLOUDS';
-  else                                        label = venue.toUpperCase();
-  return '<span class="at">@</span> ' + label;
-}
+  function venueLabel(venue) {
+    var label;
+    if (/moda\s*center/i.test(venue))      label = 'MODA CENTER';
+    else if (/coliseum|veterans/i.test(venue)) label = 'VETERANS MEMORIAL COLISEUM';
+    else                                    label = venue.toUpperCase();
+    return '<span class="at">@</span> ' + label;
+  }
 
-function shrinkNames() {
-  var els = document.querySelectorAll('.ename');
-  for (var i = 0; i < els.length; i++) {
-    var el = els[i], size = 48;
-    el.style.fontSize = size + 'px';
-    while (el.scrollWidth > el.clientWidth + 1 && size > 20) {
-      size -= 2; el.style.fontSize = size + 'px';
+  function shrinkNames() {
+    var els = document.querySelectorAll('.ename');
+    for (var i = 0; i < els.length; i++) {
+      var el = els[i];
+      var size = 48;
+      el.style.fontSize = size + 'px';
+      while (el.scrollWidth > el.clientWidth + 1 && size > 24) {
+        size -= 2;
+        el.style.fontSize = size + 'px';
+      }
     }
   }
-}
 
-function makeMatchup(ev) {
-  var g   = ev.game;
-  var el  = document.createElement('div');
-  el.className = 'eimg matchup';
+  function makeRow(ev) {
+    var row = document.createElement('div');
+    if (!ev) { row.className = 'erow empty'; return row; }
+    row.className = 'erow';
 
-  var lDiv = document.createElement('div'); lDiv.className = 'm-left';
-  lDiv.style.background = 'rgba(' + g.homeColor + ',.22)';
+    var img = document.createElement('img');
+    img.className = 'eimg';
+    img.src = ev.image;
+    img.alt = ev.name;
+    img.onerror = function () { this.style.background = '#3a3a3a'; this.style.visibility = 'hidden'; };
 
-  var lImg = document.createElement('img'); lImg.className = 'mlogo';
-  lImg.src = g.home; lImg.alt = 'Home';
-  lImg.onerror = function(){ this.style.opacity='0'; };
-  lDiv.appendChild(lImg);
+    var date = document.createElement('div');
+    date.className = 'edate';
+    date.textContent = dayNum(ev.date);
 
-  var vsDiv = document.createElement('div'); vsDiv.className = 'm-vs';
-  var vsTxt = document.createElement('span'); vsTxt.textContent = 'VS';
-  vsDiv.appendChild(vsTxt);
+    var stack = document.createElement('div');
+    stack.className = 'etextstack';
 
-  var rDiv = document.createElement('div'); rDiv.className = 'm-right';
-  var rImg = document.createElement('img'); rImg.className = 'mlogo';
-  rImg.src = g.away; rImg.alt = 'Away';
-  rImg.onerror = function(){ this.style.opacity='0'; };
-  rDiv.appendChild(rImg);
+    var name = document.createElement('div');
+    name.className = 'ename';
+    name.textContent = ev.name.toUpperCase();
 
-  // Score bar (hidden until live data arrives)
-  if (g.gameKey) {
-    var bar = document.createElement('div');
-    bar.className = 'ls-bar';
-    bar.setAttribute('data-game-key', g.gameKey);
-    bar.style.display = 'none';
-    el.appendChild(bar);
+    var venue = document.createElement('div');
+    venue.className = 'evenue';
+    venue.innerHTML = venueLabel(ev.venue);
+
+    stack.appendChild(name);
+    stack.appendChild(venue);
+
+    var time = document.createElement('div');
+    time.className = 'etime';
+    time.textContent = ev.time;
+
+    row.appendChild(img);
+    row.appendChild(date);
+    row.appendChild(stack);
+    row.appendChild(time);
+    return row;
   }
 
-  el.appendChild(lDiv); el.appendChild(vsDiv); el.appendChild(rDiv);
-  return el;
-}
+  function buildPage(pageEvents, gridH) {
+    var page = document.createElement('div');
+    page.className = 'grid-page';
+    page.style.height = gridH + 'px';
 
-function makeRow(ev) {
-  var row = document.createElement('div');
-  if (!ev) { row.className = 'erow empty'; return row; }
-  row.className = 'erow';
+    var colL = document.createElement('div');
+    colL.className = 'col';
+    var vd = document.createElement('div');
+    vd.className = 'vdiv';
+    var colR = document.createElement('div');
+    colR.className = 'col';
 
-  var imgEl;
-  if (ev.game) {
-    imgEl = makeMatchup(ev);
-  } else {
-    imgEl = document.createElement('img');
-    imgEl.className = 'eimg';
-    imgEl.width = 210; imgEl.height = 148;
-    imgEl.src = ev.img; imgEl.alt = ev.name;
-    imgEl.onerror = function () { this.style.background = '#3a3a3a'; this.style.visibility = 'hidden'; };
+    var left  = [pageEvents[0]||null, pageEvents[2]||null, pageEvents[4]||null, pageEvents[6]||null];
+    var right = [pageEvents[1]||null, pageEvents[3]||null, pageEvents[5]||null, pageEvents[7]||null];
+    while (left.length  < 4) left.push(null);
+    while (right.length < 4) right.push(null);
+
+    left.forEach(function (ev)  { colL.appendChild(makeRow(ev)); });
+    right.forEach(function (ev) { colR.appendChild(makeRow(ev)); });
+
+    page.appendChild(colL);
+    page.appendChild(vd);
+    page.appendChild(colR);
+    return page;
   }
 
-  var d = document.createElement('div');
-  d.className = 'edate'; d.textContent = ev.day;
-
-  var stack = document.createElement('div');
-  stack.className = 'etextstack';
-
-  var n = document.createElement('div');
-  n.className = 'ename'; n.textContent = ev.name.toUpperCase();
-
-  var vn = document.createElement('div');
-  vn.className = 'evenue'; vn.innerHTML = venueLabel(ev.venue);
-
-  stack.appendChild(n); stack.appendChild(vn);
-
-  var t = document.createElement('div');
-  t.className = 'etime'; t.textContent = ev.time;
-
-  row.appendChild(imgEl); row.appendChild(d); row.appendChild(stack); row.appendChild(t);
-  return row;
-}
-
-function buildPage(pageEvents, gridH) {
-  var page = document.createElement('div');
-  page.className = 'grid-page';
-  page.style.height = gridH + 'px';
-
-  var colL = document.createElement('div'); colL.className = 'col';
-  var vd   = document.createElement('div'); vd.className = 'vdiv';
-  var colR = document.createElement('div'); colR.className = 'col';
-
-  var left  = [pageEvents[0]||null, pageEvents[2]||null, pageEvents[4]||null, pageEvents[6]||null];
-  var right = [pageEvents[1]||null, pageEvents[3]||null, pageEvents[5]||null, pageEvents[7]||null];
-  while (left.length  < 4) left.push(null);
-  while (right.length < 4) right.push(null);
-
-  left.forEach(function (ev)  { colL.appendChild(makeRow(ev)); });
-  right.forEach(function (ev) { colR.appendChild(makeRow(ev)); });
-
-  page.appendChild(colL); page.appendChild(vd); page.appendChild(colR);
-  return page;
-}
-
-function updateDots(total, current) {
-  var dots = document.getElementById('dots');
-  dots.style.display = total > 1 ? 'flex' : 'none';
-  dots.innerHTML = '';
-  for (var i = 0; i < total; i++) {
-    var d = document.createElement('div');
-    d.className = 'dot' + (i === current ? ' on' : '');
-    dots.appendChild(d);
+  function updateDots(total, current) {
+    var dots = document.getElementById('dots');
+    dots.style.display = total > 1 ? 'flex' : 'none';
+    dots.innerHTML = '';
+    for (var i = 0; i < total; i++) {
+      var d = document.createElement('div');
+      d.className = 'dot' + (i === current ? ' on' : '');
+      dots.appendChild(d);
+    }
   }
-}
 
-function advancePage() {
-  pageIdx = (pageIdx + 1) % numPages;
-  var track = document.getElementById('grid-track');
-  var grid  = document.getElementById('grid');
-  track.style.transform = 'translateY(-' + (pageIdx * grid.clientHeight) + 'px)';
-  setTimeout(shrinkNames, 850);
-  updateDots(numPages, pageIdx);
-}
+  function showPage(idx, animate) {
+    var track = document.getElementById('grid-track');
+    var grid  = document.getElementById('grid');
+    var gridH = grid.clientHeight;
+    if (!animate) {
+      track.style.transition = 'none';
+      track.style.transform  = 'translateY(0)';
+      track.offsetHeight;           // flush layout
+      track.style.transition = '';
+    } else {
+      track.style.transform = 'translateY(-' + (idx * gridH) + 'px)';
+      setTimeout(shrinkNames, 850);
+    }
+    updateDots(numPages, idx);
+  }
 
-// ── EXPIRATION ────────────────────────────────────────────────────────
-var EVT_YEAR = 2026;
+  function advancePage() {
+    pageIdx = (pageIdx + 1) % numPages;
+    var track = document.getElementById('grid-track');
+    var grid  = document.getElementById('grid');
+    track.style.transform = 'translateY(-' + (pageIdx * grid.clientHeight) + 'px)';
+    setTimeout(shrinkNames, 850);
+    updateDots(numPages, pageIdx);
+  }
 
-function activeEvents() {
-  var today = new Date(); today.setHours(0, 0, 0, 0);
-  return EVENTS.filter(function (ev) {
-    var m = ev.month !== undefined ? ev.month : 10;
-    return new Date(EVT_YEAR, m - 1, parseInt(ev.day, 10)) >= today;
+  function render(events) {
+    var track = document.getElementById('grid-track');
+    var grid  = document.getElementById('grid');
+    var hm    = document.getElementById('hmonth');
+
+    clearInterval(pageTimer);
+    track.innerHTML = '';
+    pageIdx  = 0;
+    numPages = 0;
+
+    if (!events.length) { updateDots(0, 0); return; }
+
+    hm.textContent = monthLabel(events[0].date);
+
+    var pages = [];
+    for (var i = 0; i < events.length; i += PAGE_SIZE) {
+      pages.push(events.slice(i, i + PAGE_SIZE));
+    }
+    numPages = pages.length;
+
+    var gridH = grid.clientHeight;
+    track.style.height = (numPages * gridH) + 'px';
+
+    pages.forEach(function (pg) { track.appendChild(buildPage(pg, gridH)); });
+
+    showPage(0, false);
+    shrinkNames();
+
+    if (numPages > 1) {
+      pageTimer = setInterval(advancePage, PAGE_MS);
+    }
+  }
+
+  function showErr(msg) {
+    var el = document.getElementById('err');
+    el.textContent = 'FEED: ' + msg;
+    el.style.display = 'block';
+  }
+
+  function load() {
+    fetch(FEED + '?t=' + Date.now(), { cache: 'no-store' })
+      .then(function (r) {
+        if (!r.ok) throw new Error('HTTP ' + r.status);
+        return r.text();
+      })
+      .then(function (xml) {
+        document.getElementById('err').style.display = 'none';
+        render(parseFeed(xml));
+      })
+      .catch(function (e) { showErr(e.message); });
+  }
+
+  load();
+  setInterval(load, POLL);
+
+  window.addEventListener('message', function (e) {
+    if (e && e.data && e.data.sig === 'show') load();
   });
-}
 
-function init() {
-  var track = document.getElementById('grid-track');
-  var grid  = document.getElementById('grid');
-
-  track.innerHTML = '';
-  clearInterval(pageTimer);
-  pageIdx = 0;
-
-  var visible = activeEvents();
-  var pages = [];
-  for (var i = 0; i < visible.length; i += PAGE_SIZE) {
-    pages.push(visible.slice(i, i + PAGE_SIZE));
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(load);
   }
-  numPages = pages.length;
-
-  if (numPages === 0) {
-    // Nothing left — show a simple end-of-month message
-    track.innerHTML = '<div style="color:rgba(255,255,255,.35);font-size:36px;font-weight:700;text-align:center;padding-top:60px;text-transform:uppercase;letter-spacing:.06em;">No upcoming events</div>';
-    updateDots(0, 0);
-    return;
-  }
-
-  var gridH = grid.clientHeight;
-  track.style.height = (numPages * gridH) + 'px';
-  pages.forEach(function (pg) { track.appendChild(buildPage(pg, gridH)); });
-
-  track.style.transition = 'none';
-  track.style.transform  = 'translateY(0)';
-  track.offsetHeight;
-  track.style.transition = '';
-
-  shrinkNames();
-  updateDots(numPages, 0);
-
-  if (numPages > 1) {
-    pageTimer = setInterval(advancePage, PAGE_MS);
-  }
-
-  // Start score polling if any Blazers game is today
-  startScorePolling();
-}
-
-// ── LIVE SCORE POLLING (ESPN public API) ──────────────────────────────
-var scoreCache   = {};   // { 'POR-2026-10-07': { status, detail, homeScore, awayScore, homeAbbr, awayAbbr } }
-var scoreTimer   = null;
-
-function todayKey() {
-  var d = new Date();
-  var mm = String(d.getMonth() + 1).padStart(2, '0');
-  var dd = String(d.getDate()).padStart(2, '0');
-  return 'POR-' + d.getFullYear() + '-' + mm + '-' + dd;
-}
-
-function hasTodayGame() {
-  var key = todayKey();
-  return EVENTS.some(function (ev) { return ev.game && ev.game.gameKey === key; });
-}
-
-function startScorePolling() {
-  clearInterval(scoreTimer);
-  if (!hasTodayGame()) return;
-  fetchNbaScores();
-  scoreTimer = setInterval(fetchNbaScores, 60000);
-}
-
-function fetchNbaScores() {
-  var xhr = new XMLHttpRequest();
-  xhr.open('GET', 'https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard', true);
-  xhr.timeout = 8000;
-  xhr.onload = function () {
-    if (xhr.status !== 200) return;
-    try { processNbaScores(JSON.parse(xhr.responseText)); } catch (e) {}
-  };
-  xhr.send();
-}
-
-function processNbaScores(data) {
-  (data.events || []).forEach(function (ev) {
-    var comp = ev.competitions && ev.competitions[0];
-    if (!comp) return;
-    var home = null, away = null;
-    (comp.competitors || []).forEach(function (c) {
-      if (c.homeAway === 'home') home = c; else away = c;
-    });
-    if (!home || !away) return;
-
-    // Only track if Portland is playing
-    var isPOR = (home.team && home.team.abbreviation === 'POR') ||
-                (away.team && away.team.abbreviation === 'POR');
-    if (!isPOR) return;
-
-    // Build key from game UTC date → PT date (games are evening PT so UTC date -1 day)
-    var rawDate = ev.date || '';           // e.g. "2026-10-07T02:00Z"
-    var utcDate = new Date(rawDate);
-    // Shift to Pacific (UTC-7 standard / UTC-8 daylight — just use UTC-7 for Oct)
-    var ptDate  = new Date(utcDate.getTime() - 7 * 3600 * 1000);
-    var mm = String(ptDate.getUTCMonth() + 1).padStart(2, '0');
-    var dd = String(ptDate.getUTCDate()).padStart(2, '0');
-    var key = 'POR-' + ptDate.getUTCFullYear() + '-' + mm + '-' + dd;
-
-    var statusName = ev.status && ev.status.type && ev.status.type.name || '';
-    var detail     = ev.status && ev.status.type && ev.status.type.shortDetail || '';
-
-    scoreCache[key] = {
-      status:    statusName,
-      detail:    detail,
-      homeScore: parseInt(home.score, 10) || 0,
-      awayScore: parseInt(away.score,  10) || 0,
-      homeAbbr:  (home.team && home.team.abbreviation) || 'HM',
-      awayAbbr:  (away.team && away.team.abbreviation) || 'AW'
-    };
-  });
-  updateScoreOverlays();
-}
-
-function buildScoreHTML(s) {
-  var isLive  = s.status === 'STATUS_IN_PROGRESS';
-  var isFinal = s.status === 'STATUS_FINAL';
-  if (!isLive && !isFinal) return null;
-
-  var label = isFinal ? 'FINAL' : '<span class="ls-live">● LIVE</span>';
-  var period = isLive ? '<span class="ls-sep">|</span>' + s.detail : '';
-  var score  = '<span class="ls-score">' + s.homeAbbr + ' ' + s.homeScore +
-               ' <span class="ls-sep">–</span> ' + s.awayScore + ' ' + s.awayAbbr + '</span>';
-  return label + period + score;
-}
-
-function updateScoreOverlays() {
-  var bars = document.querySelectorAll('.ls-bar[data-game-key]');
-  for (var i = 0; i < bars.length; i++) {
-    var bar = bars[i];
-    var key = bar.getAttribute('data-game-key');
-    var s   = scoreCache[key];
-    if (!s) { bar.style.display = 'none'; continue; }
-    var html = buildScoreHTML(s);
-    if (!html) { bar.style.display = 'none'; continue; }
-    bar.innerHTML = html;
-    bar.style.display = 'flex';
-    bar.classList.toggle('is-live', s.status === 'STATUS_IN_PROGRESS');
-  }
-}
-
-function scaleToFit() {
-  var w = document.getElementById('wrapper');
-  var s = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
-  w.style.transform = 'scale(' + s + ')';
-  w.style.left = ((window.innerWidth  - 1920 * s) / 2) + 'px';
-  w.style.top  = ((window.innerHeight - 1080 * s) / 2) + 'px';
-}
-
-scaleToFit();
-window.addEventListener('resize', function () { scaleToFit(); init(); });
-
-if (document.fonts && document.fonts.ready) {
-  document.fonts.ready.then(init);
-} else {
-  init();
-}
+}());
 </script>
 </body>
 </html>
