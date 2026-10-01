@@ -2,7 +2,7 @@
 <rss version="2.0">
   <channel>
     <title>Moda Center / VMC Events</title>
-    <lastBuildDate>2026-10-01T21:07:55Z</lastBuildDate>
+    <lastBuildDate>2026-10-01T22:40:02Z</lastBuildDate>
     <item>
       <name>Bilmuri</name>
       <date>THU OCT 1</date>
@@ -31,6 +31,15 @@
       <city>SOMBR</city>
     </item>
     <item>
+      <name>Winterhawks vs. Spokane Chiefs</name>
+      <date>FRI OCT 2</date>
+      <time></time>
+      <venue>Veterans Memorial Coliseum</venue>
+      <image></image>
+      <dateiso>2026-10-02</dateiso>
+      <city>SPOKANE</city>
+    </item>
+    <item>
       <name>Tyler Childers</name>
       <date>SAT OCT 3</date>
       <time>6:30 PM</time>
@@ -38,6 +47,15 @@
       <image>https://cdn.prod.website-files.com/62aa5d3f408f1681bc0ddb81/692e38e1879c1b04c83055af_Childer%20Web.avif</image>
       <dateiso>2026-10-03</dateiso>
       <city>TYLER CHILDERS</city>
+    </item>
+    <item>
+      <name>Winterhawks vs. Spokane Chiefs</name>
+      <date>SAT OCT 3</date>
+      <time></time>
+      <venue>Veterans Memorial Coliseum</venue>
+      <image></image>
+      <dateiso>2026-10-03</dateiso>
+      <city>SPOKANE</city>
     </item>
     <item>
       <name>The Neighbourhood</name>
@@ -58,6 +76,15 @@
       <city>DISNEY</city>
     </item>
     <item>
+      <name>Trail Blazers vs. Golden State Warriors</name>
+      <date>WED OCT 7</date>
+      <time></time>
+      <venue>Moda Center</venue>
+      <image></image>
+      <dateiso>2026-10-07</dateiso>
+      <city>GOLDEN STATE</city>
+    </item>
+    <item>
       <name>Carin Leon</name>
       <date>FRI OCT 9</date>
       <time>8:00 PM</time>
@@ -67,6 +94,15 @@
       <city>CARIN LEON</city>
     </item>
     <item>
+      <name>Winterhawks vs. Wenatchee Wild</name>
+      <date>FRI OCT 9</date>
+      <time></time>
+      <venue>Veterans Memorial Coliseum</venue>
+      <image></image>
+      <dateiso>2026-10-09</dateiso>
+      <city>WENATCHEE</city>
+    </item>
+    <item>
       <name>Matt Rife</name>
       <date>SAT OCT 10</date>
       <time>8:00 PM</time>
@@ -74,6 +110,15 @@
       <image>https://cdn.prod.website-files.com/62aa5d3f408f1681bc0ddb81/6a985ca21f7aad73342085e3_Matt%20Rife%20Web.jpg</image>
       <dateiso>2026-10-10</dateiso>
       <city>MATT RIFE</city>
+    </item>
+    <item>
+      <name>Trail Blazers vs. London Lions</name>
+      <date>MON OCT 12</date>
+      <time></time>
+      <venue>Moda Center</venue>
+      <image></image>
+      <dateiso>2026-10-12</dateiso>
+      <city>LONDON</city>
     </item>
     <item>
       <name>Disney</name>
@@ -173,51 +218,6 @@
       <image>https://cdn.prod.website-files.com/62aa5d3f408f1681bc0ddb81/69e00ef48ecbdaef653bad60_teddy%20swims%20web%202.avif</image>
       <dateiso>2026-11-08</dateiso>
       <city>TEDDY SWIMS</city>
-    </item>
-    <item>
-      <name>Ramon Ayala</name>
-      <date>FRI NOV 27</date>
-      <time>8:30 PM</time>
-      <venue>Veterans Memorial Coliseum</venue>
-      <image>https://cdn.prod.website-files.com/62aa5d3f408f1681bc0ddb81/69d3fea1895d9ae80c33bcd0_ramon%20ayala%20web.avif</image>
-      <dateiso>2026-11-27</dateiso>
-      <city>RAMON AYALA</city>
-    </item>
-    <item>
-      <name>Trans-Siberian Orchestra</name>
-      <date>SAT NOV 28</date>
-      <time>3:30 PM</time>
-      <venue>Moda Center</venue>
-      <image>https://cdn.prod.website-files.com/62aa5d3f408f1681bc0ddb81/6a99ed4c221ab17b19dbbbc8_TSO%20Web.jpg</image>
-      <dateiso>2026-11-28</dateiso>
-      <city>TRANS-SIBERIAN ORCHESTRA</city>
-    </item>
-    <item>
-      <name>TRIUMPH</name>
-      <date>SAT DEC 5</date>
-      <time>8:00 PM</time>
-      <venue>Moda Center</venue>
-      <image>https://cdn.prod.website-files.com/62aa5d3f408f1681bc0ddb81/6a8629bbb143b31b00cd9dcc_TRIUMPH%20Web.jpg</image>
-      <dateiso>2026-12-05</dateiso>
-      <city>TRIUMPH</city>
-    </item>
-    <item>
-      <name>Max McNown</name>
-      <date>SUN DEC 6</date>
-      <time>7:00 PM</time>
-      <venue>Veterans Memorial Coliseum</venue>
-      <image>https://cdn.prod.website-files.com/62aa5d3f408f1681bc0ddb81/6a874353ce029f3c556bbafb_MaxMcNown%20Web.jpg</image>
-      <dateiso>2026-12-06</dateiso>
-      <city>MAX MCNOWN</city>
-    </item>
-    <item>
-      <name>Ram PBR Portland</name>
-      <date>FRI JAN 22</date>
-      <time>7:00 PM</time>
-      <venue>Moda Center</venue>
-      <image>https://cdn.prod.website-files.com/62aa5d3f408f1681bc0ddb81/6a986a49d6ef72739f221594_pbrweb.jpg</image>
-      <dateiso>2027-01-22</dateiso>
-      <city>RAM PBR PORTLAND</city>
     </item>
   </channel>
 </rss>
