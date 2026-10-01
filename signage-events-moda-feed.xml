@@ -2,11 +2,11 @@
 <rss version="2.0">
   <channel>
     <title>Moda Center / VMC Events</title>
-    <lastBuildDate>2026-09-25T01:29:36Z</lastBuildDate>
+    <lastBuildDate>2026-10-01T20:32:56Z</lastBuildDate>
     <item>
       <name>Jungle</name>
       <date>THU OCT 1</date>
-      <time>8:00 PM</time>
+      <time>7:45 PM</time>
       <venue>Veterans Memorial Coliseum</venue>
       <image>https://cdn.prod.website-files.com/62aa5d3f408f1681bc0ddb81/69c18c3f920be9c3b2e8bd98_jungle%20web%202.avif</image>
       <dateiso>2026-10-01</dateiso>
@@ -156,6 +156,14 @@
       <dateiso>2027-01-22</dateiso>
     </item>
     <item>
+      <name>Harlem Globetrotters</name>
+      <date>SUN JAN 31</date>
+      <time>3:00 PM</time>
+      <venue>Veterans Memorial Coliseum</venue>
+      <image>https://cdn.prod.website-files.com/62aa5d3f408f1681bc0ddb81/6ab9d114a13234711e9265a8_Harlem%20Globetrotters%20Web.jpg</image>
+      <dateiso>2027-01-31</dateiso>
+    </item>
+    <item>
       <name>Gracie Abrams</name>
       <date>SUN JAN 31</date>
       <time>8:00 PM</time>
@@ -186,14 +194,6 @@
       <venue>Moda Center</venue>
       <image>https://cdn.prod.website-files.com/62aa5d3f408f1681bc0ddb81/6aa9c1eb8dce7bbaa21d98b9_Zimmer%20Web.jpg</image>
       <dateiso>2027-04-11</dateiso>
-    </item>
-    <item>
-      <name>Hot Wheels Stunt Show</name>
-      <date>SAT MAY 22</date>
-      <time>12:00 PM</time>
-      <venue>Veterans Memorial Coliseum</venue>
-      <image>https://cdn.prod.website-files.com/62aa5d3f408f1681bc0ddb81/6aaf17c68a243e59e4b37e15_HWSS%20Web.jpg</image>
-      <dateiso>2027-05-22</dateiso>
     </item>
   </channel>
 </rss>
