@@ -251,6 +251,50 @@
   }
   .dot.on { background: #fff; }
 
+  /* ── MATCHUP CARD ─────────────────────────────────────────────────────── */
+  .matchup {
+    display: flex; align-items: stretch;
+    background: #0c0c14; position: relative; overflow: hidden;
+  }
+  .m-left, .m-right {
+    flex: 1; display: flex; align-items: center; justify-content: center;
+    position: relative; overflow: hidden;
+  }
+  .m-right { background: rgba(255,255,255,.03); }
+  .m-vs {
+    flex-shrink: 0; width: 28px;
+    display: flex; align-items: center; justify-content: center;
+    position: relative; z-index: 2;
+  }
+  .m-vs::before {
+    content: ''; position: absolute; inset: 0;
+    background: rgba(255,255,255,.07); transform: skewX(-10deg);
+  }
+  .m-vs span {
+    font-size: 12px; font-weight: 800; color: rgba(255,255,255,.65);
+    letter-spacing: .12em; text-transform: uppercase;
+    writing-mode: vertical-lr; text-orientation: mixed;
+    position: relative; z-index: 1;
+    font-family: "United Sans Cond", "Arial Narrow", sans-serif;
+  }
+  .matchup img.mlogo {
+    width: 92px; height: 92px; object-fit: contain;
+    filter: drop-shadow(0 2px 10px rgba(0,0,0,.7));
+  }
+  .ls-bar {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    background: rgba(0,0,0,.78); padding: 4px 8px;
+    display: flex; align-items: center; gap: 7px;
+    font-size: 11px; font-weight: 800; color: #fff;
+    text-transform: uppercase; letter-spacing: .07em; z-index: 4;
+    font-family: "United Sans Cond", "Arial Narrow", sans-serif;
+  }
+  .ls-live { color: #ff4040; }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.35} }
+  .ls-bar.is-live .ls-live { animation: blink 1.3s ease-in-out infinite; }
+  .ls-sep { opacity: .35; }
+  .ls-score { margin-left: auto; letter-spacing: .04em; }
+
   #err {
     position: fixed; left: 0; bottom: 0; right: 0;
     background: rgba(180,0,0,.9); color: #fff;
@@ -292,7 +336,7 @@
 (function () {
   var qs   = new URLSearchParams(location.search);
   var FEED = qs.get('feed') || 'signage-events-moda-feed.xml';
-  var POLL     = 300000;   // re-fetch feed every 5 min
+  var POLL      = 300000;  // re-fetch feed every 5 min
   var PAGE_SIZE = 8;
   var PAGE_MS   = 15000;   // 15 seconds per page
 
@@ -300,6 +344,77 @@
   var pageIdx   = 0;
   var numPages  = 0;
 
+  // ── Team logo lookups ────────────────────────────────────────────────────
+  var BLZ = 'https://a.espncdn.com/i/teamlogos/nba/500/por.png';
+  var WH  = 'https://media.chl.ca/wp-content/uploads/sites/67/2023/11/20112551/POR.png';
+  var RQ  = 'https://cdn.prod.website-files.com/62aa5d3f408f1681bc0ddb81/';
+
+  var NBA_ABBR = {
+    'atlanta':'atl','hawks':'atl','boston':'bos','celtics':'bos',
+    'brooklyn':'bkn','nets':'bkn','charlotte':'cha','hornets':'cha',
+    'chicago':'chi','bulls':'chi','cleveland':'cle','cavaliers':'cle','cavs':'cle',
+    'dallas':'dal','mavericks':'dal','mavs':'dal','denver':'den','nuggets':'den',
+    'detroit':'det','pistons':'det','golden state':'gs','warriors':'gs',
+    'houston':'hou','rockets':'hou','indiana':'ind','pacers':'ind',
+    'clippers':'lac','la clippers':'lac','lakers':'lal','la lakers':'lal',
+    'memphis':'mem','grizzlies':'mem','miami':'mia','heat':'mia',
+    'milwaukee':'mil','bucks':'mil','minnesota':'min','timberwolves':'min','wolves':'min',
+    'new orleans':'no','pelicans':'no','new york':'nyk','knicks':'nyk',
+    'oklahoma':'okc','oklahoma city':'okc','thunder':'okc',
+    'orlando':'orl','magic':'orl','philadelphia':'phi','76ers':'phi','sixers':'phi',
+    'phoenix':'phx','suns':'phx','sacramento':'sac','kings':'sac',
+    'san antonio':'sas','spurs':'sas','toronto':'tor','raptors':'tor',
+    'utah':'uta','jazz':'uta','washington':'wsh','wizards':'wsh'
+  };
+
+  var WHL_LOGOS = {
+    'spokane':    RQ+'62aa5d3f408f16edce0ddcbb_whl-spokane-chiefs.svg',
+    'chiefs':     RQ+'62aa5d3f408f16edce0ddcbb_whl-spokane-chiefs.svg',
+    'everett':    RQ+'6555a9ed91256169c3795f3a_62aa5d3f408f1630d60dddf1_whl-everett-silvertips.avif',
+    'silvertips': RQ+'6555a9ed91256169c3795f3a_62aa5d3f408f1630d60dddf1_whl-everett-silvertips.avif',
+    'vancouver':  RQ+'62aa5d3f408f1683770ddbb4_whl-vancouver-giants.svg',
+    'giants':     RQ+'62aa5d3f408f1683770ddbb4_whl-vancouver-giants.svg',
+    'kelowna':    RQ+'62aa5d3f408f1638340ddde4_whl-kelowna-rockets.svg',
+    'rockets':    RQ+'62aa5d3f408f1638340ddde4_whl-kelowna-rockets.svg',
+    'tri-city':   RQ+'62aa5d3f408f1681bc0ddb80_whl-tri-city-americans.svg',
+    'americans':  RQ+'62aa5d3f408f1681bc0ddb80_whl-tri-city-americans.svg',
+    'seattle':    RQ+'62aa5d3f408f1681bc0ddb83_whl-seattle-thunderbirds.svg',
+    'thunderbirds':RQ+'62aa5d3f408f1681bc0ddb83_whl-seattle-thunderbirds.svg',
+    'moose jaw':  RQ+'62aa5d3f408f1681bc0ddb84_whl-moose-jaw-warriors.svg',
+    'swift current':RQ+'62aa5d3f408f1681bc0ddba0_whl-swift-current-broncos.svg',
+    'broncos':    RQ+'62aa5d3f408f1681bc0ddba0_whl-swift-current-broncos.svg'
+  };
+
+  function nbaLogo(city) {
+    var key = (city || '').toLowerCase().trim();
+    if (NBA_ABBR[key]) return 'https://a.espncdn.com/i/teamlogos/nba/500/' + NBA_ABBR[key] + '.png';
+    for (var k in NBA_ABBR) {
+      if (key.indexOf(k) !== -1 || k.indexOf(key) !== -1)
+        return 'https://a.espncdn.com/i/teamlogos/nba/500/' + NBA_ABBR[k] + '.png';
+    }
+    return '';
+  }
+
+  function whlLogo(city) {
+    var key = (city || '').toLowerCase().trim();
+    if (WHL_LOGOS[key]) return WHL_LOGOS[key];
+    for (var k in WHL_LOGOS) {
+      if (key.indexOf(k) !== -1 || k.indexOf(key) !== -1) return WHL_LOGOS[k];
+    }
+    return '';
+  }
+
+  function isBlazersGame(ev) { return /trail blazers|blazers/i.test(ev.name); }
+  function isWHGame(ev)      { return /winterhawk/i.test(ev.name); }
+
+  function gameConfig(ev) {
+    if (isBlazersGame(ev)) return { home:BLZ, away:nbaLogo(ev.city), homeColor:'198,17,65',
+                                    gameKey: ev.dateiso ? 'POR-'+ev.dateiso : '' };
+    if (isWHGame(ev))      return { home:WH,  away:whlLogo(ev.city), homeColor:'0,40,104', gameKey:'' };
+    return null;
+  }
+
+  // ── Feed parsing ─────────────────────────────────────────────────────────
   function g(item, tag) {
     var el = item.getElementsByTagName(tag)[0];
     return el ? el.textContent.trim() : '';
@@ -313,58 +428,87 @@
     var out = [];
     for (var i = 0; i < items.length; i++) {
       var it = items[i];
-      out.push({
-        date:  g(it, 'date'),
-        time:  g(it, 'time'),
-        name:  g(it, 'name'),
-        venue: g(it, 'venue'),
-        image: g(it, 'image')
-      });
+      out.push({ date:g(it,'date'), dateiso:g(it,'dateiso'), time:g(it,'time'),
+                 name:g(it,'name'), venue:g(it,'venue'), image:g(it,'image'), city:g(it,'city') });
     }
     return out;
   }
 
-  function dayNum(dateStr) {
-    var parts = dateStr.split(' ');
-    return parts[parts.length - 1];
-  }
+  function dayNum(dateStr) { var p = dateStr.split(' '); return p[p.length - 1]; }
 
   function monthLabel(dateStr) {
-    var parts = dateStr.split(' ');
-    return (parts[1] || '').replace(/\.$/,'') + '.';
+    var p = dateStr.split(' ');
+    return (p[1] || '').replace(/\.$/,'') + '.';
   }
 
   function venueLabel(venue) {
     var label;
-    if (/moda\s*center/i.test(venue))      label = 'MODA CENTER';
+    if (/moda\s*center/i.test(venue))          label = 'MODA CENTER';
     else if (/coliseum|veterans/i.test(venue)) label = 'VETERANS MEMORIAL COLISEUM';
-    else                                    label = venue.toUpperCase();
+    else if (/theater|clouds/i.test(venue))    label = 'THEATER OF THE CLOUDS';
+    else                                        label = venue.toUpperCase();
     return '<span class="at">@</span> ' + label;
   }
 
   function shrinkNames() {
     var els = document.querySelectorAll('.ename');
     for (var i = 0; i < els.length; i++) {
-      var el = els[i];
-      var size = 48;
+      var el = els[i], size = 48;
       el.style.fontSize = size + 'px';
-      while (el.scrollWidth > el.clientWidth + 1 && size > 24) {
-        size -= 2;
-        el.style.fontSize = size + 'px';
-      }
+      while (el.scrollWidth > el.clientWidth + 1 && size > 24) { size -= 2; el.style.fontSize = size + 'px'; }
     }
   }
 
+  // ── Matchup card ─────────────────────────────────────────────────────────
+  function makeMatchup(gc) {
+    var el = document.createElement('div');
+    el.className = 'eimg matchup';
+
+    var lDiv = document.createElement('div'); lDiv.className = 'm-left';
+    lDiv.style.background = 'rgba(' + gc.homeColor + ',.22)';
+    var lImg = document.createElement('img'); lImg.className = 'mlogo';
+    lImg.src = gc.home; lImg.alt = 'Home';
+    lImg.onerror = function () { this.style.opacity = '0'; };
+    lDiv.appendChild(lImg);
+
+    var vsDiv = document.createElement('div'); vsDiv.className = 'm-vs';
+    var vsTxt = document.createElement('span'); vsTxt.textContent = 'VS';
+    vsDiv.appendChild(vsTxt);
+
+    var rDiv = document.createElement('div'); rDiv.className = 'm-right';
+    var rImg = document.createElement('img'); rImg.className = 'mlogo';
+    rImg.src = gc.away; rImg.alt = 'Away';
+    rImg.onerror = function () { this.style.opacity = '0'; };
+    rDiv.appendChild(rImg);
+
+    if (gc.gameKey) {
+      var bar = document.createElement('div');
+      bar.className = 'ls-bar';
+      bar.setAttribute('data-game-key', gc.gameKey);
+      bar.style.display = 'none';
+      el.appendChild(bar);
+    }
+
+    el.appendChild(lDiv); el.appendChild(vsDiv); el.appendChild(rDiv);
+    return el;
+  }
+
+  // ── Row ──────────────────────────────────────────────────────────────────
   function makeRow(ev) {
     var row = document.createElement('div');
     if (!ev) { row.className = 'erow empty'; return row; }
     row.className = 'erow';
 
-    var img = document.createElement('img');
-    img.className = 'eimg';
-    img.src = ev.image;
-    img.alt = ev.name;
-    img.onerror = function () { this.style.background = '#3a3a3a'; this.style.visibility = 'hidden'; };
+    var gc = gameConfig(ev);
+    var imgEl;
+    if (gc) {
+      imgEl = makeMatchup(gc);
+    } else {
+      imgEl = document.createElement('img');
+      imgEl.className = 'eimg';
+      imgEl.src = ev.image; imgEl.alt = ev.name;
+      imgEl.onerror = function () { this.style.background = '#3a3a3a'; this.style.visibility = 'hidden'; };
+    }
 
     var date = document.createElement('div');
     date.className = 'edate';
@@ -388,24 +532,19 @@
     time.className = 'etime';
     time.textContent = ev.time;
 
-    row.appendChild(img);
-    row.appendChild(date);
-    row.appendChild(stack);
-    row.appendChild(time);
+    row.appendChild(imgEl); row.appendChild(date); row.appendChild(stack); row.appendChild(time);
     return row;
   }
 
+  // ── Page building ────────────────────────────────────────────────────────
   function buildPage(pageEvents, gridH) {
     var page = document.createElement('div');
     page.className = 'grid-page';
     page.style.height = gridH + 'px';
 
-    var colL = document.createElement('div');
-    colL.className = 'col';
-    var vd = document.createElement('div');
-    vd.className = 'vdiv';
-    var colR = document.createElement('div');
-    colR.className = 'col';
+    var colL = document.createElement('div'); colL.className = 'col';
+    var vd   = document.createElement('div'); vd.className = 'vdiv';
+    var colR = document.createElement('div'); colR.className = 'col';
 
     var left  = [pageEvents[0]||null, pageEvents[2]||null, pageEvents[4]||null, pageEvents[6]||null];
     var right = [pageEvents[1]||null, pageEvents[3]||null, pageEvents[5]||null, pageEvents[7]||null];
@@ -415,9 +554,7 @@
     left.forEach(function (ev)  { colL.appendChild(makeRow(ev)); });
     right.forEach(function (ev) { colR.appendChild(makeRow(ev)); });
 
-    page.appendChild(colL);
-    page.appendChild(vd);
-    page.appendChild(colR);
+    page.appendChild(colL); page.appendChild(vd); page.appendChild(colR);
     return page;
   }
 
@@ -439,7 +576,7 @@
     if (!animate) {
       track.style.transition = 'none';
       track.style.transform  = 'translateY(0)';
-      track.offsetHeight;           // flush layout
+      track.offsetHeight;
       track.style.transition = '';
     } else {
       track.style.transform = 'translateY(-' + (idx * gridH) + 'px)';
@@ -457,6 +594,7 @@
     updateDots(numPages, pageIdx);
   }
 
+  // ── Render ───────────────────────────────────────────────────────────────
   function render(events) {
     var track = document.getElementById('grid-track');
     var grid  = document.getElementById('grid');
@@ -464,32 +602,125 @@
 
     clearInterval(pageTimer);
     track.innerHTML = '';
-    pageIdx  = 0;
-    numPages = 0;
+    pageIdx = 0; numPages = 0;
+
+    // Keep only current-month events that haven't happened yet
+    var today = new Date(); today.setHours(0, 0, 0, 0);
+    var curMonth = today.getMonth();
+    var curYear  = today.getFullYear();
+    events = events.filter(function (ev) {
+      if (!ev.dateiso) return true;
+      var p = ev.dateiso.split('-');
+      var evDate = new Date(parseInt(p[0],10), parseInt(p[1],10) - 1, parseInt(p[2],10));
+      return evDate >= today && evDate.getMonth() === curMonth && evDate.getFullYear() === curYear;
+    });
 
     if (!events.length) { updateDots(0, 0); return; }
 
     hm.textContent = monthLabel(events[0].date);
 
     var pages = [];
-    for (var i = 0; i < events.length; i += PAGE_SIZE) {
-      pages.push(events.slice(i, i + PAGE_SIZE));
-    }
+    for (var i = 0; i < events.length; i += PAGE_SIZE) pages.push(events.slice(i, i + PAGE_SIZE));
     numPages = pages.length;
 
     var gridH = grid.clientHeight;
     track.style.height = (numPages * gridH) + 'px';
-
     pages.forEach(function (pg) { track.appendChild(buildPage(pg, gridH)); });
 
     showPage(0, false);
     shrinkNames();
 
-    if (numPages > 1) {
-      pageTimer = setInterval(advancePage, PAGE_MS);
+    if (numPages > 1) pageTimer = setInterval(advancePage, PAGE_MS);
+
+    startScorePolling();
+  }
+
+  // ── Live score polling (ESPN public API) ──────────────────────────────────
+  var scoreCache = {};
+  var scoreTimer = null;
+
+  function todayKey() {
+    var d = new Date();
+    var mm = String(d.getMonth() + 1).padStart(2, '0');
+    var dd = String(d.getDate()).padStart(2, '0');
+    return 'POR-' + d.getFullYear() + '-' + mm + '-' + dd;
+  }
+
+  function startScorePolling() {
+    clearInterval(scoreTimer);
+    var key = todayKey();
+    if (!document.querySelector('.ls-bar[data-game-key="' + key + '"]')) return;
+    fetchNbaScores();
+    scoreTimer = setInterval(fetchNbaScores, 60000);
+  }
+
+  function fetchNbaScores() {
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', 'https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard', true);
+    xhr.timeout = 8000;
+    xhr.onload = function () {
+      if (xhr.status !== 200) return;
+      try { processNbaScores(JSON.parse(xhr.responseText)); } catch (e) {}
+    };
+    xhr.send();
+  }
+
+  function processNbaScores(data) {
+    (data.events || []).forEach(function (ev) {
+      var comp = ev.competitions && ev.competitions[0];
+      if (!comp) return;
+      var home = null, away = null;
+      (comp.competitors || []).forEach(function (c) {
+        if (c.homeAway === 'home') home = c; else away = c;
+      });
+      if (!home || !away) return;
+      var isPOR = (home.team && home.team.abbreviation === 'POR') ||
+                  (away.team && away.team.abbreviation === 'POR');
+      if (!isPOR) return;
+      var utcDate = new Date(ev.date || '');
+      var ptDate  = new Date(utcDate.getTime() - 7 * 3600 * 1000);
+      var mm = String(ptDate.getUTCMonth() + 1).padStart(2, '0');
+      var dd = String(ptDate.getUTCDate()).padStart(2, '0');
+      var key = 'POR-' + ptDate.getUTCFullYear() + '-' + mm + '-' + dd;
+      scoreCache[key] = {
+        status:    ev.status && ev.status.type && ev.status.type.name || '',
+        detail:    ev.status && ev.status.type && ev.status.type.shortDetail || '',
+        homeScore: parseInt(home.score, 10) || 0,
+        awayScore: parseInt(away.score,  10) || 0,
+        homeAbbr:  (home.team && home.team.abbreviation) || 'HM',
+        awayAbbr:  (away.team && away.team.abbreviation) || 'AW'
+      };
+    });
+    updateScoreOverlays();
+  }
+
+  function buildScoreHTML(s) {
+    var isLive  = s.status === 'STATUS_IN_PROGRESS';
+    var isFinal = s.status === 'STATUS_FINAL';
+    if (!isLive && !isFinal) return null;
+    var label  = isFinal ? 'FINAL' : '<span class="ls-live">● LIVE</span>';
+    var period = isLive ? '<span class="ls-sep">|</span>' + s.detail : '';
+    var score  = '<span class="ls-score">' + s.homeAbbr + ' ' + s.homeScore +
+                 ' <span class="ls-sep">–</span> ' + s.awayScore + ' ' + s.awayAbbr + '</span>';
+    return label + period + score;
+  }
+
+  function updateScoreOverlays() {
+    var bars = document.querySelectorAll('.ls-bar[data-game-key]');
+    for (var i = 0; i < bars.length; i++) {
+      var bar = bars[i];
+      var key = bar.getAttribute('data-game-key');
+      var s   = scoreCache[key];
+      if (!s) { bar.style.display = 'none'; continue; }
+      var html = buildScoreHTML(s);
+      if (!html) { bar.style.display = 'none'; continue; }
+      bar.innerHTML = html;
+      bar.style.display = 'flex';
+      bar.classList.toggle('is-live', s.status === 'STATUS_IN_PROGRESS');
     }
   }
 
+  // ── Load feed ────────────────────────────────────────────────────────────
   function showErr(msg) {
     var el = document.getElementById('err');
     el.textContent = 'FEED: ' + msg;
