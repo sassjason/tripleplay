@@ -2,24 +2,78 @@
 <rss version="2.0">
   <channel>
     <title>Upcoming Events</title>
-    <lastBuildDate>2026-09-25T01:29:36Z</lastBuildDate>
+    <lastBuildDate>2026-10-01T20:32:56Z</lastBuildDate>
     <item>
-      <name>Kehlani</name>
-      <date>SAT SEP 26</date>
+      <name>Bilmuri</name>
+      <date>THU OCT 1</date>
       <time></time>
       <venue>Theater of the Clouds</venue>
-      <dateiso>2026-09-26</dateiso>
+      <dateiso>2026-10-01</dateiso>
       <home>false</home>
-      <city>KEHLANI</city>
+      <city>BILMURI</city>
     </item>
     <item>
-      <name>Chance the Rapper</name>
-      <date>SUN SEP 27</date>
+      <name>Jungle</name>
+      <date>THU OCT 1</date>
       <time></time>
-      <venue>Theater of the Clouds</venue>
-      <dateiso>2026-09-27</dateiso>
-      <home>false</home>
-      <city>CHANCE THE RAPPER</city>
+      <venue>Veterans Memorial Coliseum</venue>
+      <dateiso>2026-10-01</dateiso>
+      <home>true</home>
+      <city>JUNGLE</city>
+    </item>
+    <item>
+      <name>SOMBR</name>
+      <date>FRI OCT 2</date>
+      <time></time>
+      <venue>Moda Center</venue>
+      <dateiso>2026-10-02</dateiso>
+      <home>true</home>
+      <city>SOMBR</city>
+    </item>
+    <item>
+      <name>Tyler Childers</name>
+      <date>SAT OCT 3</date>
+      <time></time>
+      <venue>Moda Center</venue>
+      <dateiso>2026-10-03</dateiso>
+      <home>true</home>
+      <city>TYLER CHILDERS</city>
+    </item>
+    <item>
+      <name>The Neighbourhood</name>
+      <date>MON OCT 5</date>
+      <time></time>
+      <venue>Moda Center</venue>
+      <dateiso>2026-10-05</dateiso>
+      <home>true</home>
+      <city>THE NEIGHBOURHOOD</city>
+    </item>
+    <item>
+      <name>Disney</name>
+      <date>TUE OCT 6</date>
+      <time></time>
+      <venue>Moda Center</venue>
+      <dateiso>2026-10-06</dateiso>
+      <home>true</home>
+      <city>DISNEY</city>
+    </item>
+    <item>
+      <name>Carin Leon</name>
+      <date>FRI OCT 9</date>
+      <time></time>
+      <venue>Moda Center</venue>
+      <dateiso>2026-10-09</dateiso>
+      <home>true</home>
+      <city>CARIN LEON</city>
+    </item>
+    <item>
+      <name>Matt Rife</name>
+      <date>SAT OCT 10</date>
+      <time></time>
+      <venue>Moda Center</venue>
+      <dateiso>2026-10-10</dateiso>
+      <home>true</home>
+      <city>MATT RIFE</city>
     </item>
   </channel>
 </rss>
