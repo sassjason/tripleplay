@@ -2,7 +2,16 @@
 <rss version="2.0">
   <channel>
     <title>Moda Center / VMC Events</title>
-    <lastBuildDate>2026-10-01T20:32:56Z</lastBuildDate>
+    <lastBuildDate>2026-10-01T21:00:31Z</lastBuildDate>
+    <item>
+      <name>Bilmuri</name>
+      <date>THU OCT 1</date>
+      <time>7:00 PM</time>
+      <venue>Theater of the Clouds</venue>
+      <image>https://cdn.prod.website-files.com/62aa5d3f408f1681bc0ddb81/698cf5e221e3d0076657ac50_Bilmuri%20Web.avif</image>
+      <dateiso>2026-10-01</dateiso>
+      <city>BILMURI</city>
+    </item>
     <item>
       <name>Jungle</name>
       <date>THU OCT 1</date>
@@ -10,6 +19,7 @@
       <venue>Veterans Memorial Coliseum</venue>
       <image>https://cdn.prod.website-files.com/62aa5d3f408f1681bc0ddb81/69c18c3f920be9c3b2e8bd98_jungle%20web%202.avif</image>
       <dateiso>2026-10-01</dateiso>
+      <city>JUNGLE</city>
     </item>
     <item>
       <name>SOMBR</name>
@@ -18,6 +28,7 @@
       <venue>Moda Center</venue>
       <image>https://cdn.prod.website-files.com/62aa5d3f408f1681bc0ddb81/69dce424cd43b679f3242105_SOMBR.avif</image>
       <dateiso>2026-10-02</dateiso>
+      <city>SOMBR</city>
     </item>
     <item>
       <name>Tyler Childers</name>
@@ -26,6 +37,7 @@
       <venue>Moda Center</venue>
       <image>https://cdn.prod.website-files.com/62aa5d3f408f1681bc0ddb81/692e38e1879c1b04c83055af_Childer%20Web.avif</image>
       <dateiso>2026-10-03</dateiso>
+      <city>TYLER CHILDERS</city>
     </item>
     <item>
       <name>The Neighbourhood</name>
@@ -34,6 +46,7 @@
       <venue>Moda Center</venue>
       <image>https://cdn.prod.website-files.com/62aa5d3f408f1681bc0ddb81/6904f9b3bbd3f3a82c049564_The%20Neighbourhood%20Web.jpg</image>
       <dateiso>2026-10-05</dateiso>
+      <city>THE NEIGHBOURHOOD</city>
     </item>
     <item>
       <name>Disney</name>
@@ -42,6 +55,7 @@
       <venue>Moda Center</venue>
       <image>https://cdn.prod.website-files.com/62aa5d3f408f1681bc0ddb81/6a3088439d624bf9428df558_descendantsweb.jpg</image>
       <dateiso>2026-10-06</dateiso>
+      <city>DISNEY</city>
     </item>
     <item>
       <name>Carin Leon</name>
@@ -50,6 +64,7 @@
       <venue>Moda Center</venue>
       <image>https://cdn.prod.website-files.com/62aa5d3f408f1681bc0ddb81/6a889191e77978c3e51e6ae5_carinleonwebsite.jpg</image>
       <dateiso>2026-10-09</dateiso>
+      <city>CARIN LEON</city>
     </item>
     <item>
       <name>Matt Rife</name>
@@ -58,6 +73,7 @@
       <venue>Moda Center</venue>
       <image>https://cdn.prod.website-files.com/62aa5d3f408f1681bc0ddb81/6a985ca21f7aad73342085e3_Matt%20Rife%20Web.jpg</image>
       <dateiso>2026-10-10</dateiso>
+      <city>MATT RIFE</city>
     </item>
     <item>
       <name>Disney</name>
@@ -66,6 +82,7 @@
       <venue>Veterans Memorial Coliseum</venue>
       <image>https://cdn.prod.website-files.com/62aa5d3f408f1681bc0ddb81/6a51787a12b02f0dbb5f924a_jump%20in%20disney%20web.jpg</image>
       <dateiso>2026-10-15</dateiso>
+      <city>DISNEY</city>
     </item>
     <item>
       <name>MANÁ</name>
@@ -74,6 +91,7 @@
       <venue>Moda Center</venue>
       <image>https://cdn.prod.website-files.com/62aa5d3f408f1681bc0ddb81/692d283d4127e535ffa19844_manaweb.avif</image>
       <dateiso>2026-10-16</dateiso>
+      <city>MANÁ</city>
     </item>
     <item>
       <name>Doja Cat</name>
@@ -82,6 +100,43 @@
       <venue>Moda Center</venue>
       <image>https://cdn.prod.website-files.com/62aa5d3f408f1681bc0ddb81/698cf5ff8ba92ec8db5baf9f_Doja%20Cat%20Web.avif</image>
       <dateiso>2026-10-17</dateiso>
+      <city>DOJA CAT</city>
+    </item>
+    <item>
+      <name>Shaboozey</name>
+      <date>TUE OCT 20</date>
+      <time>8:00 PM</time>
+      <venue>Theater of the Clouds</venue>
+      <image>https://cdn.prod.website-files.com/62aa5d3f408f1681bc0ddb81/69f0b4fd4425dbd79f665f81_shaboozey.avif</image>
+      <dateiso>2026-10-20</dateiso>
+      <city>SHABOOZEY</city>
+    </item>
+    <item>
+      <name>Chuy Lizarraga</name>
+      <date>SAT OCT 24</date>
+      <time>8:00 PM</time>
+      <venue>Theater of the Clouds</venue>
+      <image>https://cdn.prod.website-files.com/62aa5d3f408f1681bc0ddb81/6a87736d077cce7e007ddec6_Chuy%20Web.jpg</image>
+      <dateiso>2026-10-24</dateiso>
+      <city>CHUY LIZARRAGA</city>
+    </item>
+    <item>
+      <name>Logic &amp; G-Eazy</name>
+      <date>SUN OCT 25</date>
+      <time>7:00 PM</time>
+      <venue>Theater of the Clouds</venue>
+      <image>https://cdn.prod.website-files.com/62aa5d3f408f1681bc0ddb81/6a679fa60dc0a2b1638c4559_G-Eazy%20Logic%20Web.jpg</image>
+      <dateiso>2026-10-25</dateiso>
+      <city>LOGIC &amp; G-EAZY</city>
+    </item>
+    <item>
+      <name>Dermot Kennedy</name>
+      <date>TUE OCT 27</date>
+      <time>7:30 PM</time>
+      <venue>Theater of the Clouds</venue>
+      <image>https://cdn.prod.website-files.com/62aa5d3f408f1681bc0ddb81/69c19be6a3d27a197e1d8a42_Dermot%20Kennedy%20Web.avif</image>
+      <dateiso>2026-10-27</dateiso>
+      <city>DERMOT KENNEDY</city>
     </item>
     <item>
       <name>Bryson Tiller</name>
@@ -90,6 +145,7 @@
       <venue>Veterans Memorial Coliseum</venue>
       <image>https://cdn.prod.website-files.com/62aa5d3f408f1681bc0ddb81/6a1dacc41bada09f568ff55a_brysontillerweb.jpg</image>
       <dateiso>2026-10-29</dateiso>
+      <city>BRYSON TILLER</city>
     </item>
     <item>
       <name>Gorillaz</name>
@@ -98,6 +154,7 @@
       <venue>Moda Center</venue>
       <image>https://cdn.prod.website-files.com/62aa5d3f408f1681bc0ddb81/69a61619d9b89c11c8a9089e_Gorillaz%20Web.avif</image>
       <dateiso>2026-10-30</dateiso>
+      <city>GORILLAZ</city>
     </item>
     <item>
       <name>The Smashing Pumpkins</name>
@@ -106,6 +163,7 @@
       <venue>Moda Center</venue>
       <image>https://cdn.prod.website-files.com/62aa5d3f408f1681bc0ddb81/6a091de7337eee08aeb73e61_smashing%20web.avif</image>
       <dateiso>2026-11-01</dateiso>
+      <city>THE SMASHING PUMPKINS</city>
     </item>
     <item>
       <name>Teddy Swims</name>
@@ -114,6 +172,7 @@
       <venue>Moda Center</venue>
       <image>https://cdn.prod.website-files.com/62aa5d3f408f1681bc0ddb81/69e00ef48ecbdaef653bad60_teddy%20swims%20web%202.avif</image>
       <dateiso>2026-11-08</dateiso>
+      <city>TEDDY SWIMS</city>
     </item>
     <item>
       <name>Ramon Ayala</name>
@@ -122,6 +181,7 @@
       <venue>Veterans Memorial Coliseum</venue>
       <image>https://cdn.prod.website-files.com/62aa5d3f408f1681bc0ddb81/69d3fea1895d9ae80c33bcd0_ramon%20ayala%20web.avif</image>
       <dateiso>2026-11-27</dateiso>
+      <city>RAMON AYALA</city>
     </item>
     <item>
       <name>Trans-Siberian Orchestra</name>
@@ -130,6 +190,7 @@
       <venue>Moda Center</venue>
       <image>https://cdn.prod.website-files.com/62aa5d3f408f1681bc0ddb81/6a99ed4c221ab17b19dbbbc8_TSO%20Web.jpg</image>
       <dateiso>2026-11-28</dateiso>
+      <city>TRANS-SIBERIAN ORCHESTRA</city>
     </item>
     <item>
       <name>TRIUMPH</name>
@@ -138,6 +199,7 @@
       <venue>Moda Center</venue>
       <image>https://cdn.prod.website-files.com/62aa5d3f408f1681bc0ddb81/6a8629bbb143b31b00cd9dcc_TRIUMPH%20Web.jpg</image>
       <dateiso>2026-12-05</dateiso>
+      <city>TRIUMPH</city>
     </item>
     <item>
       <name>Max McNown</name>
@@ -146,6 +208,7 @@
       <venue>Veterans Memorial Coliseum</venue>
       <image>https://cdn.prod.website-files.com/62aa5d3f408f1681bc0ddb81/6a874353ce029f3c556bbafb_MaxMcNown%20Web.jpg</image>
       <dateiso>2026-12-06</dateiso>
+      <city>MAX MCNOWN</city>
     </item>
     <item>
       <name>Ram PBR Portland</name>
@@ -154,46 +217,7 @@
       <venue>Moda Center</venue>
       <image>https://cdn.prod.website-files.com/62aa5d3f408f1681bc0ddb81/6a986a49d6ef72739f221594_pbrweb.jpg</image>
       <dateiso>2027-01-22</dateiso>
-    </item>
-    <item>
-      <name>Harlem Globetrotters</name>
-      <date>SUN JAN 31</date>
-      <time>3:00 PM</time>
-      <venue>Veterans Memorial Coliseum</venue>
-      <image>https://cdn.prod.website-files.com/62aa5d3f408f1681bc0ddb81/6ab9d114a13234711e9265a8_Harlem%20Globetrotters%20Web.jpg</image>
-      <dateiso>2027-01-31</dateiso>
-    </item>
-    <item>
-      <name>Gracie Abrams</name>
-      <date>SUN JAN 31</date>
-      <time>8:00 PM</time>
-      <venue>Moda Center</venue>
-      <image>https://cdn.prod.website-files.com/62aa5d3f408f1681bc0ddb81/6a174e05537663b7d1715f2b_gracie%20web%20updated.jpg</image>
-      <dateiso>2027-01-31</dateiso>
-    </item>
-    <item>
-      <name>Elevation Worship &amp; Steven Furtick</name>
-      <date>SAT FEB 27</date>
-      <time>7:00 PM</time>
-      <venue>Moda Center</venue>
-      <image>https://cdn.prod.website-files.com/62aa5d3f408f1681bc0ddb81/6aa196f36835712764017cce_Elevation%20Web.jpg</image>
-      <dateiso>2027-02-27</dateiso>
-    </item>
-    <item>
-      <name>Monster Jam</name>
-      <date>FRI MAR 5</date>
-      <time>7:00 PM</time>
-      <venue>Moda Center</venue>
-      <image>https://cdn.prod.website-files.com/62aa5d3f408f1681bc0ddb81/6a5fa676aa59cdc009c54f21_monster%20Web.jpg</image>
-      <dateiso>2027-03-05</dateiso>
-    </item>
-    <item>
-      <name>Hans Zimmer Live</name>
-      <date>SUN APR 11</date>
-      <time>7:30 PM</time>
-      <venue>Moda Center</venue>
-      <image>https://cdn.prod.website-files.com/62aa5d3f408f1681bc0ddb81/6aa9c1eb8dce7bbaa21d98b9_Zimmer%20Web.jpg</image>
-      <dateiso>2027-04-11</dateiso>
+      <city>RAM PBR PORTLAND</city>
     </item>
   </channel>
 </rss>
