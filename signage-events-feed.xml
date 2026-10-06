@@ -2,70 +2,7 @@
 <rss version="2.0">
   <channel>
     <title>Upcoming Events</title>
-    <lastBuildDate>2026-10-02T03:54:26Z</lastBuildDate>
-    <item>
-      <name>Bilmuri</name>
-      <date>THU OCT 1</date>
-      <time></time>
-      <venue>Theater of the Clouds</venue>
-      <dateiso>2026-10-01</dateiso>
-      <home>false</home>
-      <city>BILMURI</city>
-    </item>
-    <item>
-      <name>Jungle</name>
-      <date>THU OCT 1</date>
-      <time></time>
-      <venue>Veterans Memorial Coliseum</venue>
-      <dateiso>2026-10-01</dateiso>
-      <home>true</home>
-      <city>JUNGLE</city>
-    </item>
-    <item>
-      <name>SOMBR</name>
-      <date>FRI OCT 2</date>
-      <time></time>
-      <venue>Moda Center</venue>
-      <dateiso>2026-10-02</dateiso>
-      <home>true</home>
-      <city>SOMBR</city>
-    </item>
-    <item>
-      <name>Winterhawks vs. Spokane Chiefs</name>
-      <date>FRI OCT 2</date>
-      <time>19:00:00</time>
-      <venue>Veterans Memorial Coliseum</venue>
-      <dateiso>2026-10-02</dateiso>
-      <home>true</home>
-      <city>SPOKANE</city>
-    </item>
-    <item>
-      <name>Tyler Childers</name>
-      <date>SAT OCT 3</date>
-      <time></time>
-      <venue>Moda Center</venue>
-      <dateiso>2026-10-03</dateiso>
-      <home>true</home>
-      <city>TYLER CHILDERS</city>
-    </item>
-    <item>
-      <name>Winterhawks vs. Spokane Chiefs</name>
-      <date>SAT OCT 3</date>
-      <time>18:00:00</time>
-      <venue>Veterans Memorial Coliseum</venue>
-      <dateiso>2026-10-03</dateiso>
-      <home>true</home>
-      <city>SPOKANE</city>
-    </item>
-    <item>
-      <name>The Neighbourhood</name>
-      <date>MON OCT 5</date>
-      <time></time>
-      <venue>Moda Center</venue>
-      <dateiso>2026-10-05</dateiso>
-      <home>true</home>
-      <city>THE NEIGHBOURHOOD</city>
-    </item>
+    <lastBuildDate>2026-10-06T21:01:53Z</lastBuildDate>
     <item>
       <name>Disney</name>
       <date>TUE OCT 6</date>
@@ -74,6 +11,69 @@
       <dateiso>2026-10-06</dateiso>
       <home>true</home>
       <city>DISNEY</city>
+    </item>
+    <item>
+      <name>Trail Blazers vs. Golden State Warriors</name>
+      <date>WED OCT 7</date>
+      <time>7:00 PM</time>
+      <venue>Moda Center</venue>
+      <dateiso>2026-10-07</dateiso>
+      <home>true</home>
+      <city>GOLDEN STATE</city>
+    </item>
+    <item>
+      <name>Carin Leon</name>
+      <date>FRI OCT 9</date>
+      <time></time>
+      <venue>Moda Center</venue>
+      <dateiso>2026-10-09</dateiso>
+      <home>true</home>
+      <city>CARIN LEON</city>
+    </item>
+    <item>
+      <name>Winterhawks vs. Wenatchee Wild</name>
+      <date>FRI OCT 9</date>
+      <time>19:00:00</time>
+      <venue>Veterans Memorial Coliseum</venue>
+      <dateiso>2026-10-09</dateiso>
+      <home>true</home>
+      <city>WENATCHEE</city>
+    </item>
+    <item>
+      <name>Matt Rife</name>
+      <date>SAT OCT 10</date>
+      <time></time>
+      <venue>Moda Center</venue>
+      <dateiso>2026-10-10</dateiso>
+      <home>true</home>
+      <city>MATT RIFE</city>
+    </item>
+    <item>
+      <name>Trail Blazers vs. London Lions</name>
+      <date>MON OCT 12</date>
+      <time>1:00 PM</time>
+      <venue>Moda Center</venue>
+      <dateiso>2026-10-12</dateiso>
+      <home>true</home>
+      <city>LONDON</city>
+    </item>
+    <item>
+      <name>Disney</name>
+      <date>THU OCT 15</date>
+      <time></time>
+      <venue>Veterans Memorial Coliseum</venue>
+      <dateiso>2026-10-15</dateiso>
+      <home>true</home>
+      <city>DISNEY</city>
+    </item>
+    <item>
+      <name>MANÁ</name>
+      <date>FRI OCT 16</date>
+      <time></time>
+      <venue>Moda Center</venue>
+      <dateiso>2026-10-16</dateiso>
+      <home>true</home>
+      <city>MANÁ</city>
     </item>
   </channel>
 </rss>
