@@ -26,11 +26,14 @@
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   html, body {
-    width: 1920px; height: 1080px;
+    width: 100%; height: 100%;
     overflow: hidden; background: #5d5b5e;
   }
 
+  /* Designed at 1920x1080; scaleToFit() (script) shrinks/grows it to whatever the player's window is */
   #stage {
+    position: absolute; left: 0; top: 0;
+    transform-origin: 0 0;
     width: 1920px; height: 1080px;
     background: #5d5b5e;
     font-family: "United Sans Cond", "Arial Narrow", sans-serif;
@@ -117,7 +120,8 @@
   }
 
   .col {
-    flex: 1;
+    flex: 1 1 0;
+    min-width: 0;          /* never let a long title widen the column and push the right side off-screen */
     display: flex;
     flex-direction: column;
     min-height: 0;
@@ -145,7 +149,19 @@
     align-items: center;
     gap: 18px;
     min-height: 0;
+    min-width: 0;
     overflow: hidden;
+  }
+
+  /* Right of the image: line 1 = date | venue | time, line 2 = title under the date */
+  .ebody {
+    flex: 1; min-width: 0;
+    display: flex; flex-direction: column; justify-content: center;
+    gap: 8px;
+  }
+  .etop {
+    display: flex; align-items: center; gap: 18px;
+    min-width: 0;
   }
 
   .erow:not(:last-child)::after {
@@ -172,13 +188,12 @@
 
   .edate {
     flex-shrink: 0;
-    min-width: 96px;
     font-size: 80px;
     font-weight: 800;
     color: #fff;
     line-height: 1;
     letter-spacing: -.01em;
-    text-align: center;
+    text-align: left;
     font-family: "United Sans Cond", "Arial Narrow", sans-serif;
   }
 
@@ -193,6 +208,7 @@
   }
 
   .ename {
+    width: 100%;
     font-size: 48px;
     font-weight: 700;
     color: #fff;
@@ -206,6 +222,8 @@
   }
 
   .evenue {
+    flex: 1; min-width: 0;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     font-size: 28px;
     font-weight: 500;
     color: rgba(255,255,255,.55);
@@ -227,7 +245,8 @@
     letter-spacing: .01em;
     line-height: 1;
     text-align: right;
-    min-width: 130px;
+    white-space: nowrap;
+    margin-left: auto;
     font-family: "United Sans Cond", "Arial Narrow", sans-serif;
   }
   .etime:empty { display: none; }
@@ -408,11 +427,28 @@
   function isWHGame(ev)      { return /winterhawk/i.test(ev.name); }
 
   function gameConfig(ev) {
-    if (isBlazersGame(ev)) return { home:BLZ, away:nbaLogo(ev.city), homeColor:'198,17,65',
-                                    gameKey: ev.dateiso ? 'POR-'+ev.dateiso : '' };
-    if (isWHGame(ev))      return { home:WH,  away:whlLogo(ev.city), homeColor:'0,40,104', gameKey:'' };
+    // The feed supplies the opponent's logo URL (ev.image) straight from ESPN / HockeyTech.
+    // The name-based lookup below is only a fallback for rows that arrive without one.
+    if (isBlazersGame(ev)) { var fb = nbaLogo(ev.city);
+                             return { home:BLZ, away:ev.image || fb, fallback:fb, homeColor:'198,17,65',
+                                      gameKey: ev.dateiso ? 'POR-'+ev.dateiso : '' }; }
+    if (isWHGame(ev))      { var fw = whlLogo(ev.city);
+                             return { home:WH,  away:ev.image || fw, fallback:fw, homeColor:'0,40,104', gameKey:'' }; }
     return null;
   }
+
+  // ── Scale the 1920x1080 stage to the actual window so nothing is cut off ──────
+  function scaleToFit() {
+    var w = window.innerWidth || document.documentElement.clientWidth || 1920;
+    var h = window.innerHeight || document.documentElement.clientHeight || 1080;
+    var s = Math.min(w / 1920, h / 1080);
+    var st = document.getElementById('stage');
+    st.style.transform = 'scale(' + s + ')';
+    st.style.left = Math.max(0, (w - 1920 * s) / 2) + 'px';
+    st.style.top  = Math.max(0, (h - 1080 * s) / 2) + 'px';
+  }
+  scaleToFit();
+  window.addEventListener('resize', scaleToFit);
 
   // ── Feed parsing ─────────────────────────────────────────────────────────
   function g(item, tag) {
@@ -450,13 +486,18 @@
     return '<span class="at">@</span> ' + label;
   }
 
-  function shrinkNames() {
-    var els = document.querySelectorAll('.ename');
+  // Shrink text until it fits on one line, so nothing is ever cut off.
+  function fitAll(selector, maxSize, minSize) {
+    var els = document.querySelectorAll(selector);
     for (var i = 0; i < els.length; i++) {
-      var el = els[i], size = 48;
+      var el = els[i], size = maxSize;
       el.style.fontSize = size + 'px';
-      while (el.scrollWidth > el.clientWidth + 1 && size > 24) { size -= 2; el.style.fontSize = size + 'px'; }
+      while (el.scrollWidth > el.clientWidth + 1 && size > minSize) { size -= 1; el.style.fontSize = size + 'px'; }
     }
+  }
+  function shrinkNames() {
+    fitAll('.ename', 48, 26);
+    fitAll('.evenue', 28, 18);
   }
 
   // ── Matchup card ─────────────────────────────────────────────────────────
@@ -478,7 +519,10 @@
     var rDiv = document.createElement('div'); rDiv.className = 'm-right';
     var rImg = document.createElement('img'); rImg.className = 'mlogo';
     rImg.src = gc.away; rImg.alt = 'Away';
-    rImg.onerror = function () { this.style.opacity = '0'; };
+    rImg.onerror = function () {                 // supplied logo failed -> try the name-based one, then hide
+      if (gc.fallback && this.src.indexOf(gc.fallback) === -1) { this.src = gc.fallback; }
+      else { this.style.opacity = '0'; }
+    };
     rDiv.appendChild(rImg);
 
     if (gc.gameKey) {
@@ -514,9 +558,6 @@
     date.className = 'edate';
     date.textContent = dayNum(ev.date);
 
-    var stack = document.createElement('div');
-    stack.className = 'etextstack';
-
     var name = document.createElement('div');
     name.className = 'ename';
     name.textContent = ev.name.toUpperCase();
@@ -525,14 +566,20 @@
     venue.className = 'evenue';
     venue.innerHTML = venueLabel(ev.venue);
 
-    stack.appendChild(name);
-    stack.appendChild(venue);
-
     var time = document.createElement('div');
     time.className = 'etime';
     time.textContent = ev.time;
 
-    row.appendChild(imgEl); row.appendChild(date); row.appendChild(stack); row.appendChild(time);
+    // Line 1: date | venue | time      Line 2: title, left-aligned under the date, full width
+    var top = document.createElement('div');
+    top.className = 'etop';
+    top.appendChild(date); top.appendChild(venue); top.appendChild(time);
+
+    var body = document.createElement('div');
+    body.className = 'ebody';
+    body.appendChild(top); body.appendChild(name);
+
+    row.appendChild(imgEl); row.appendChild(body);
     return row;
   }
 
@@ -629,6 +676,7 @@
 
     showPage(0, false);
     shrinkNames();
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(shrinkNames);   // re-fit once the real font is loaded
 
     if (numPages > 1) pageTimer = setInterval(advancePage, PAGE_MS);
 
