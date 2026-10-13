@@ -2,7 +2,7 @@
 <rss version="2.0">
   <channel>
     <title>Moda Center / VMC Events</title>
-    <lastBuildDate>2026-10-13T20:15:05Z</lastBuildDate>
+    <lastBuildDate>2026-10-13T21:35:22Z</lastBuildDate>
     <item>
       <name>Disney</name>
       <date>THU OCT 15</date>
@@ -40,6 +40,15 @@
       <city>SHABOOZEY</city>
     </item>
     <item>
+      <name>Trail Blazers vs. Phoenix Suns</name>
+      <date>WED OCT 21</date>
+      <time>7:00 PM</time>
+      <venue>Moda Center</venue>
+      <image></image>
+      <dateiso>2026-10-21</dateiso>
+      <city>PHOENIX</city>
+    </item>
+    <item>
       <name>Chuy Lizarraga</name>
       <date>SAT OCT 24</date>
       <time>8:00 PM</time>
@@ -69,11 +78,20 @@
     <item>
       <name>Winterhawks vs. Vancouver Giants</name>
       <date>WED OCT 28</date>
-      <time></time>
+      <time>7:00 PM</time>
       <venue>Veterans Memorial Coliseum</venue>
       <image></image>
       <dateiso>2026-10-28</dateiso>
       <city>VANCOUVER</city>
+    </item>
+    <item>
+      <name>Trail Blazers vs. Memphis Grizzlies</name>
+      <date>THU OCT 29</date>
+      <time>7:00 PM</time>
+      <venue>Moda Center</venue>
+      <image></image>
+      <dateiso>2026-10-29</dateiso>
+      <city>MEMPHIS</city>
     </item>
     <item>
       <name>Bryson Tiller</name>
@@ -94,6 +112,15 @@
       <city>GORILLAZ</city>
     </item>
     <item>
+      <name>Winterhawks vs. Kelowna Rockets</name>
+      <date>SAT OCT 31</date>
+      <time>3:00 PM</time>
+      <venue>Veterans Memorial Coliseum</venue>
+      <image></image>
+      <dateiso>2026-10-31</dateiso>
+      <city>KELOWNA</city>
+    </item>
+    <item>
       <name>The Smashing Pumpkins</name>
       <date>SUN NOV 1</date>
       <time>8:00 PM</time>
@@ -101,6 +128,42 @@
       <image>https://cdn.prod.website-files.com/62aa5d3f408f1681bc0ddb81/6a091de7337eee08aeb73e61_smashing%20web.avif</image>
       <dateiso>2026-11-01</dateiso>
       <city>THE SMASHING PUMPKINS</city>
+    </item>
+    <item>
+      <name>Winterhawks vs. Medicine Hat Tigers</name>
+      <date>WED NOV 4</date>
+      <time>7:00 PM</time>
+      <venue>Veterans Memorial Coliseum</venue>
+      <image></image>
+      <dateiso>2026-11-04</dateiso>
+      <city>MEDICINE HAT</city>
+    </item>
+    <item>
+      <name>Winterhawks vs. Spokane Chiefs</name>
+      <date>FRI NOV 6</date>
+      <time>7:00 PM</time>
+      <venue>Veterans Memorial Coliseum</venue>
+      <image></image>
+      <dateiso>2026-11-06</dateiso>
+      <city>SPOKANE</city>
+    </item>
+    <item>
+      <name>Winterhawks vs. Spokane Chiefs</name>
+      <date>SAT NOV 7</date>
+      <time>6:00 PM</time>
+      <venue>Veterans Memorial Coliseum</venue>
+      <image></image>
+      <dateiso>2026-11-07</dateiso>
+      <city>SPOKANE</city>
+    </item>
+    <item>
+      <name>Trail Blazers vs. San Antonio Spurs</name>
+      <date>SAT NOV 7</date>
+      <time>7:00 PM</time>
+      <venue>Moda Center</venue>
+      <image></image>
+      <dateiso>2026-11-07</dateiso>
+      <city>SAN ANTONIO</city>
     </item>
     <item>
       <name>Teddy Swims</name>
@@ -112,6 +175,24 @@
       <city>TEDDY SWIMS</city>
     </item>
     <item>
+      <name>Trail Blazers vs. Oklahoma City Thunder</name>
+      <date>TUE NOV 10</date>
+      <time>8:00 PM</time>
+      <venue>Moda Center</venue>
+      <image></image>
+      <dateiso>2026-11-10</dateiso>
+      <city>OKLAHOMA CITY</city>
+    </item>
+    <item>
+      <name>Trail Blazers vs. Oklahoma City Thunder</name>
+      <date>WED NOV 11</date>
+      <time>7:00 PM</time>
+      <venue>Moda Center</venue>
+      <image></image>
+      <dateiso>2026-11-11</dateiso>
+      <city>OKLAHOMA CITY</city>
+    </item>
+    <item>
       <name>Rose Quarter Guitar Show</name>
       <date>SUN NOV 15</date>
       <time>10:00 AM</time>
@@ -121,103 +202,22 @@
       <city>ROSE QUARTER GUITAR SHOW</city>
     </item>
     <item>
-      <name>Ramon Ayala</name>
+      <name>Trail Blazers vs. San Antonio Spurs</name>
+      <date>WED NOV 25</date>
+      <time>7:00 PM</time>
+      <venue>Moda Center</venue>
+      <image></image>
+      <dateiso>2026-11-25</dateiso>
+      <city>SAN ANTONIO</city>
+    </item>
+    <item>
+      <name>Trail Blazers vs. Golden State Warriors</name>
       <date>FRI NOV 27</date>
-      <time>8:30 PM</time>
-      <venue>Veterans Memorial Coliseum</venue>
-      <image>https://cdn.prod.website-files.com/62aa5d3f408f1681bc0ddb81/69d3fea1895d9ae80c33bcd0_ramon%20ayala%20web.avif</image>
+      <time>6:30 PM</time>
+      <venue>Moda Center</venue>
+      <image></image>
       <dateiso>2026-11-27</dateiso>
-      <city>RAMON AYALA</city>
-    </item>
-    <item>
-      <name>Trans-Siberian Orchestra</name>
-      <date>SAT NOV 28</date>
-      <time>3:30 PM</time>
-      <venue>Moda Center</venue>
-      <image>https://cdn.prod.website-files.com/62aa5d3f408f1681bc0ddb81/6a99ed4c221ab17b19dbbbc8_TSO%20Web.jpg</image>
-      <dateiso>2026-11-28</dateiso>
-      <city>TRANS-SIBERIAN ORCHESTRA</city>
-    </item>
-    <item>
-      <name>TRIUMPH</name>
-      <date>SAT DEC 5</date>
-      <time>8:00 PM</time>
-      <venue>Moda Center</venue>
-      <image>https://cdn.prod.website-files.com/62aa5d3f408f1681bc0ddb81/6a8629bbb143b31b00cd9dcc_TRIUMPH%20Web.jpg</image>
-      <dateiso>2026-12-05</dateiso>
-      <city>TRIUMPH</city>
-    </item>
-    <item>
-      <name>Max McNown</name>
-      <date>SUN DEC 6</date>
-      <time>7:00 PM</time>
-      <venue>Veterans Memorial Coliseum</venue>
-      <image>https://cdn.prod.website-files.com/62aa5d3f408f1681bc0ddb81/6a874353ce029f3c556bbafb_MaxMcNown%20Web.jpg</image>
-      <dateiso>2026-12-06</dateiso>
-      <city>MAX MCNOWN</city>
-    </item>
-    <item>
-      <name>Ram PBR Portland</name>
-      <date>FRI JAN 22</date>
-      <time>7:00 PM</time>
-      <venue>Moda Center</venue>
-      <image>https://cdn.prod.website-files.com/62aa5d3f408f1681bc0ddb81/6a986a49d6ef72739f221594_pbrweb.jpg</image>
-      <dateiso>2027-01-22</dateiso>
-      <city>RAM PBR PORTLAND</city>
-    </item>
-    <item>
-      <name>Harlem Globetrotters</name>
-      <date>SUN JAN 31</date>
-      <time>3:00 PM</time>
-      <venue>Veterans Memorial Coliseum</venue>
-      <image>https://cdn.prod.website-files.com/62aa5d3f408f1681bc0ddb81/6ab9d114a13234711e9265a8_Harlem%20Globetrotters%20Web.jpg</image>
-      <dateiso>2027-01-31</dateiso>
-      <city>HARLEM GLOBETROTTERS</city>
-    </item>
-    <item>
-      <name>Gracie Abrams</name>
-      <date>SUN JAN 31</date>
-      <time>8:00 PM</time>
-      <venue>Moda Center</venue>
-      <image>https://cdn.prod.website-files.com/62aa5d3f408f1681bc0ddb81/6a174e05537663b7d1715f2b_gracie%20web%20updated.jpg</image>
-      <dateiso>2027-01-31</dateiso>
-      <city>GRACIE ABRAMS</city>
-    </item>
-    <item>
-      <name>Elevation Worship &amp; Steven Furtick</name>
-      <date>SAT FEB 27</date>
-      <time>7:00 PM</time>
-      <venue>Moda Center</venue>
-      <image>https://cdn.prod.website-files.com/62aa5d3f408f1681bc0ddb81/6aa196f36835712764017cce_Elevation%20Web.jpg</image>
-      <dateiso>2027-02-27</dateiso>
-      <city>ELEVATION WORSHIP &amp; STEVEN FURTICK</city>
-    </item>
-    <item>
-      <name>Letterkenny Live</name>
-      <date>WED MAR 3</date>
-      <time>7:30 PM</time>
-      <venue>Theater of the Clouds</venue>
-      <image>https://cdn.prod.website-files.com/62aa5d3f408f1681bc0ddb81/6a23090637a63ec91066e36f_Letterkenny%20Web.jpg</image>
-      <dateiso>2027-03-03</dateiso>
-      <city>LETTERKENNY LIVE</city>
-    </item>
-    <item>
-      <name>Monster Jam</name>
-      <date>FRI MAR 5</date>
-      <time>7:00 PM</time>
-      <venue>Moda Center</venue>
-      <image>https://cdn.prod.website-files.com/62aa5d3f408f1681bc0ddb81/6a5fa676aa59cdc009c54f21_monster%20Web.jpg</image>
-      <dateiso>2027-03-05</dateiso>
-      <city>MONSTER JAM</city>
-    </item>
-    <item>
-      <name>Dancing With The Stars</name>
-      <date>WED MAR 24</date>
-      <time>7:30 PM</time>
-      <venue>Moda Center</venue>
-      <image>https://cdn.prod.website-files.com/62aa5d3f408f1681bc0ddb81/6ac598fd8aaaac6e8bacab19_DWTS%20Web.jpg</image>
-      <dateiso>2027-03-24</dateiso>
-      <city>DANCING WITH THE STARS</city>
+      <city>GOLDEN STATE</city>
     </item>
   </channel>
 </rss>
