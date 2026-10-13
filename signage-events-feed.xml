@@ -2,61 +2,7 @@
 <rss version="2.0">
   <channel>
     <title>Upcoming Events</title>
-    <lastBuildDate>2026-10-06T21:11:58Z</lastBuildDate>
-    <item>
-      <name>Disney</name>
-      <date>TUE OCT 6</date>
-      <time></time>
-      <venue>Moda Center</venue>
-      <dateiso>2026-10-06</dateiso>
-      <home>true</home>
-      <city>DISNEY</city>
-    </item>
-    <item>
-      <name>Trail Blazers vs. Golden State Warriors</name>
-      <date>WED OCT 7</date>
-      <time>7:00 PM</time>
-      <venue>Moda Center</venue>
-      <dateiso>2026-10-07</dateiso>
-      <home>true</home>
-      <city>GOLDEN STATE</city>
-    </item>
-    <item>
-      <name>Carin Leon</name>
-      <date>FRI OCT 9</date>
-      <time></time>
-      <venue>Moda Center</venue>
-      <dateiso>2026-10-09</dateiso>
-      <home>true</home>
-      <city>CARIN LEON</city>
-    </item>
-    <item>
-      <name>Winterhawks vs. Wenatchee Wild</name>
-      <date>FRI OCT 9</date>
-      <time>19:00:00</time>
-      <venue>Veterans Memorial Coliseum</venue>
-      <dateiso>2026-10-09</dateiso>
-      <home>true</home>
-      <city>WENATCHEE</city>
-    </item>
-    <item>
-      <name>Matt Rife</name>
-      <date>SAT OCT 10</date>
-      <time></time>
-      <venue>Moda Center</venue>
-      <dateiso>2026-10-10</dateiso>
-      <home>true</home>
-      <city>MATT RIFE</city>
-    </item>
-    <item>
-      <name>Trail Blazers vs. London Lions</name>
-      <date>MON OCT 12</date>
-      <time>1:00 PM</time>
-      <venue>Moda Center</venue>
-      <dateiso>2026-10-12</dateiso>
-      <home>true</home>
-      <city>LONDON</city>
-    </item>
+    <lastBuildDate>2026-10-13T20:05:41Z</lastBuildDate>
     <item>
       <name>Disney</name>
       <date>THU OCT 15</date>
@@ -74,6 +20,60 @@
       <dateiso>2026-10-16</dateiso>
       <home>true</home>
       <city>MANÁ</city>
+    </item>
+    <item>
+      <name>Doja Cat</name>
+      <date>SAT OCT 17</date>
+      <time></time>
+      <venue>Moda Center</venue>
+      <dateiso>2026-10-17</dateiso>
+      <home>true</home>
+      <city>DOJA CAT</city>
+    </item>
+    <item>
+      <name>Shaboozey</name>
+      <date>TUE OCT 20</date>
+      <time></time>
+      <venue>Theater of the Clouds</venue>
+      <dateiso>2026-10-20</dateiso>
+      <home>false</home>
+      <city>SHABOOZEY</city>
+    </item>
+    <item>
+      <name>Chuy Lizarraga</name>
+      <date>SAT OCT 24</date>
+      <time></time>
+      <venue>Theater of the Clouds</venue>
+      <dateiso>2026-10-24</dateiso>
+      <home>false</home>
+      <city>CHUY LIZARRAGA</city>
+    </item>
+    <item>
+      <name>Logic &amp; G-Eazy</name>
+      <date>SUN OCT 25</date>
+      <time></time>
+      <venue>Theater of the Clouds</venue>
+      <dateiso>2026-10-25</dateiso>
+      <home>false</home>
+      <city>LOGIC &amp; G-EAZY</city>
+    </item>
+    <item>
+      <name>Dermot Kennedy</name>
+      <date>TUE OCT 27</date>
+      <time></time>
+      <venue>Theater of the Clouds</venue>
+      <dateiso>2026-10-27</dateiso>
+      <home>false</home>
+      <city>DERMOT KENNEDY</city>
+    </item>
+    <item>
+      <name>Winterhawks vs. Vancouver Giants</name>
+      <date>WED OCT 28</date>
+      <time>19:00:00</time>
+      <venue>Veterans Memorial Coliseum</venue>
+      <dateiso>2026-10-28</dateiso>
+      <home>true</home>
+      <city>VANCOUVER</city>
     </item>
   </channel>
 </rss>
