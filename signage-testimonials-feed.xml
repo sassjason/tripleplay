@@ -2,13 +2,29 @@
 <rss version="2.0">
   <channel>
     <title>Testimonials</title>
-    <lastBuildDate>2026-10-06T21:12:02Z</lastBuildDate>
+    <lastBuildDate>2026-10-13T20:05:44Z</lastBuildDate>
     <item>
-      <quote>It was the best day of my whole life. Sombr touched my hand so my whole life is complete… I love the Rose Quarter!! I will be coming back soon due to lovely staff!"</quote>
-      <attribution>- Sophia /  / Sombr</attribution>
-      <name>Sophia</name>
+      <quote>Family-friendly, clean, safe environment! Staff always upbeat, friendly and helpful</quote>
+      <attribution>- Cassandra /  / Disney, Worlds Collide</attribution>
+      <name>Cassandra</name>
       <quoteDate></quoteDate>
-      <source>Sombr</source>
+      <source>Disney, Worlds Collide</source>
+      <seconds>10</seconds>
+    </item>
+    <item>
+      <quote>I have a disability and can't stand or sit long. The staff were amazing and helped me go down the stairs when I was struggling and slow. They made me feel comfortable and not like a burden."</quote>
+      <attribution>- Ashley /  / Disney, Worlds Collide</attribution>
+      <name>Ashley</name>
+      <quoteDate></quoteDate>
+      <source>Disney, Worlds Collide</source>
+      <seconds>10</seconds>
+    </item>
+    <item>
+      <quote>Attending Matt Rife in 2026 was an unforgettable experience from beginning to end... The Rose Quarter provided an exciting setting for the event, and experiences like this are exactly why live entertainment is so important.</quote>
+      <attribution>- Baley /  / Matt Rife</attribution>
+      <name>Baley</name>
+      <quoteDate></quoteDate>
+      <source>Matt Rife</source>
       <seconds>10</seconds>
     </item>
   </channel>
