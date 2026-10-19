@@ -53,7 +53,7 @@
   var qs = new URLSearchParams(location.search);
   var CONFIG = {
     fadeMs:    parseInt(qs.get("fade")    || "800", 10),
-    perItemMs: parseInt(qs.get("peritem") || "11000", 10),
+    perItemMs: parseInt(qs.get("peritem") || "31000", 10),
     minMs:     parseInt(qs.get("min")     || "12000", 10),
     poll:      parseInt(qs.get("poll")    || "60000", 10),
     manifest:  qs.get("manifest") || "media-manifest.json"
@@ -73,14 +73,24 @@
 
   // ---- layout iframes (created once per src, kept resident) -----------------
   var layoutObjs = {};                 // src -> { el, loaded, shown }
-  function ensureLayout(src) {
-    if (layoutObjs[src]) return layoutObjs[src];
+  // itemSeconds (set in Media Admin) is passed to the layout as ?dwell= so every
+  // quote/headline sits that long, overriding the spreadsheet Seconds column.
+  function layoutUrl(src, itemSeconds) {
+    return (itemSeconds > 0) ? src + (src.indexOf("?") >= 0 ? "&" : "?") + "dwell=" + (itemSeconds * 1000) : src;
+  }
+  function ensureLayout(src, itemSeconds) {
+    var want = layoutUrl(src, itemSeconds);
+    if (layoutObjs[src]) {
+      var ex = layoutObjs[src];
+      if (itemSeconds !== undefined && ex.url !== want) { ex.url = want; ex.loaded = false; ex.el.src = want; }
+      return ex;
+    }
     var f = document.createElement("iframe");
     f.className = "layer";
     f.setAttribute("scrolling", "no");
-    var o = { el: f, loaded: false, shown: false, src: src };
+    var o = { el: f, loaded: false, shown: false, src: src, url: want };
     f.addEventListener("load", function () { o.loaded = true; syncLayer(o); });
-    f.src = src;
+    f.src = want;
     deck.appendChild(f);
     layoutObjs[src] = o;
     return o;
@@ -198,7 +208,7 @@
   function loop() {
     fetchManifest().then(function (mf) {
       var layoutDefs = (mf.layouts && mf.layouts.length) ? mf.layouts : DEFAULT_LAYOUTS;
-      layoutDefs.forEach(function (l) { ensureLayout(l.src); });
+      layoutDefs.forEach(function (l) { ensureLayout(l.src, l.itemSeconds || 0); });
 
       var enabledLayouts = layoutDefs.filter(function (l) { return l.enabled !== false && isScheduledNow(l); });
       // Pinned items are always included regardless of their enabled flag.
@@ -216,7 +226,8 @@
             } else if (!l.feed) {
               dwell = Math.max(CONFIG.minMs, 45000);  // self-contained layouts default 45s
             } else {
-              dwell = Math.max(CONFIG.minMs, counts[i] * CONFIG.perItemMs);
+              var per = l.itemSeconds > 0 ? l.itemSeconds * 1000 + 1000 : CONFIG.perItemMs;  // +1s entrance, as in the layouts
+              dwell = Math.max(CONFIG.minMs, counts[i] * per);
             }
             slides.push({ kind: "layout", o: ensureLayout(l.src), el: layoutObjs[l.src].el, dwellMs: dwell });
           }
