@@ -27,7 +27,7 @@
   .pos { position: absolute; }
 
   /* Top-left season label (in the subtitle rule row) */
-  #seasonWrap { top: 242px; left: 88px; }
+  #seasonWrap { top: 240px; left: 88px; }
   #season { font-size: 22px; letter-spacing: 0.02em; text-transform: uppercase; transform-origin: 0 50%; }
 
   /* Top-right date */
@@ -45,12 +45,12 @@
     width: 100%;
     font-size: 165px; line-height: 0.92; letter-spacing: 0.005em;
     text-transform: uppercase; text-align: center;
-    transform-origin: 50% 50%; will-change: transform, opacity;
+    will-change: opacity;
   }
 
   /* Centered source / quote-title under the headline */
   #sourceWrap { top: 854px; left: 0; width: 1920px; text-align: center; }
-  #source { font-size: 30px; font-style: italic; letter-spacing: 0.04em; text-transform: uppercase; transform-origin: 50% 50%; will-change: transform, opacity; }
+  #source { font-size: 45px; font-style: italic; letter-spacing: 0.04em; text-transform: uppercase; will-change: opacity; }
 
   #clock {
     position: absolute; right: 48px; bottom: 42px; opacity: 0.8; display: none;
@@ -86,7 +86,7 @@
     dwell:   parseInt(qs.get("dwell") || qs.get("rotate") || "8000", 10),
     enterMs: parseInt(qs.get("enter") || "1000", 10),
     poll:    parseInt(qs.get("poll")  || "10000", 10),
-    anim:   (qs.get("anim")  || "spring").toLowerCase(),
+    anim:   (qs.get("anim")  || "fade").toLowerCase(),
     clock:  (qs.get("clock") || "1") !== "0"
   };
 
@@ -101,29 +101,24 @@
     stage.style.backgroundImage = "url('" + CONFIG.plate + "')";
   } else { document.documentElement.style.background = "#fff"; }
 
-  var items = [], idx = 0, curKey = null;
+  var items = [], idx = 0, curKey = null, bootstrapped = false;
+
+  // Tripleplay re-serves the page on each channel cycle (~10s) - sooner than the
+  // first rotation fires - so a plain idx=0 start would show only the first headline
+  // forever. Persist the last-shown index per feed and resume on the NEXT one each
+  // load, so the page advances whether rotation is driven by the reload or the timer.
+  var IDX_KEY = "sigIdx:" + CONFIG.feed;
+  function saveIdx(i) { try { localStorage.setItem(IDX_KEY, String(i)); } catch (e) {} }
+  function loadIdx() { try { var v = parseInt(localStorage.getItem(IDX_KEY), 10); return isNaN(v) ? -1 : v; } catch (e) { return -1; } }
 
   function showError(msg) { elErr.style.display = "block"; elErr.textContent = "FEED ERROR: " + msg; }
   function cancelAnims(el) { if (el.getAnimations) { el.getAnimations().forEach(function (a) { a.cancel(); }); } }
 
-  function springIn(el, big) {
-    cancelAnims(el);
-    var over = big ? 1.03 : 1.02, rise = big ? 34 : 20;
-    el.animate([
-      { opacity: 0, transform: "translateY(" + rise + "px) scale(0.93)" },
-      { opacity: 1, transform: "translateY(-7px) scale(" + over + ")", offset: 0.6 },
-      { opacity: 1, transform: "translateY(2px) scale(0.997)", offset: 0.82 },
-      { opacity: 1, transform: "translateY(0) scale(1)" }
-    ], { duration: big ? 720 : 560, easing: "ease-out", fill: "both" });
-  }
-  function fadeIn(el) { cancelAnims(el); el.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 450, fill: "both" }); }
+  function fadeIn(el) { cancelAnims(el); el.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 400, easing: "ease-in-out", fill: "both" }); }
 
   function enter() {
     if (CONFIG.anim === "none") { return; }
-    if (CONFIG.anim === "fade") { fadeIn(elHead); fadeIn(elSource); fadeIn(elDate); fadeIn(elSeason); return; }
-    springIn(elHead, true);
-    setTimeout(function () { springIn(elSource, false); }, 150);
-    fadeIn(elDate); fadeIn(elSeason);
+    fadeIn(elHead); fadeIn(elSource); fadeIn(elDate); fadeIn(elSeason);
   }
 
   // ---- countdown ring + per-slide dwell ------------------------------------
@@ -143,9 +138,10 @@
     return (s && s > 0) ? s * 1000 : CONFIG.dwell;
   }
 
-  var nextTimer = null;
+  var nextTimer = null, paused = false;   // paused: set by the carousel while this layout is faded out
   function scheduleNext() {
     clearTimeout(nextTimer);
+    if (paused) { return; }                // don't rotate while off-screen (prevents a mid-dissolve swap)
     var total = CONFIG.enterMs + currentDwell();
     startClock(total);
     nextTimer = setTimeout(advance, total);
@@ -185,7 +181,11 @@
     if (key === curKey) { return; }
     var first = (curKey === null);
     curKey = key;
-    function swapAndEnter() { setAll(it); enter(); scheduleNext(); }
+    saveIdx(idx % items.length);   // remember what's on screen so the next page load resumes after it
+    function swapAndEnter() {
+      [elHead, elSource, elDate, elSeason].forEach(function(el) { el.style.opacity = "0"; });  // hide during font-fit to avoid visible resize flash
+      setAll(it); enter(); scheduleNext();
+    }
     if (first || CONFIG.anim === "none") { swapAndEnter(); }
     else {
       [elHead, elSource, elDate, elSeason].forEach(cancelAnims);
@@ -224,6 +224,11 @@
         items = parseFeed(txt);
         elErr.style.display = "none";
         if (!items.length) showError("feed has no <item> elements");
+        if (!bootstrapped && items.length) {        // first load after a (re)start: pick up where we left off
+          bootstrapped = true;
+          var prev = loadIdx();
+          idx = (prev >= 0) ? ((prev + 1) % items.length) : 0;
+        }
         if (idx >= items.length) { idx = 0; }
         renderCurrent();
       })
@@ -232,6 +237,16 @@
 
   loadFeed();
   setInterval(loadFeed, CONFIG.poll);
+
+  // Carousel sync (postMessage from signage-carousel.html). Pausing while faded out,
+  // and starting a fresh dwell on fade-in, keeps a settled headline on screen through
+  // the dissolve instead of swapping mid-fade. No effect when this page runs on its own.
+  window.addEventListener("message", function (e) {
+    var d = e && e.data;
+    if (!d || !d.sig) { return; }
+    if (d.sig === "show")      { paused = false; clearTimeout(nextTimer); scheduleNext(); }
+    else if (d.sig === "hide") { paused = true;  clearTimeout(nextTimer); }
+  });
 
   // The OTF loads async; once ready the text metrics change, so re-fit the headline.
   if (document.fonts && document.fonts.ready) {
