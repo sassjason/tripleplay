@@ -2,34 +2,7 @@
 <rss version="2.0">
   <channel>
     <title>Upcoming Events</title>
-    <lastBuildDate>2026-10-13T21:51:46Z</lastBuildDate>
-    <item>
-      <name>Disney</name>
-      <date>THU OCT 15</date>
-      <time></time>
-      <venue>Veterans Memorial Coliseum</venue>
-      <dateiso>2026-10-15</dateiso>
-      <home>true</home>
-      <city>DISNEY</city>
-    </item>
-    <item>
-      <name>MANÁ</name>
-      <date>FRI OCT 16</date>
-      <time></time>
-      <venue>Moda Center</venue>
-      <dateiso>2026-10-16</dateiso>
-      <home>true</home>
-      <city>MANÁ</city>
-    </item>
-    <item>
-      <name>Doja Cat</name>
-      <date>SAT OCT 17</date>
-      <time></time>
-      <venue>Moda Center</venue>
-      <dateiso>2026-10-17</dateiso>
-      <home>true</home>
-      <city>DOJA CAT</city>
-    </item>
+    <lastBuildDate>2026-10-19T18:52:37Z</lastBuildDate>
     <item>
       <name>Shaboozey</name>
       <date>TUE OCT 20</date>
@@ -74,6 +47,33 @@
       <dateiso>2026-10-27</dateiso>
       <home>false</home>
       <city>DERMOT KENNEDY</city>
+    </item>
+    <item>
+      <name>Winterhawks vs. Vancouver Giants</name>
+      <date>WED OCT 28</date>
+      <time>19:00:00</time>
+      <venue>Veterans Memorial Coliseum</venue>
+      <dateiso>2026-10-28</dateiso>
+      <home>true</home>
+      <city>VANCOUVER</city>
+    </item>
+    <item>
+      <name>Bryson Tiller</name>
+      <date>THU OCT 29</date>
+      <time></time>
+      <venue>Veterans Memorial Coliseum</venue>
+      <dateiso>2026-10-29</dateiso>
+      <home>true</home>
+      <city>BRYSON TILLER</city>
+    </item>
+    <item>
+      <name>Trail Blazers vs. Memphis Grizzlies</name>
+      <date>THU OCT 29</date>
+      <time>7:00 PM</time>
+      <venue>Moda Center</venue>
+      <dateiso>2026-10-29</dateiso>
+      <home>true</home>
+      <city>MEMPHIS</city>
     </item>
   </channel>
 </rss>
