@@ -38,13 +38,13 @@
     width: 100%;
     text-align: center; text-transform: uppercase;
     font-size: 66px; line-height: 1.14; letter-spacing: 0.01em;
-    will-change: opacity;
+    transform-origin: 50% 50%; will-change: transform, opacity;
     text-shadow: 0 2px 14px rgba(0,0,0,0.55);
   }
   #attribution {
     text-align: center; text-transform: uppercase;
     font-size: 40px; letter-spacing: 0.06em;
-    will-change: opacity;
+    transform-origin: 50% 50%; will-change: transform, opacity;
     text-shadow: 0 2px 12px rgba(0,0,0,0.55);
   }
 
@@ -84,7 +84,7 @@
     dwell:   parseInt(qs.get("dwell") || qs.get("rotate") || "8000", 10), // default ms a quote sits (per-slide Seconds overrides)
     enterMs: parseInt(qs.get("enter") || "1000", 10),                     // allowance for the entrance to finish
     poll:    parseInt(qs.get("poll")  || "10000", 10),
-    anim:   (qs.get("anim")  || "fade").toLowerCase(),
+    anim:   (qs.get("anim")  || "spring").toLowerCase(),
     clock:  (qs.get("clock") || "1") !== "0"                              // bottom-right countdown ring
   };
 
@@ -100,26 +100,61 @@
     document.body.style.background = "transparent";
   }
 
-  var items = [], idx = 0, curQuote = null, bootstrapped = false;
-
-  // Tripleplay re-serves the page on each channel cycle (~10s) - sooner than the
-  // first rotation fires - so a plain idx=0 start would show only the first quote
-  // forever. Persist the last-shown index per feed and resume on the NEXT one each
-  // load, so the page advances whether rotation is driven by the reload or the timer.
-  var IDX_KEY = "sigIdx:" + CONFIG.feed;
-  function saveIdx(i) { try { localStorage.setItem(IDX_KEY, String(i)); } catch (e) {} }
-  function loadIdx() { try { var v = parseInt(localStorage.getItem(IDX_KEY), 10); return isNaN(v) ? -1 : v; } catch (e) { return -1; } }
+  var items = [], idx = 0, curQuote = null;
 
   function showError(msg) { elErr.style.display = "block"; elErr.textContent = "FEED ERROR: " + msg; }
 
   // ---- animation styles ----------------------------------------------------
   function cancelAnims(el) { if (el.getAnimations) { el.getAnimations().forEach(function (a) { a.cancel(); }); } }
 
-  function fadeIn(el) { cancelAnims(el); el.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 400, easing: "ease-in-out", fill: "both" }); }
+  // rubber-band: rise up, overshoot bigger, dip slightly, settle
+  function springIn(el, big) {
+    cancelAnims(el);
+    var over = big ? 1.045 : 1.025, rise = big ? 42 : 26;
+    el.animate([
+      { opacity: 0, transform: "translateY(" + rise + "px) scale(0.90)" },
+      { opacity: 1, transform: "translateY(-9px) scale(" + over + ")", offset: 0.6 },
+      { opacity: 1, transform: "translateY(3px) scale(0.995)", offset: 0.82 },
+      { opacity: 1, transform: "translateY(0) scale(1)" }
+    ], { duration: big ? 720 : 600, easing: "ease-out", fill: "both" });
+  }
+
+  function fadeIn(el) { cancelAnims(el); el.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 500, fill: "both" }); }
+
+  function wordsIn(el) {
+    var s = el.children;
+    for (var i = 0; i < s.length; i++) {
+      cancelAnims(s[i]);
+      s[i].animate([
+        { opacity: 0, transform: "translateY(26px) scale(0.96)" },
+        { opacity: 1, transform: "translateY(-5px)", offset: 0.7 },
+        { opacity: 1, transform: "translateY(0) scale(1)" }
+      ], { duration: 480, delay: Math.min(i * 42, 1500), easing: "ease-out", fill: "both" });
+    }
+  }
+
+  function setQuoteText(text) {
+    if (CONFIG.anim === "words") {
+      elQuote.innerHTML = "";
+      var w = text.split(" ");
+      for (var i = 0; i < w.length; i++) {
+        var sp = document.createElement("span");
+        sp.textContent = w[i] + (i < w.length - 1 ? " " : "");
+        sp.style.display = "inline-block";
+        sp.style.whiteSpace = "pre";
+        elQuote.appendChild(sp);
+      }
+    } else {
+      elQuote.textContent = text;
+    }
+  }
 
   function enter() {
     if (CONFIG.anim === "none") { return; }
-    fadeIn(elQuote); fadeIn(elAttr);
+    if (CONFIG.anim === "fade") { fadeIn(elQuote); fadeIn(elAttr); return; }
+    if (CONFIG.anim === "words") { wordsIn(elQuote); setTimeout(function () { springIn(elAttr, false); }, 160); return; }
+    springIn(elQuote, true);                                   // spring (default)
+    setTimeout(function () { springIn(elAttr, false); }, 150); // attribution follows a beat later
   }
 
   // ---- auto-fit: largest font size whose text stays inside the box ----------
@@ -143,12 +178,10 @@
     if (q === curQuote && elAttr.textContent === it.attribution) { return; }
     var first = (curQuote === null);
     curQuote = q;
-    saveIdx(idx % items.length);   // remember what's on screen so the next page load resumes after it
 
     function swapAndEnter() {
-      elQuote.style.opacity = "0"; elAttr.style.opacity = "0";  // hide during font-fit to avoid visible resize flash
-      elQuote.textContent = q; elAttr.textContent = it.attribution;
-      fitQuote();
+      setQuoteText(q); elAttr.textContent = it.attribution;
+      fitQuote();                       // auto-size the quote to fill its box
       enter(); scheduleNext();
     }
 
@@ -189,10 +222,9 @@
 
   // Rotation timer (re)starts each time a quote enters, so every quote sits for
   // a full dwell AFTER it settles. The ring tracks the same window.
-  var nextTimer = null, paused = false;   // paused: set by the carousel while this layout is faded out
+  var nextTimer = null;
   function scheduleNext() {
     clearTimeout(nextTimer);
-    if (paused) { return; }                // don't rotate while off-screen (prevents a mid-dissolve swap)
     var total = CONFIG.enterMs + currentDwell();
     startClock(total);
     nextTimer = setTimeout(advance, total);
@@ -228,11 +260,6 @@
         items = parseFeed(txt);
         elErr.style.display = "none";
         if (!items.length) showError("feed has no <item> elements");
-        if (!bootstrapped && items.length) {        // first load after a (re)start: pick up where we left off
-          bootstrapped = true;
-          var prev = loadIdx();
-          idx = (prev >= 0) ? ((prev + 1) % items.length) : 0;
-        }
         if (idx >= items.length) { idx = 0; }
         renderCurrent();
       })
@@ -241,16 +268,6 @@
 
   loadFeed();                           // shows first quote, which starts the dwell timer chain
   setInterval(loadFeed, CONFIG.poll);   // pick up XLS edits in the background
-
-  // Carousel sync (postMessage from signage-carousel.html). Pausing while faded out,
-  // and starting a fresh dwell on fade-in, keeps a settled quote on screen through the
-  // dissolve instead of swapping mid-fade. No effect when this page runs on its own.
-  window.addEventListener("message", function (e) {
-    var d = e && e.data;
-    if (!d || !d.sig) { return; }
-    if (d.sig === "show")      { paused = false; clearTimeout(nextTimer); scheduleNext(); }
-    else if (d.sig === "hide") { paused = true;  clearTimeout(nextTimer); }
-  });
 
   // The OTF loads async; once ready the text metrics change, so re-fit the quote.
   if (document.fonts && document.fonts.ready) {
