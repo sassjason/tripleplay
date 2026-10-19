@@ -2,14 +2,14 @@
 <rss version="2.0">
   <channel>
     <title>Testimonials</title>
-    <lastBuildDate>2026-10-19T19:05:06Z</lastBuildDate>
+    <lastBuildDate>2026-10-19T21:41:53Z</lastBuildDate>
     <item>
       <quote>We had such a great experience with the ADA services at the Moda Center during last night’s Doja Cat concert! Every staff member we interacted with was so kind, helpful, and accommodating. Your kindness truly made a difference and made our night so much easier and more enjoyable</quote>
       <attribution>- Amy /  / Doja Cat</attribution>
       <name>Amy</name>
       <quoteDate></quoteDate>
       <source>Doja Cat</source>
-      <seconds>10</seconds>
+      <seconds>20</seconds>
     </item>
     <item>
       <quote>It was other worldly. The emotions that I felt cannot be described other than pure happiness and excitement.</quote>
@@ -17,7 +17,7 @@
       <name>Canon</name>
       <quoteDate></quoteDate>
       <source>Doja Cat</source>
-      <seconds>10</seconds>
+      <seconds>20</seconds>
     </item>
     <item>
       <quote>...as we walked out the doors and headed back toward our car, my 10 year old mentioned how it felt like we were leaving Disneyland at the end of the day. Memories we’ll treasure forever.</quote>
@@ -25,7 +25,7 @@
       <name>Jamie</name>
       <quoteDate></quoteDate>
       <source>Disnet on Ice</source>
-      <seconds>10</seconds>
+      <seconds>20</seconds>
     </item>
   </channel>
 </rss>
