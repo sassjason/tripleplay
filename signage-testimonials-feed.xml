@@ -2,29 +2,21 @@
 <rss version="2.0">
   <channel>
     <title>Testimonials</title>
-    <lastBuildDate>2026-10-13T21:52:03Z</lastBuildDate>
+    <lastBuildDate>2026-10-19T18:40:15Z</lastBuildDate>
     <item>
-      <quote>Family-friendly, clean, safe environment! Staff always upbeat, friendly and helpful.</quote>
-      <attribution>- Cassandra /  / Disney, Worlds Collide</attribution>
-      <name>Cassandra</name>
-      <quoteDate></quoteDate>
-      <source>Disney, Worlds Collide</source>
-      <seconds>10</seconds>
+      <quote>Love Moda! From the door checks to the ticket scanners and the elevator attendants everyone was kind to us, my son was so excited and would not stop talking to everyone and they were all so kind.</quote>
+      <attribution>- Ciera Valdez / 1.12.25 / WWE</attribution>
+      <name>Ciera Valdez</name>
+      <quoteDate>1.12.25</quoteDate>
+      <source>WWE</source>
+      <seconds>8</seconds>
     </item>
     <item>
-      <quote>I have a disability and can't stand or sit long. The staff were amazing and helped me go down the stairs when I was struggling and slow. They made me feel comfortable and not like a burden.</quote>
-      <attribution>- Ashley /  / Disney, Worlds Collide</attribution>
-      <name>Ashley</name>
-      <quoteDate></quoteDate>
-      <source>Disney, Worlds Collide</source>
-      <seconds>10</seconds>
-    </item>
-    <item>
-      <quote>Attending Matt Rife in 2026 was an unforgettable experience from beginning to end... The Rose Quarter provided an exciting setting for the event, and experiences like this are exactly why live entertainment is so important.</quote>
-      <attribution>- Baley /  / Matt Rife</attribution>
-      <name>Baley</name>
-      <quoteDate></quoteDate>
-      <source>Matt Rife</source>
+      <quote>The staff went above and beyond to make sure our group had an amazing night. We will absolutely be back.</quote>
+      <attribution>- Marcus Reed / 2.08.25 / Trail Blazers vs Lakers</attribution>
+      <name>Marcus Reed</name>
+      <quoteDate>2.08.25</quoteDate>
+      <source>Trail Blazers vs Lakers</source>
       <seconds>10</seconds>
     </item>
   </channel>
