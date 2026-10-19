@@ -1,223 +1,91 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0">
   <channel>
-    <title>Moda Center / VMC Events</title>
-    <lastBuildDate>2026-10-13T21:51:56Z</lastBuildDate>
+    <title>Moda Center Event Schedule</title>
+    <lastBuildDate>2026-09-23T00:00:00Z</lastBuildDate>
     <item>
-      <name>Disney</name>
-      <date>THU OCT 15</date>
-      <time>7:00 PM</time>
-      <venue>Veterans Memorial Coliseum</venue>
-      <image>https://cdn.prod.website-files.com/62aa5d3f408f1681bc0ddb81/6a51787a12b02f0dbb5f924a_jump%20in%20disney%20web.jpg</image>
-      <dateiso>2026-10-15</dateiso>
-      <city>DISNEY</city>
+      <month>Oct.</month>
+      <day>1</day>
+      <title>Fall Comedy Spectacular</title>
+      <time>7:00PM</time>
+      <seconds>10</seconds>
     </item>
     <item>
-      <name>MANÁ</name>
-      <date>FRI OCT 16</date>
-      <time>8:30 PM</time>
-      <venue>Moda Center</venue>
-      <image>https://cdn.prod.website-files.com/62aa5d3f408f1681bc0ddb81/692d283d4127e535ffa19844_manaweb.avif</image>
-      <dateiso>2026-10-16</dateiso>
-      <city>MANÁ</city>
+      <month>Oct.</month>
+      <day>8</day>
+      <title>Iron Maiden</title>
+      <time>7:30PM</time>
+      <seconds>10</seconds>
     </item>
     <item>
-      <name>Doja Cat</name>
-      <date>SAT OCT 17</date>
-      <time>7:30 PM</time>
-      <venue>Moda Center</venue>
-      <image>https://cdn.prod.website-files.com/62aa5d3f408f1681bc0ddb81/698cf5ff8ba92ec8db5baf9f_Doja%20Cat%20Web.avif</image>
-      <dateiso>2026-10-17</dateiso>
-      <city>DOJA CAT</city>
+      <month>Oct.</month>
+      <day>12</day>
+      <title>UFC 320</title>
+      <time>5:00PM</time>
+      <seconds>10</seconds>
     </item>
     <item>
-      <name>Shaboozey</name>
-      <date>TUE OCT 20</date>
-      <time>8:00 PM</time>
-      <venue>Theater of the Clouds</venue>
-      <image>https://cdn.prod.website-files.com/62aa5d3f408f1681bc0ddb81/69f0b4fd4425dbd79f665f81_shaboozey.avif</image>
-      <dateiso>2026-10-20</dateiso>
-      <city>SHABOOZEY</city>
+      <month>Oct.</month>
+      <day>15</day>
+      <title>Peso Pluma</title>
+      <time>8:00PM</time>
+      <seconds>10</seconds>
     </item>
     <item>
-      <name>Trail Blazers vs. Phoenix Suns</name>
-      <date>WED OCT 21</date>
-      <time>7:00 PM</time>
-      <venue>Moda Center</venue>
-      <image>https://a.espncdn.com/i/teamlogos/nba/500/phx.png</image>
-      <dateiso>2026-10-21</dateiso>
-      <city>PHOENIX</city>
+      <month>Oct.</month>
+      <day>19</day>
+      <title>Portland Home &amp; Garden Show</title>
+      <time>10:00AM</time>
+      <seconds>10</seconds>
     </item>
     <item>
-      <name>Chuy Lizarraga</name>
-      <date>SAT OCT 24</date>
-      <time>8:00 PM</time>
-      <venue>Theater of the Clouds</venue>
-      <image>https://cdn.prod.website-files.com/62aa5d3f408f1681bc0ddb81/6a87736d077cce7e007ddec6_Chuy%20Web.jpg</image>
-      <dateiso>2026-10-24</dateiso>
-      <city>CHUY LIZARRAGA</city>
+      <month>Oct.</month>
+      <day>22</day>
+      <title>Portland Ice Show</title>
+      <time>6:30PM</time>
+      <seconds>10</seconds>
     </item>
     <item>
-      <name>Logic &amp; G-Eazy</name>
-      <date>SUN OCT 25</date>
-      <time>7:00 PM</time>
-      <venue>Theater of the Clouds</venue>
-      <image>https://cdn.prod.website-files.com/62aa5d3f408f1681bc0ddb81/6a679fa60dc0a2b1638c4559_G-Eazy%20Logic%20Web.jpg</image>
-      <dateiso>2026-10-25</dateiso>
-      <city>LOGIC &amp; G-EAZY</city>
+      <month>Oct.</month>
+      <day>25</day>
+      <title>Kendrick Lamar</title>
+      <time>7:00PM</time>
+      <seconds>10</seconds>
     </item>
     <item>
-      <name>Dermot Kennedy</name>
-      <date>TUE OCT 27</date>
-      <time>7:30 PM</time>
-      <venue>Theater of the Clouds</venue>
-      <image>https://cdn.prod.website-files.com/62aa5d3f408f1681bc0ddb81/69c19be6a3d27a197e1d8a42_Dermot%20Kennedy%20Web.avif</image>
-      <dateiso>2026-10-27</dateiso>
-      <city>DERMOT KENNEDY</city>
+      <month>Oct.</month>
+      <day>31</day>
+      <title>Halloween Bash</title>
+      <time>9:00PM</time>
+      <seconds>10</seconds>
     </item>
     <item>
-      <name>Winterhawks vs. Vancouver Giants</name>
-      <date>WED OCT 28</date>
-      <time>7:00 PM</time>
-      <venue>Veterans Memorial Coliseum</venue>
-      <image>https://assets.leaguestat.com/whl/logos/223.png</image>
-      <dateiso>2026-10-28</dateiso>
-      <city>VANCOUVER</city>
+      <month>Nov.</month>
+      <day>9</day>
+      <title>Sabrina Carpenter</title>
+      <time>7:30PM</time>
+      <seconds>10</seconds>
     </item>
     <item>
-      <name>Trail Blazers vs. Memphis Grizzlies</name>
-      <date>THU OCT 29</date>
-      <time>7:00 PM</time>
-      <venue>Moda Center</venue>
-      <image>https://a.espncdn.com/i/teamlogos/nba/500/mem.png</image>
-      <dateiso>2026-10-29</dateiso>
-      <city>MEMPHIS</city>
+      <month>Nov.</month>
+      <day>12</day>
+      <title>Portland International Auto Show</title>
+      <time>11:00AM</time>
+      <seconds>10</seconds>
     </item>
     <item>
-      <name>Bryson Tiller</name>
-      <date>THU OCT 29</date>
-      <time>7:30 PM</time>
-      <venue>Veterans Memorial Coliseum</venue>
-      <image>https://cdn.prod.website-files.com/62aa5d3f408f1681bc0ddb81/6a1dacc41bada09f568ff55a_brysontillerweb.jpg</image>
-      <dateiso>2026-10-29</dateiso>
-      <city>BRYSON TILLER</city>
+      <month>Nov.</month>
+      <day>15</day>
+      <title>Zach Bryan</title>
+      <time>7:00PM</time>
+      <seconds>10</seconds>
     </item>
     <item>
-      <name>Gorillaz</name>
-      <date>FRI OCT 30</date>
-      <time>7:00 PM</time>
-      <venue>Moda Center</venue>
-      <image>https://cdn.prod.website-files.com/62aa5d3f408f1681bc0ddb81/69a61619d9b89c11c8a9089e_Gorillaz%20Web.avif</image>
-      <dateiso>2026-10-30</dateiso>
-      <city>GORILLAZ</city>
-    </item>
-    <item>
-      <name>Winterhawks vs. Kelowna Rockets</name>
-      <date>SAT OCT 31</date>
-      <time>3:00 PM</time>
-      <venue>Veterans Memorial Coliseum</venue>
-      <image>https://assets.leaguestat.com/whl/logos/50x50/204.png</image>
-      <dateiso>2026-10-31</dateiso>
-      <city>KELOWNA</city>
-    </item>
-    <item>
-      <name>The Smashing Pumpkins</name>
-      <date>SUN NOV 1</date>
-      <time>8:00 PM</time>
-      <venue>Moda Center</venue>
-      <image>https://cdn.prod.website-files.com/62aa5d3f408f1681bc0ddb81/6a091de7337eee08aeb73e61_smashing%20web.avif</image>
-      <dateiso>2026-11-01</dateiso>
-      <city>THE SMASHING PUMPKINS</city>
-    </item>
-    <item>
-      <name>Winterhawks vs. Medicine Hat Tigers</name>
-      <date>WED NOV 4</date>
-      <time>7:00 PM</time>
-      <venue>Veterans Memorial Coliseum</venue>
-      <image>https://assets.leaguestat.com/whl/logos/206.png</image>
-      <dateiso>2026-11-04</dateiso>
-      <city>MEDICINE HAT</city>
-    </item>
-    <item>
-      <name>Winterhawks vs. Spokane Chiefs</name>
-      <date>FRI NOV 6</date>
-      <time>7:00 PM</time>
-      <venue>Veterans Memorial Coliseum</venue>
-      <image>https://assets.leaguestat.com/whl/logos/215.png</image>
-      <dateiso>2026-11-06</dateiso>
-      <city>SPOKANE</city>
-    </item>
-    <item>
-      <name>Winterhawks vs. Spokane Chiefs</name>
-      <date>SAT NOV 7</date>
-      <time>6:00 PM</time>
-      <venue>Veterans Memorial Coliseum</venue>
-      <image>https://assets.leaguestat.com/whl/logos/215.png</image>
-      <dateiso>2026-11-07</dateiso>
-      <city>SPOKANE</city>
-    </item>
-    <item>
-      <name>Trail Blazers vs. San Antonio Spurs</name>
-      <date>SAT NOV 7</date>
-      <time>7:00 PM</time>
-      <venue>Moda Center</venue>
-      <image>https://a.espncdn.com/i/teamlogos/nba/500/sa.png</image>
-      <dateiso>2026-11-07</dateiso>
-      <city>SAN ANTONIO</city>
-    </item>
-    <item>
-      <name>Teddy Swims</name>
-      <date>SUN NOV 8</date>
-      <time>7:00 PM</time>
-      <venue>Moda Center</venue>
-      <image>https://cdn.prod.website-files.com/62aa5d3f408f1681bc0ddb81/69e00ef48ecbdaef653bad60_teddy%20swims%20web%202.avif</image>
-      <dateiso>2026-11-08</dateiso>
-      <city>TEDDY SWIMS</city>
-    </item>
-    <item>
-      <name>Trail Blazers vs. Oklahoma City Thunder</name>
-      <date>TUE NOV 10</date>
-      <time>8:00 PM</time>
-      <venue>Moda Center</venue>
-      <image>https://a.espncdn.com/i/teamlogos/nba/500/okc.png</image>
-      <dateiso>2026-11-10</dateiso>
-      <city>OKLAHOMA CITY</city>
-    </item>
-    <item>
-      <name>Trail Blazers vs. Oklahoma City Thunder</name>
-      <date>WED NOV 11</date>
-      <time>7:00 PM</time>
-      <venue>Moda Center</venue>
-      <image>https://a.espncdn.com/i/teamlogos/nba/500/okc.png</image>
-      <dateiso>2026-11-11</dateiso>
-      <city>OKLAHOMA CITY</city>
-    </item>
-    <item>
-      <name>Rose Quarter Guitar Show</name>
-      <date>SUN NOV 15</date>
-      <time>10:00 AM</time>
-      <venue>Veterans Memorial Coliseum</venue>
-      <image>https://cdn.prod.website-files.com/62aa5d3f408f1681bc0ddb81/6ac7ef177493e4bbf655fddf_Add%20a%20heading%20(1200%20x%20628%20px)%20(3).jpg</image>
-      <dateiso>2026-11-15</dateiso>
-      <city>ROSE QUARTER GUITAR SHOW</city>
-    </item>
-    <item>
-      <name>Trail Blazers vs. San Antonio Spurs</name>
-      <date>WED NOV 25</date>
-      <time>7:00 PM</time>
-      <venue>Moda Center</venue>
-      <image>https://a.espncdn.com/i/teamlogos/nba/500/sa.png</image>
-      <dateiso>2026-11-25</dateiso>
-      <city>SAN ANTONIO</city>
-    </item>
-    <item>
-      <name>Trail Blazers vs. Golden State Warriors</name>
-      <date>FRI NOV 27</date>
-      <time>6:30 PM</time>
-      <venue>Moda Center</venue>
-      <image>https://a.espncdn.com/i/teamlogos/nba/500/gs.png</image>
-      <dateiso>2026-11-27</dateiso>
-      <city>GOLDEN STATE</city>
+      <month>Nov.</month>
+      <day>19</day>
+      <title>Cirque du Soleil</title>
+      <time>7:30PM</time>
+      <seconds>10</seconds>
     </item>
   </channel>
 </rss>
