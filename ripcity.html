@@ -83,7 +83,7 @@
   var CONFIG = {
     feed:    qs.get("feed")  || "signage-ripcity-feed.xml",
     plate:   qs.get("plate") || "24IPTVEventSchedule_PLATE.png",
-    dwell:   parseInt(qs.get("dwell") || qs.get("rotate") || "8000", 10),
+    dwell:   parseInt(qs.get("dwell") || qs.get("rotate") || "30000", 10),
     enterMs: parseInt(qs.get("enter") || "1000", 10),
     poll:    parseInt(qs.get("poll")  || "10000", 10),
     anim:   (qs.get("anim")  || "fade").toLowerCase(),
@@ -134,6 +134,7 @@
   }
   function currentDwell() {
     if (!items.length) return CONFIG.dwell;
+    if (qs.has("dwell")) return CONFIG.dwell;   // admin-set duration wins over the XLS Seconds column
     var s = items[idx % items.length].seconds;
     return (s && s > 0) ? s * 1000 : CONFIG.dwell;
   }
