@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Moda Event Schedule — Tripleplay HTML Resource</title>
+<!--
+  Moda Center Event Schedule layout.
+
+  Transparent overlay — same visual DNA as gameschedule.html (header bar,
+  two-column grid, dotted accent separators, spring animation, countdown ring)
+  but rows show EVENTS (no home/away badge, no opponent logo box).
+  Designed for concerts, shows, arena events, and other non-game bookings.
+
+  Feed shape (one <item> per event):
+      <month> <day> <title> <time> <seconds>
+
+  Events are grouped by <month> and paginated into slides of up to 8 (4 per
+  column), then rotated on the per-slide dwell — same engine as gameschedule.html.
+  Title renders in natural case (as typed in the feed). Time renders in caps.
+
+  Query params:
+      ?feed=        feed XML path/URL (default: signage-events-moda-feed.xml)
+      ?headerLogo=  logo img path     (default: logos/brand/moda.png)
+      ?title=       header label      (default: EVENT SCHEDULE)
+      ?accent=      hex color         (default: #E03A3E)
+      ?bg=          background color  (default: #0E0E10; use "none" for transparent overlay)
+      ?per=         events per slide  (default: 8)
+      ?dwell=       ms per slide      (default: 10000)
+      ?enter=       ms for enter anim (default: 900)
+      ?poll=        ms feed re-poll   (default: 10000)
+      ?anim=        spring | fade | none (default: spring)
+      ?clock=       0 to hide ring
+-->
+<style>
+  @font-face {
+    font-family: "United Sans Cond Heavy";
+    src: url("UnitedSansCdHv.otf") format("opentype");
+    font-weight: normal; font-style: normal;
+  }
+
+  html, body { margin: 0; padding: 0; overflow: hidden; }
+
+  #stage {
+    position: relative; width: 1920px; height: 1080px;
+    color: #fff;
+    font-family: "United Sans Cond Heavy", "Arial Narrow", sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ---- header bar -------------------------------------------------------- */
+  #header {
+    position: absolute; top: 44px; left: 56px; right: 56px; height: 150px;
+    border: 3px solid #fff; border-radius: 30px;
+    display: flex; align-items: center; padding: 0 46px; box-sizing: border-box;
+  }
+  #headLogo { height: 104px; width: auto; margin-right: 30px; flex: 0 0 auto; }
+  #title { font-size: 92px; line-height: 1; letter-spacing: 0.01em; text-transform: uppercase; white-space: nowrap; }
+  #headSpacer { flex: 1 1 auto; }
+  #stripes { display: flex; gap: 12px; margin: 0 46px; flex: 0 0 auto; }
+  #stripes i { display: block; width: 26px; height: 56px; background: var(--accent); transform: skewX(-24deg); }
+  #month { font-size: 92px; line-height: 1; letter-spacing: 0.01em; text-transform: uppercase; white-space: nowrap; flex: 0 0 auto; }
+
+  /* ---- body: two columns with a dotted divider --------------------------- */
+  #body {
+    position: absolute; top: 250px; left: 56px; right: 56px; bottom: 52px;
+    display: grid; grid-template-columns: 1fr 0 1fr; column-gap: 64px;
+  }
+  .col { display: flex; flex-direction: column; min-width: 0; }
+  #divider {
+    grid-column: 2; align-self: stretch; width: 0;
+    border-left: 3px dotted rgba(255,255,255,0.55);
+    margin: 6px 0;
+  }
+
+  /* one event row: day | event title | time */
+  .game {
+    flex: 1 1 0; min-height: 0;
+    display: grid;
+    grid-template-columns: minmax(96px,auto) 1fr auto;
+    align-items: center; column-gap: 26px;
+    position: relative;
+  }
+  /* accent-coloured dotted separator between rows (not after the last) */
+  .game:not(:last-child)::after {
+    content: ""; position: absolute; left: 0; right: 0; bottom: 0;
+    border-bottom: 3px dotted var(--accent);
+  }
+  .g-day   { font-size: 80px; line-height: 1; white-space: nowrap; }
+  .e-title { font-size: 60px; line-height: 1; white-space: nowrap; overflow: hidden; }
+  .g-time  { font-size: 54px; line-height: 1; white-space: nowrap; text-align: right; }
+
+  #clock {
+    position: absolute; right: 40px; bottom: 16px; opacity: 0.8; display: none;
+  }
+  #err {
+    position: absolute; left: 0; bottom: 0; right: 0;
+    background: rgba(200,0,0,0.92); color: #fff;
+    font-family: monospace; font-size: 22px; padding: 12px 20px;
+    text-transform: none; letter-spacing: normal; display: none;
+  }
+</style>
+</head>
+<body>
+  <div id="stage">
+    <div id="header">
+      <img id="headLogo" alt="">
+      <div id="title"></div>
+      <div id="headSpacer"></div>
+      <div id="stripes"><i></i><i></i><i></i><i></i><i></i></div>
+      <div id="month"></div>
+    </div>
+    <div id="body">
+      <div class="col" id="colL"></div>
+      <div id="divider"></div>
+      <div class="col" id="colR"></div>
+    </div>
+    <svg id="clock" width="44" height="44" viewBox="0 0 48 48" aria-hidden="true">
+      <circle cx="24" cy="24" r="20" fill="none" stroke="rgba(255,255,255,0.22)" stroke-width="4"></circle>
+      <circle id="clockProg" cx="24" cy="24" r="20" fill="none" stroke="#fff" stroke-width="4"
+              stroke-linecap="round" transform="rotate(-90 24 24)"></circle>
+    </svg>
+    <div id="err"></div>
+  </div>
+
+<script>
+  var qs = new URLSearchParams(location.search);
+
+  var CONFIG = {
+    feed:       qs.get("feed")       || "signage-events-moda-feed.xml",
+    headerLogo: qs.get("headerLogo") || "logos/brand/moda.png",
+    title:      qs.get("title")      || "EVENT SCHEDULE",
+    accent:     qs.get("accent")     || "#E03A3E",
+    bg:         qs.get("bg")         || "#0E0E10",
+    perPage:    parseInt(qs.get("per")   || "8",     10),
+    dwell:      parseInt(qs.get("dwell") || qs.get("rotate") || "10000", 10),
+    enterMs:    parseInt(qs.get("enter") || "900",   10),
+    poll:       parseInt(qs.get("poll")  || "10000", 10),
+    anim:      (qs.get("anim")  || "spring").toLowerCase(),
+    clock:     (qs.get("clock") || "1") !== "0"
+  };
+
+  var stage = document.getElementById("stage");
+  document.documentElement.style.setProperty("--accent", CONFIG.accent);
+  if (CONFIG.bg && CONFIG.bg.toLowerCase() !== "none") {
+    stage.style.background = CONFIG.bg;
+    document.body.style.background = CONFIG.bg;
+  }
+  document.getElementById("title").textContent = CONFIG.title;
+
+  var headLogo = document.getElementById("headLogo");
+  headLogo.style.display = "none";                             // shown only once it loads
+  headLogo.onload = function () { headLogo.style.display = "block"; };
+  headLogo.src = CONFIG.headerLogo;
+
+  var elMonth = document.getElementById("month");
+  var colL = document.getElementById("colL"), colR = document.getElementById("colR");
+  var elErr = document.getElementById("err");
+
+  function showError(msg) { elErr.style.display = "block"; elErr.textContent = "FEED ERROR: " + msg; }
+
+  // Shrink long event titles until they fit their column
+  function fitTitle(el) {
+    var max = el.clientWidth; if (!max) return;
+    var size = 60;
+    el.style.fontSize = size + "px";
+    while (el.scrollWidth > max && size > 26) { size -= 2; el.style.fontSize = size + "px"; }
+  }
+
+  function eventRow(g) {
+    var row   = document.createElement("div"); row.className   = "game";
+    var day   = document.createElement("div"); day.className   = "g-day";   day.textContent   = g.day || "";
+    var title = document.createElement("div"); title.className = "e-title"; title.textContent = g.title || "";
+    var time  = document.createElement("div"); time.className  = "g-time";  time.textContent  = (g.time || "").toUpperCase();
+    row.appendChild(day); row.appendChild(title); row.appendChild(time);
+    return row;
+  }
+
+  // ---- pages: group by month, chunk into slides of perPage -----------------
+  var pages = [], idx = 0, curKey = null;
+
+  function buildPages(items) {
+    var groups = [], byMonth = {};
+    items.forEach(function (it) {
+      var m = it.month || "";
+      if (!byMonth.hasOwnProperty(m)) { byMonth[m] = { month: m, games: [] }; groups.push(byMonth[m]); }
+      byMonth[m].games.push(it);
+    });
+    var out = [];
+    groups.forEach(function (grp) {
+      for (var i = 0; i < grp.games.length; i += CONFIG.perPage) {
+        out.push({ month: grp.month, games: grp.games.slice(i, i + CONFIG.perPage) });
+      }
+    });
+    return out;
+  }
+
+  function renderPage(page) {
+    elMonth.textContent = (page.month || "").toUpperCase();
+    colL.innerHTML = ""; colR.innerHTML = "";
+    var half = Math.ceil(CONFIG.perPage / 2);
+    page.games.forEach(function (g, i) {
+      (i < half ? colL : colR).appendChild(eventRow(g));
+    });
+    var titles = stage.querySelectorAll(".e-title");
+    for (var i = 0; i < titles.length; i++) { fitTitle(titles[i]); }
+  }
+
+  // ---- enter animation -----------------------------------------------------
+  function cancelAnims(el) { if (el.getAnimations) el.getAnimations().forEach(function (a) { a.cancel(); }); }
+  function enter() {
+    if (CONFIG.anim === "none") return;
+    var rows = stage.querySelectorAll(".game");
+    for (var i = 0; i < rows.length; i++) {
+      (function (el, d) {
+        cancelAnims(el);
+        el.animate([
+          { opacity: 0, transform: "translateY(18px)" },
+          { opacity: 1, transform: "translateY(0)" }
+        ], { duration: 460, delay: d, easing: "ease-out", fill: "both" });
+      })(rows[i], (CONFIG.anim === "fade") ? 0 : i * 70);
+    }
+    cancelAnims(elMonth);
+    elMonth.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 400, fill: "both" });
+  }
+
+  // ---- countdown ring + dwell ----------------------------------------------
+  var clockSvg = document.getElementById("clock"), clockProg = document.getElementById("clockProg");
+  var CIRC = 2 * Math.PI * 20;
+  if (clockProg) { clockProg.style.strokeDasharray = CIRC; clockProg.style.strokeDashoffset = CIRC; }
+  function startClock(ms) {
+    if (!clockProg) return;
+    if (!CONFIG.clock || pages.length <= 1) { clockSvg.style.display = "none"; return; }
+    clockSvg.style.display = "block"; cancelAnims(clockProg);
+    clockProg.animate([{ strokeDashoffset: CIRC }, { strokeDashoffset: 0 }], { duration: ms, easing: "linear", fill: "forwards" });
+  }
+  function currentDwell() {
+    if (!pages.length) return CONFIG.dwell;
+    var g0 = pages[idx % pages.length].games[0];
+    var s = g0 && g0.seconds;
+    return (s && s > 0) ? s * 1000 : CONFIG.dwell;
+  }
+  var nextTimer = null;
+  function scheduleNext() {
+    clearTimeout(nextTimer);
+    var total = CONFIG.enterMs + currentDwell();
+    startClock(total);
+    nextTimer = setTimeout(advance, total);
+  }
+  function advance() {
+    if (pages.length <= 1) { scheduleNext(); return; }
+    idx++; showPage(pages[idx % pages.length]);
+  }
+
+  function pageKey(p) { return (p.month || "") + "#" + p.games.map(function (g) { return g.day + g.title + g.time; }).join("|"); }
+  function showPage(p) {
+    var key = pageKey(p);
+    if (key === curKey) { scheduleNext(); return; }
+    curKey = key;
+    renderPage(p); enter(); scheduleNext();
+  }
+  function renderCurrent() { if (pages.length) showPage(pages[idx % pages.length]); }
+
+  // ---- feed ----------------------------------------------------------------
+  function parseFeed(xmlText) {
+    var doc = new DOMParser().parseFromString(xmlText, "application/xml");
+    if (doc.getElementsByTagName("parsererror").length) throw new Error("XML not well-formed");
+    var nodes = doc.getElementsByTagName("item"), out = [];
+    function g(n, tag) { var e = n.getElementsByTagName(tag)[0]; return e ? e.textContent : ""; }
+    for (var i = 0; i < nodes.length; i++) {
+      out.push({
+        month:   g(nodes[i], "month"),
+        day:     g(nodes[i], "day"),
+        title:   g(nodes[i], "title"),
+        time:    g(nodes[i], "time"),
+        seconds: parseInt(g(nodes[i], "seconds"), 10) || 0
+      });
+    }
+    return out;
+  }
+
+  function loadFeed() {
+    var url = CONFIG.feed + (CONFIG.feed.indexOf("?") >= 0 ? "&" : "?") + "t=" + Date.now();
+    fetch(url, { cache: "no-store" })
+      .then(function (r) { if (!r.ok) throw new Error("HTTP " + r.status); return r.text(); })
+      .then(function (txt) {
+        pages = buildPages(parseFeed(txt));
+        elErr.style.display = "none";
+        if (!pages.length) showError("feed has no <item> elements");
+        if (idx >= pages.length) idx = 0;
+        curKey = null;
+        renderCurrent();
+      })
+      .catch(function (e) { showError(e.message + "  (" + CONFIG.feed + ")"); });
+  }
+
+  loadFeed();
+  setInterval(loadFeed, CONFIG.poll);
+
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(function () { if (pages.length) { curKey = null; renderCurrent(); } });
+  }
+  window.addEventListener("resize", function () { if (pages.length) { curKey = null; renderCurrent(); } });
+</script>
+</body>
+</html>
