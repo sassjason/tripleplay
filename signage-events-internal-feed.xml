@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>Employee Events</title>
+    <lastBuildDate>2026-10-19T18:40:15Z</lastBuildDate>
+    <item>
+      <month>Jan.</month>
+      <day>1</day>
+      <title>Volunteer Event at Oregon Food Bank</title>
+      <time>10:00AM-1:00PM</time>
+      <location>7900 NE 33rd Dr, Portland, OR 97211</location>
+      <seconds>12</seconds>
+    </item>
+    <item>
+      <month>Jan.</month>
+      <day>3-10</day>
+      <title>Rose Quarter Campus Cleanout</title>
+      <time>9:00AM-5:00PM</time>
+      <location>Loading Dock</location>
+      <seconds>12</seconds>
+    </item>
+    <item>
+      <month>Jan.</month>
+      <day>7</day>
+      <title>All Staff DEI Training</title>
+      <time>9:00AM-12:00PM</time>
+      <location>Georgia Pacific Room - VMC</location>
+      <seconds>12</seconds>
+    </item>
+    <item>
+      <month>Jan.</month>
+      <day>9</day>
+      <title>AAPI Lunch + Learn</title>
+      <time>12:00PM-1:00PM</time>
+      <location>Rose Room</location>
+      <seconds>12</seconds>
+    </item>
+    <item>
+      <month>Jan.</month>
+      <day>15</day>
+      <title>Employee Happy Hour</title>
+      <time>4:00PM-5:00PM</time>
+      <location>Dr. Jack's</location>
+      <seconds>12</seconds>
+    </item>
+    <item>
+      <month>Jan.</month>
+      <day>18</day>
+      <title>Volunteer Event at Oregon Food Bank</title>
+      <time>10:00AM-1:00PM</time>
+      <location>7900 NE 33rd Dr, Portland, OR 97211</location>
+      <seconds>12</seconds>
+    </item>
+    <item>
+      <month>Jan.</month>
+      <day>20</day>
+      <title>Volunteer Event</title>
+      <time>10:00AM-12:00PM</time>
+      <location>1234 Portland Ave. Portland, OR</location>
+      <seconds>12</seconds>
+    </item>
+    <item>
+      <month>Jan.</month>
+      <day>21</day>
+      <title>All Staff DEI Training</title>
+      <time>9:00AM-12:00PM</time>
+      <location>Georgia Pacific Room - VMC</location>
+      <seconds>12</seconds>
+    </item>
+    <item>
+      <month>Jan.</month>
+      <day>26</day>
+      <title>Volunteer Event at Asian Food Pantry</title>
+      <time>10:00AM-12:00PM</time>
+      <location>1820 NE 40th Ave., Portland, OR</location>
+      <seconds>12</seconds>
+    </item>
+    <item>
+      <month>Jan.</month>
+      <day>29</day>
+      <title>Blood Drive</title>
+      <time>10:00AM-2:00PM</time>
+      <location>Randall Children's Hospital</location>
+      <seconds>12</seconds>
+    </item>
+  </channel>
+</rss>
