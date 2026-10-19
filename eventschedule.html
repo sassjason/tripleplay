@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Employee Events — Tripleplay HTML Resource</title>
+<!--
+  Internal Employee Events layout.
+
+  Transparent overlay (same model as gameschedule.html): Tripleplay owns the
+  background, this HTML draws the whole schedule. No opponent logos here — the
+  header carries the static brand marks (Blazers + Rose Quarter + RQ) and each
+  row is an event: a day (or range, e.g. "3-10"), a natural-case title, and a
+  TIME | LOCATION detail line.
+
+  Feed shape (one <item> per EVENT):
+      <month> <day> <title> <time> <location> <seconds>
+  Events are grouped by <month> and paginated into slides of up to 10 (5 per
+  column), then rotated on a per-slide dwell.
+
+  Note: the title is rendered in NATURAL CASE (as typed). Time/location render
+  in caps. The pipeline still stores words only; this layout owns the casing.
+-->
+<style>
+  @font-face {
+    font-family: "United Sans Cond Heavy";
+    src: url("UnitedSansCdHv.otf") format("opentype");
+    font-weight: normal; font-style: normal;
+  }
+
+  html, body { margin: 0; padding: 0; overflow: hidden; }
+
+  #stage {
+    position: relative; width: 1920px; height: 1080px;
+    color: #fff;
+    font-family: "United Sans Cond Heavy", "Arial Narrow", sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ---- header bar -------------------------------------------------------- */
+  #header {
+    position: absolute; top: 40px; left: 56px; right: 56px; height: 146px;
+    border: 3px solid #fff; border-radius: 30px;
+    display: flex; align-items: center; padding: 0 44px; box-sizing: border-box;
+  }
+  #brand { display: flex; align-items: center; gap: 26px; margin-right: 34px; flex: 0 0 auto; }
+  #brand img { height: 86px; width: auto; }
+  #title { font-size: 84px; line-height: 1; letter-spacing: 0.01em; text-transform: uppercase; white-space: nowrap; }
+  #headSpacer { flex: 1 1 auto; }
+  #stripes { display: flex; gap: 12px; margin: 0 44px; flex: 0 0 auto; }
+  #stripes i { display: block; width: 26px; height: 56px; background: var(--accent); transform: skewX(-24deg); }
+  #month { font-size: 84px; line-height: 1; letter-spacing: 0.01em; text-transform: uppercase; white-space: nowrap; flex: 0 0 auto; }
+
+  /* ---- body: rounded frame, two columns, dotted divider ------------------ */
+  #frame {
+    position: absolute; top: 214px; left: 56px; right: 56px; bottom: 48px;
+    border: 3px solid #fff; border-radius: 30px;
+    padding: 30px 52px; box-sizing: border-box;
+  }
+  #body { width: 100%; height: 100%; display: grid; grid-template-columns: 1fr 0 1fr; column-gap: 70px; }
+  .col { display: flex; flex-direction: column; min-width: 0; }
+  #divider {
+    grid-column: 2; align-self: stretch; width: 0;
+    border-left: 3px dotted rgba(255,255,255,0.55); margin: 4px 0;
+  }
+
+  .evt {
+    flex: 1 1 0; min-height: 0;
+    display: grid; grid-template-columns: minmax(120px,auto) 1fr;
+    align-items: center; column-gap: 26px; position: relative;
+  }
+  .evt:not(:last-child)::after {
+    content: ""; position: absolute; left: 0; right: 0; bottom: 0;
+    border-bottom: 3px dotted var(--accent);
+  }
+  .e-day  { font-size: 76px; line-height: 1; white-space: nowrap; }
+  .e-main { min-width: 0; }
+  .e-title{ font-size: 44px; line-height: 1.04; white-space: nowrap; overflow: hidden; }   /* natural case */
+  .e-detail { font-size: 30px; line-height: 1; margin-top: 12px; text-transform: uppercase; white-space: nowrap; overflow: hidden; opacity: 0.96; }
+  .e-detail .sep { color: var(--accent); margin: 0 14px; }
+
+  #clock { position: absolute; right: 40px; bottom: 12px; opacity: 0.8; display: none; }
+  #err {
+    position: absolute; left: 0; bottom: 0; right: 0;
+    background: rgba(200,0,0,0.92); color: #fff;
+    font-family: monospace; font-size: 22px; padding: 12px 20px;
+    text-transform: none; letter-spacing: normal; display: none;
+  }
+</style>
+</head>
+<body>
+  <div id="stage">
+    <div id="header">
+      <div id="brand"></div>
+      <div id="title"></div>
+      <div id="headSpacer"></div>
+      <div id="stripes"><i></i><i></i><i></i><i></i><i></i></div>
+      <div id="month"></div>
+    </div>
+    <div id="frame">
+      <div id="body">
+        <div class="col" id="colL"></div>
+        <div id="divider"></div>
+        <div class="col" id="colR"></div>
+      </div>
+    </div>
+    <svg id="clock" width="44" height="44" viewBox="0 0 48 48" aria-hidden="true">
+      <circle cx="24" cy="24" r="20" fill="none" stroke="rgba(255,255,255,0.22)" stroke-width="4"></circle>
+      <circle id="clockProg" cx="24" cy="24" r="20" fill="none" stroke="#fff" stroke-width="4"
+              stroke-linecap="round" transform="rotate(-90 24 24)"></circle>
+    </svg>
+    <div id="err"></div>
+  </div>
+
+<script>
+  var qs = new URLSearchParams(location.search);
+  var CONFIG = {
+    feed:     qs.get("feed")     || "signage-events-internal-feed.xml",
+    logobase: (qs.get("logobase")|| "logos").replace(/\/$/, ""),
+    title:    qs.get("title")    || "EMPLOYEE EVENTS",
+    accent:   qs.get("accent")   || "#E03A3E",
+    bg:       qs.get("bg")       || "#0E0E10",   // ?bg=none for transparent overlay
+    perPage:  parseInt(qs.get("per")  || "10", 10),
+    dwell:    parseInt(qs.get("dwell")|| qs.get("rotate") || "12000", 10),
+    enterMs:  parseInt(qs.get("enter")|| "900", 10),
+    poll:     parseInt(qs.get("poll") || "10000", 10),
+    anim:    (qs.get("anim")  || "spring").toLowerCase(),
+    clock:   (qs.get("clock") || "1") !== "0"
+  };
+  // header brand marks (hidden individually if the file is missing)
+  var BRAND = (qs.get("brand") || "blazers,rosequarter,rq").split(",").map(function (s) { return s.trim(); }).filter(Boolean);
+
+  var stage = document.getElementById("stage");
+  document.documentElement.style.setProperty("--accent", CONFIG.accent);
+  if (CONFIG.bg && CONFIG.bg.toLowerCase() !== "none") {
+    stage.style.background = CONFIG.bg; document.body.style.background = CONFIG.bg;
+  }
+  document.getElementById("title").textContent = CONFIG.title;
+
+  var brandWrap = document.getElementById("brand");
+  BRAND.forEach(function (name) {
+    var img = document.createElement("img");
+    img.alt = name; img.style.display = "none";                 // shown only once it loads
+    img.onload = function () { img.style.display = "inline"; };
+    img.src = CONFIG.logobase + "/brand/" + name + ".png";
+    brandWrap.appendChild(img);
+  });
+
+  var elMonth = document.getElementById("month");
+  var colL = document.getElementById("colL"), colR = document.getElementById("colR");
+  var elErr = document.getElementById("err");
+
+  function showError(msg) { elErr.style.display = "block"; elErr.textContent = "FEED ERROR: " + msg; }
+  function cancelAnims(el) { if (el.getAnimations) el.getAnimations().forEach(function (a) { a.cancel(); }); }
+
+  // shrink one-line text until it fits its cell
+  function fitLine(el, base, min) {
+    var max = el.clientWidth; if (!max) return;
+    var size = base; el.style.fontSize = size + "px";
+    while (el.scrollWidth > max && size > min) { size -= 2; el.style.fontSize = size + "px"; }
+  }
+
+  function evtRow(ev) {
+    var row = document.createElement("div"); row.className = "evt";
+    var day = document.createElement("div"); day.className = "e-day"; day.textContent = ev.day || "";
+    var main = document.createElement("div"); main.className = "e-main";
+    var title = document.createElement("div"); title.className = "e-title"; title.textContent = ev.title || "";
+    var detail = document.createElement("div"); detail.className = "e-detail";
+    var time = (ev.time || "").toUpperCase(), loc = (ev.location || "").toUpperCase();
+    if (time) detail.appendChild(document.createTextNode(time));
+    if (time && loc) { var s = document.createElement("span"); s.className = "sep"; s.textContent = "|"; detail.appendChild(s); }
+    if (loc) detail.appendChild(document.createTextNode(loc));
+    main.appendChild(title); main.appendChild(detail);
+    row.appendChild(day); row.appendChild(main);
+    return row;
+  }
+
+  var pages = [], idx = 0, curKey = null;
+
+  function buildPages(items) {
+    var groups = [], byMonth = {};
+    items.forEach(function (it) {
+      var m = it.month || "";
+      if (!byMonth.hasOwnProperty(m)) { byMonth[m] = { month: m, evts: [] }; groups.push(byMonth[m]); }
+      byMonth[m].evts.push(it);
+    });
+    var out = [];
+    groups.forEach(function (grp) {
+      for (var i = 0; i < grp.evts.length; i += CONFIG.perPage) {
+        out.push({ month: grp.month, evts: grp.evts.slice(i, i + CONFIG.perPage) });
+      }
+    });
+    return out;
+  }
+
+  function renderPage(page) {
+    elMonth.textContent = (page.month || "").toUpperCase();
+    colL.innerHTML = ""; colR.innerHTML = "";
+    var half = Math.ceil(CONFIG.perPage / 2);
+    page.evts.forEach(function (ev, i) { (i < half ? colL : colR).appendChild(evtRow(ev)); });
+    var days = stage.querySelectorAll(".e-day");  for (var i = 0; i < days.length; i++)  fitLine(days[i], 76, 38);
+    var tits = stage.querySelectorAll(".e-title"); for (var j = 0; j < tits.length; j++) fitLine(tits[j], 44, 26);
+    var dets = stage.querySelectorAll(".e-detail");for (var k = 0; k < dets.length; k++) fitLine(dets[k], 30, 18);
+  }
+
+  function enter() {
+    if (CONFIG.anim === "none") return;
+    var rows = stage.querySelectorAll(".evt");
+    for (var i = 0; i < rows.length; i++) {
+      (function (el, d) {
+        cancelAnims(el);
+        el.animate([{ opacity: 0, transform: "translateY(16px)" }, { opacity: 1, transform: "translateY(0)" }],
+                   { duration: 440, delay: d, easing: "ease-out", fill: "both" });
+      })(rows[i], (CONFIG.anim === "fade") ? 0 : i * 55);
+    }
+    cancelAnims(elMonth); elMonth.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 400, fill: "both" });
+  }
+
+  var clockSvg = document.getElementById("clock"), clockProg = document.getElementById("clockProg");
+  var CIRC = 2 * Math.PI * 20;
+  if (clockProg) { clockProg.style.strokeDasharray = CIRC; clockProg.style.strokeDashoffset = CIRC; }
+  function startClock(ms) {
+    if (!clockProg) return;
+    if (!CONFIG.clock || pages.length <= 1) { clockSvg.style.display = "none"; return; }
+    clockSvg.style.display = "block"; cancelAnims(clockProg);
+    clockProg.animate([{ strokeDashoffset: CIRC }, { strokeDashoffset: 0 }], { duration: ms, easing: "linear", fill: "forwards" });
+  }
+  function currentDwell() {
+    if (!pages.length) return CONFIG.dwell;
+    var e0 = pages[idx % pages.length].evts[0]; var s = e0 && e0.seconds;
+    return (s && s > 0) ? s * 1000 : CONFIG.dwell;
+  }
+  var nextTimer = null;
+  function scheduleNext() {
+    clearTimeout(nextTimer);
+    var total = CONFIG.enterMs + currentDwell(); startClock(total);
+    nextTimer = setTimeout(advance, total);
+  }
+  function advance() { if (pages.length <= 1) { scheduleNext(); return; } idx++; showPage(pages[idx % pages.length]); }
+
+  function pageKey(p) { return (p.month || "") + "#" + p.evts.map(function (e) { return e.day + e.title + e.time; }).join("|"); }
+  function showPage(p) {
+    var key = pageKey(p);
+    if (key === curKey) { scheduleNext(); return; }
+    curKey = key; renderPage(p); enter(); scheduleNext();
+  }
+  function renderCurrent() { if (pages.length) showPage(pages[idx % pages.length]); }
+
+  function parseFeed(xmlText) {
+    var doc = new DOMParser().parseFromString(xmlText, "application/xml");
+    if (doc.getElementsByTagName("parsererror").length) throw new Error("XML not well-formed");
+    var nodes = doc.getElementsByTagName("item"), out = [];
+    function g(n, tag) { var e = n.getElementsByTagName(tag)[0]; return e ? e.textContent : ""; }
+    for (var i = 0; i < nodes.length; i++) {
+      out.push({
+        month: g(nodes[i], "month"), day: g(nodes[i], "day"),
+        title: g(nodes[i], "title"), time: g(nodes[i], "time"),
+        location: g(nodes[i], "location"), seconds: parseInt(g(nodes[i], "seconds"), 10) || 0
+      });
+    }
+    return out;
+  }
+
+  function loadFeed() {
+    var url = CONFIG.feed + (CONFIG.feed.indexOf("?") >= 0 ? "&" : "?") + "t=" + Date.now();
+    fetch(url, { cache: "no-store" })
+      .then(function (r) { if (!r.ok) throw new Error("HTTP " + r.status); return r.text(); })
+      .then(function (txt) {
+        pages = buildPages(parseFeed(txt));
+        elErr.style.display = "none";
+        if (!pages.length) showError("feed has no <item> elements");
+        if (idx >= pages.length) idx = 0;
+        curKey = null; renderCurrent();
+      })
+      .catch(function (e) { showError(e.message + "  (" + CONFIG.feed + ")"); });
+  }
+
+  loadFeed();
+  setInterval(loadFeed, CONFIG.poll);
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(function () { if (pages.length) { curKey = null; renderCurrent(); } });
+  }
+  window.addEventListener("resize", function () { if (pages.length) { curKey = null; renderCurrent(); } });
+</script>
+</body>
+</html>
