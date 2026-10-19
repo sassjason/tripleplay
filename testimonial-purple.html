@@ -81,7 +81,7 @@
   var CONFIG = {
     feed:   qs.get("feed")  || "signage-testimonials-purple-feed.xml",
     plate:  qs.get("plate") || "24IPTV_RQ_Message_Purple_PLATE.png",
-    dwell:   parseInt(qs.get("dwell") || qs.get("rotate") || "8000", 10), // default ms a quote sits (per-slide Seconds overrides)
+    dwell:   parseInt(qs.get("dwell") || qs.get("rotate") || "30000", 10), // default ms a quote sits (per-slide Seconds overrides)
     enterMs: parseInt(qs.get("enter") || "1000", 10),                     // allowance for the entrance to finish
     poll:    parseInt(qs.get("poll")  || "10000", 10),
     anim:   (qs.get("anim")  || "fade").toLowerCase(),
@@ -183,6 +183,7 @@
   // Per-slide dwell: the current item's Seconds (from the XLS), else the default.
   function currentDwell() {
     if (!items.length) return CONFIG.dwell;
+    if (qs.has("dwell")) return CONFIG.dwell;   // admin-set duration wins over the XLS Seconds column
     var s = items[idx % items.length].seconds;
     return (s && s > 0) ? s * 1000 : CONFIG.dwell;
   }
