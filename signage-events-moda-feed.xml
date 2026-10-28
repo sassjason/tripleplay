@@ -2,52 +2,7 @@
 <rss version="2.0">
   <channel>
     <title>Moda Center / VMC Events</title>
-    <lastBuildDate>2026-10-19T21:41:45Z</lastBuildDate>
-    <item>
-      <name>Shaboozey</name>
-      <date>TUE OCT 20</date>
-      <time>8:00 PM</time>
-      <venue>Theater of the Clouds</venue>
-      <image>https://cdn.prod.website-files.com/62aa5d3f408f1681bc0ddb81/69f0b4fd4425dbd79f665f81_shaboozey.avif</image>
-      <dateiso>2026-10-20</dateiso>
-      <city>SHABOOZEY</city>
-    </item>
-    <item>
-      <name>Trail Blazers vs. Phoenix Suns</name>
-      <date>WED OCT 21</date>
-      <time>7:00 PM</time>
-      <venue>Moda Center</venue>
-      <image>https://a.espncdn.com/i/teamlogos/nba/500/phx.png</image>
-      <dateiso>2026-10-21</dateiso>
-      <city>PHOENIX</city>
-    </item>
-    <item>
-      <name>Chuy Lizarraga</name>
-      <date>SAT OCT 24</date>
-      <time>8:00 PM</time>
-      <venue>Theater of the Clouds</venue>
-      <image>https://cdn.prod.website-files.com/62aa5d3f408f1681bc0ddb81/6a87736d077cce7e007ddec6_Chuy%20Web.jpg</image>
-      <dateiso>2026-10-24</dateiso>
-      <city>CHUY LIZARRAGA</city>
-    </item>
-    <item>
-      <name>Logic &amp; G-Eazy</name>
-      <date>SUN OCT 25</date>
-      <time>7:00 PM</time>
-      <venue>Theater of the Clouds</venue>
-      <image>https://cdn.prod.website-files.com/62aa5d3f408f1681bc0ddb81/6a679fa60dc0a2b1638c4559_G-Eazy%20Logic%20Web.jpg</image>
-      <dateiso>2026-10-25</dateiso>
-      <city>LOGIC &amp; G-EAZY</city>
-    </item>
-    <item>
-      <name>Dermot Kennedy</name>
-      <date>TUE OCT 27</date>
-      <time>7:30 PM</time>
-      <venue>Theater of the Clouds</venue>
-      <image>https://cdn.prod.website-files.com/62aa5d3f408f1681bc0ddb81/69c19be6a3d27a197e1d8a42_Dermot%20Kennedy%20Web.avif</image>
-      <dateiso>2026-10-27</dateiso>
-      <city>DERMOT KENNEDY</city>
-    </item>
+    <lastBuildDate>2026-10-28T20:30:20Z</lastBuildDate>
     <item>
       <name>Winterhawks vs. Vancouver Giants</name>
       <date>WED OCT 28</date>
@@ -218,6 +173,51 @@
       <image>https://cdn.prod.website-files.com/62aa5d3f408f1681bc0ddb81/6a99ed4c221ab17b19dbbbc8_TSO%20Web.jpg</image>
       <dateiso>2026-11-28</dateiso>
       <city>TRANS-SIBERIAN ORCHESTRA</city>
+    </item>
+    <item>
+      <name>Winterhawks vs. Everett Silvertips</name>
+      <date>SAT NOV 28</date>
+      <time>6:00 PM</time>
+      <venue>Veterans Memorial Coliseum</venue>
+      <image>https://assets.leaguestat.com/whl/logos/226.png</image>
+      <dateiso>2026-11-28</dateiso>
+      <city>EVERETT</city>
+    </item>
+    <item>
+      <name>Trail Blazers vs. New Orleans Pelicans</name>
+      <date>SUN NOV 29</date>
+      <time>3:00 PM</time>
+      <venue>Moda Center</venue>
+      <image>https://a.espncdn.com/i/teamlogos/nba/500/no.png</image>
+      <dateiso>2026-11-29</dateiso>
+      <city>NEW ORLEANS</city>
+    </item>
+    <item>
+      <name>Trail Blazers vs. Minnesota Timberwolves</name>
+      <date>TUE DEC 1</date>
+      <time>7:00 PM</time>
+      <venue>Moda Center</venue>
+      <image>https://a.espncdn.com/i/teamlogos/nba/500/min.png</image>
+      <dateiso>2026-12-01</dateiso>
+      <city>MINNESOTA</city>
+    </item>
+    <item>
+      <name>Trail Blazers vs. Utah Jazz</name>
+      <date>THU DEC 3</date>
+      <time>7:00 PM</time>
+      <venue>Moda Center</venue>
+      <image>https://a.espncdn.com/i/teamlogos/nba/500/utah.png</image>
+      <dateiso>2026-12-03</dateiso>
+      <city>UTAH</city>
+    </item>
+    <item>
+      <name>Winterhawks vs. Victoria Royals</name>
+      <date>FRI DEC 4</date>
+      <time>7:00 PM</time>
+      <venue>Veterans Memorial Coliseum</venue>
+      <image>https://assets.leaguestat.com/whl/logos/227.png</image>
+      <dateiso>2026-12-04</dateiso>
+      <city>VICTORIA</city>
     </item>
   </channel>
 </rss>
