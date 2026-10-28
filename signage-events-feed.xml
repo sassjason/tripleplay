@@ -2,52 +2,7 @@
 <rss version="2.0">
   <channel>
     <title>Upcoming Events</title>
-    <lastBuildDate>2026-10-19T21:41:34Z</lastBuildDate>
-    <item>
-      <name>Shaboozey</name>
-      <date>TUE OCT 20</date>
-      <time></time>
-      <venue>Theater of the Clouds</venue>
-      <dateiso>2026-10-20</dateiso>
-      <home>false</home>
-      <city>SHABOOZEY</city>
-    </item>
-    <item>
-      <name>Trail Blazers vs. Phoenix Suns</name>
-      <date>WED OCT 21</date>
-      <time>7:00 PM</time>
-      <venue>Moda Center</venue>
-      <dateiso>2026-10-21</dateiso>
-      <home>true</home>
-      <city>PHOENIX</city>
-    </item>
-    <item>
-      <name>Chuy Lizarraga</name>
-      <date>SAT OCT 24</date>
-      <time></time>
-      <venue>Theater of the Clouds</venue>
-      <dateiso>2026-10-24</dateiso>
-      <home>false</home>
-      <city>CHUY LIZARRAGA</city>
-    </item>
-    <item>
-      <name>Logic &amp; G-Eazy</name>
-      <date>SUN OCT 25</date>
-      <time></time>
-      <venue>Theater of the Clouds</venue>
-      <dateiso>2026-10-25</dateiso>
-      <home>false</home>
-      <city>LOGIC &amp; G-EAZY</city>
-    </item>
-    <item>
-      <name>Dermot Kennedy</name>
-      <date>TUE OCT 27</date>
-      <time></time>
-      <venue>Theater of the Clouds</venue>
-      <dateiso>2026-10-27</dateiso>
-      <home>false</home>
-      <city>DERMOT KENNEDY</city>
-    </item>
+    <lastBuildDate>2026-10-28T20:30:09Z</lastBuildDate>
     <item>
       <name>Winterhawks vs. Vancouver Giants</name>
       <date>WED OCT 28</date>
@@ -74,6 +29,24 @@
       <dateiso>2026-10-29</dateiso>
       <home>true</home>
       <city>MEMPHIS</city>
+    </item>
+    <item>
+      <name>Gorillaz</name>
+      <date>FRI OCT 30</date>
+      <time></time>
+      <venue>Moda Center</venue>
+      <dateiso>2026-10-30</dateiso>
+      <home>true</home>
+      <city>GORILLAZ</city>
+    </item>
+    <item>
+      <name>Winterhawks vs. Kelowna Rockets</name>
+      <date>SAT OCT 31</date>
+      <time>15:00:00</time>
+      <venue>Veterans Memorial Coliseum</venue>
+      <dateiso>2026-10-31</dateiso>
+      <home>true</home>
+      <city>KELOWNA</city>
     </item>
   </channel>
 </rss>
