@@ -2,70 +2,7 @@
 <rss version="2.0">
   <channel>
     <title>Moda Center / VMC Events</title>
-    <lastBuildDate>2026-10-28T20:30:20Z</lastBuildDate>
-    <item>
-      <name>Winterhawks vs. Vancouver Giants</name>
-      <date>WED OCT 28</date>
-      <time>7:00 PM</time>
-      <venue>Veterans Memorial Coliseum</venue>
-      <image>https://assets.leaguestat.com/whl/logos/223.png</image>
-      <dateiso>2026-10-28</dateiso>
-      <city>VANCOUVER</city>
-    </item>
-    <item>
-      <name>Trail Blazers vs. Memphis Grizzlies</name>
-      <date>THU OCT 29</date>
-      <time>7:00 PM</time>
-      <venue>Moda Center</venue>
-      <image>https://a.espncdn.com/i/teamlogos/nba/500/mem.png</image>
-      <dateiso>2026-10-29</dateiso>
-      <city>MEMPHIS</city>
-    </item>
-    <item>
-      <name>Bryson Tiller</name>
-      <date>THU OCT 29</date>
-      <time>7:30 PM</time>
-      <venue>Veterans Memorial Coliseum</venue>
-      <image>https://cdn.prod.website-files.com/62aa5d3f408f1681bc0ddb81/6a1dacc41bada09f568ff55a_brysontillerweb.jpg</image>
-      <dateiso>2026-10-29</dateiso>
-      <city>BRYSON TILLER</city>
-    </item>
-    <item>
-      <name>Gorillaz</name>
-      <date>FRI OCT 30</date>
-      <time>7:00 PM</time>
-      <venue>Moda Center</venue>
-      <image>https://cdn.prod.website-files.com/62aa5d3f408f1681bc0ddb81/69a61619d9b89c11c8a9089e_Gorillaz%20Web.avif</image>
-      <dateiso>2026-10-30</dateiso>
-      <city>GORILLAZ</city>
-    </item>
-    <item>
-      <name>Winterhawks vs. Kelowna Rockets</name>
-      <date>SAT OCT 31</date>
-      <time>3:00 PM</time>
-      <venue>Veterans Memorial Coliseum</venue>
-      <image>https://assets.leaguestat.com/whl/logos/50x50/204.png</image>
-      <dateiso>2026-10-31</dateiso>
-      <city>KELOWNA</city>
-    </item>
-    <item>
-      <name>The Smashing Pumpkins</name>
-      <date>SUN NOV 1</date>
-      <time>8:00 PM</time>
-      <venue>Moda Center</venue>
-      <image>https://cdn.prod.website-files.com/62aa5d3f408f1681bc0ddb81/6a091de7337eee08aeb73e61_smashing%20web.avif</image>
-      <dateiso>2026-11-01</dateiso>
-      <city>THE SMASHING PUMPKINS</city>
-    </item>
-    <item>
-      <name>Winterhawks vs. Medicine Hat Tigers</name>
-      <date>WED NOV 4</date>
-      <time>7:00 PM</time>
-      <venue>Veterans Memorial Coliseum</venue>
-      <image>https://assets.leaguestat.com/whl/logos/206.png</image>
-      <dateiso>2026-11-04</dateiso>
-      <city>MEDICINE HAT</city>
-    </item>
+    <lastBuildDate>2026-11-06T00:33:45Z</lastBuildDate>
     <item>
       <name>Winterhawks vs. Spokane Chiefs</name>
       <date>FRI NOV 6</date>
@@ -134,7 +71,7 @@
       <date>THU NOV 19</date>
       <time>6:00 PM</time>
       <venue>Moda Center</venue>
-      <image>https://cdn.prod.website-files.com/62aa5d3f408f1681bc0ddb81/6ad0f71ec376e14cb156a4a7_West%20Coast%20Classing%20Web.jpg</image>
+      <image>https://cdn.prod.website-files.com/62aa5d3f408f1681bc0ddb81/6ae7ed82074e037875c19067_West%20Coast%20Classic.jpg</image>
       <dateiso>2026-11-19</dateiso>
       <city>OREGON VS OREGON STATE</city>
     </item>
@@ -218,6 +155,69 @@
       <image>https://assets.leaguestat.com/whl/logos/227.png</image>
       <dateiso>2026-12-04</dateiso>
       <city>VICTORIA</city>
+    </item>
+    <item>
+      <name>Winterhawks vs. Victoria Royals</name>
+      <date>SAT DEC 5</date>
+      <time>6:00 PM</time>
+      <venue>Veterans Memorial Coliseum</venue>
+      <image>https://assets.leaguestat.com/whl/logos/227.png</image>
+      <dateiso>2026-12-05</dateiso>
+      <city>VICTORIA</city>
+    </item>
+    <item>
+      <name>Max McNown</name>
+      <date>SUN DEC 6</date>
+      <time>7:00 PM</time>
+      <venue>Veterans Memorial Coliseum</venue>
+      <image>https://cdn.prod.website-files.com/62aa5d3f408f1681bc0ddb81/6a874353ce029f3c556bbafb_MaxMcNown%20Web.jpg</image>
+      <dateiso>2026-12-06</dateiso>
+      <city>MAX MCNOWN</city>
+    </item>
+    <item>
+      <name>Winterhawks vs. Calgary Hitmen</name>
+      <date>SAT DEC 12</date>
+      <time>6:00 PM</time>
+      <venue>Veterans Memorial Coliseum</venue>
+      <image>https://assets.leaguestat.com/whl/logos/202.png</image>
+      <dateiso>2026-12-12</dateiso>
+      <city>CALGARY</city>
+    </item>
+    <item>
+      <name>Trail Blazers vs. Atlanta Hawks</name>
+      <date>SAT DEC 12</date>
+      <time>7:00 PM</time>
+      <venue>Moda Center</venue>
+      <image>https://a.espncdn.com/i/teamlogos/nba/500/atl.png</image>
+      <dateiso>2026-12-12</dateiso>
+      <city>ATLANTA</city>
+    </item>
+    <item>
+      <name>Winterhawks vs. Seattle Thunderbirds</name>
+      <date>SUN DEC 13</date>
+      <time>4:00 PM</time>
+      <venue>Veterans Memorial Coliseum</venue>
+      <image>https://assets.leaguestat.com/whl/logos/214.png</image>
+      <dateiso>2026-12-13</dateiso>
+      <city>SEATTLE</city>
+    </item>
+    <item>
+      <name>Trail Blazers vs. Denver Nuggets</name>
+      <date>TUE DEC 15</date>
+      <time>8:00 PM</time>
+      <venue>Moda Center</venue>
+      <image>https://a.espncdn.com/i/teamlogos/nba/500/den.png</image>
+      <dateiso>2026-12-15</dateiso>
+      <city>DENVER</city>
+    </item>
+    <item>
+      <name>Winterhawks vs. Tri-City Americans</name>
+      <date>FRI DEC 18</date>
+      <time>7:00 PM</time>
+      <venue>Veterans Memorial Coliseum</venue>
+      <image>https://assets.leaguestat.com/whl/logos/217.png</image>
+      <dateiso>2026-12-18</dateiso>
+      <city>TRI-CITY</city>
     </item>
   </channel>
 </rss>
