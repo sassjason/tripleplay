@@ -2,51 +2,78 @@
 <rss version="2.0">
   <channel>
     <title>Upcoming Events</title>
-    <lastBuildDate>2026-10-28T20:30:09Z</lastBuildDate>
+    <lastBuildDate>2026-11-06T00:33:36Z</lastBuildDate>
     <item>
-      <name>Winterhawks vs. Vancouver Giants</name>
-      <date>WED OCT 28</date>
+      <name>Winterhawks vs. Spokane Chiefs</name>
+      <date>FRI NOV 6</date>
       <time>19:00:00</time>
       <venue>Veterans Memorial Coliseum</venue>
-      <dateiso>2026-10-28</dateiso>
+      <dateiso>2026-11-06</dateiso>
       <home>true</home>
-      <city>VANCOUVER</city>
+      <city>SPOKANE</city>
     </item>
     <item>
-      <name>Bryson Tiller</name>
-      <date>THU OCT 29</date>
-      <time></time>
+      <name>Winterhawks vs. Spokane Chiefs</name>
+      <date>SAT NOV 7</date>
+      <time>18:00:00</time>
       <venue>Veterans Memorial Coliseum</venue>
-      <dateiso>2026-10-29</dateiso>
+      <dateiso>2026-11-07</dateiso>
       <home>true</home>
-      <city>BRYSON TILLER</city>
+      <city>SPOKANE</city>
     </item>
     <item>
-      <name>Trail Blazers vs. Memphis Grizzlies</name>
-      <date>THU OCT 29</date>
+      <name>Trail Blazers vs. San Antonio Spurs</name>
+      <date>SAT NOV 7</date>
       <time>7:00 PM</time>
       <venue>Moda Center</venue>
-      <dateiso>2026-10-29</dateiso>
+      <dateiso>2026-11-07</dateiso>
       <home>true</home>
-      <city>MEMPHIS</city>
+      <city>SAN ANTONIO</city>
     </item>
     <item>
-      <name>Gorillaz</name>
-      <date>FRI OCT 30</date>
+      <name>Teddy Swims</name>
+      <date>SUN NOV 8</date>
       <time></time>
       <venue>Moda Center</venue>
-      <dateiso>2026-10-30</dateiso>
+      <dateiso>2026-11-08</dateiso>
       <home>true</home>
-      <city>GORILLAZ</city>
+      <city>TEDDY SWIMS</city>
     </item>
     <item>
-      <name>Winterhawks vs. Kelowna Rockets</name>
-      <date>SAT OCT 31</date>
-      <time>15:00:00</time>
-      <venue>Veterans Memorial Coliseum</venue>
-      <dateiso>2026-10-31</dateiso>
+      <name>Trail Blazers vs. Oklahoma City Thunder</name>
+      <date>TUE NOV 10</date>
+      <time>8:00 PM</time>
+      <venue>Moda Center</venue>
+      <dateiso>2026-11-10</dateiso>
       <home>true</home>
-      <city>KELOWNA</city>
+      <city>OKLAHOMA CITY</city>
+    </item>
+    <item>
+      <name>Trail Blazers vs. Oklahoma City Thunder</name>
+      <date>WED NOV 11</date>
+      <time>7:00 PM</time>
+      <venue>Moda Center</venue>
+      <dateiso>2026-11-11</dateiso>
+      <home>true</home>
+      <city>OKLAHOMA CITY</city>
+    </item>
+    <item>
+      <name>Rose Quarter Guitar Show</name>
+      <date>SUN NOV 15</date>
+      <time></time>
+      <venue>Veterans Memorial Coliseum</venue>
+      <dateiso>2026-11-15</dateiso>
+      <home>true</home>
+      <city>ROSE QUARTER GUITAR SHOW</city>
+    </item>
+    <item>
+      <name>Oregon vs Oregon State</name>
+      <date>THU NOV 19</date>
+      <time></time>
+      <venue>Moda Center</venue>
+      <dateiso>2026-11-19</dateiso>
+      <home>true</home>
+      <city>OREGON</city>
     </item>
   </channel>
 </rss>
