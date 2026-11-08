@@ -2,16 +2,7 @@
 <rss version="2.0">
   <channel>
     <title>Upcoming Events</title>
-    <lastBuildDate>2026-11-06T00:33:36Z</lastBuildDate>
-    <item>
-      <name>Winterhawks vs. Spokane Chiefs</name>
-      <date>FRI NOV 6</date>
-      <time>19:00:00</time>
-      <venue>Veterans Memorial Coliseum</venue>
-      <dateiso>2026-11-06</dateiso>
-      <home>true</home>
-      <city>SPOKANE</city>
-    </item>
+    <lastBuildDate>2026-11-08T00:30:50Z</lastBuildDate>
     <item>
       <name>Winterhawks vs. Spokane Chiefs</name>
       <date>SAT NOV 7</date>
@@ -74,6 +65,15 @@
       <dateiso>2026-11-19</dateiso>
       <home>true</home>
       <city>OREGON</city>
+    </item>
+    <item>
+      <name>Trail Blazers vs. San Antonio Spurs</name>
+      <date>WED NOV 25</date>
+      <time>7:00 PM</time>
+      <venue>Moda Center</venue>
+      <dateiso>2026-11-25</dateiso>
+      <home>true</home>
+      <city>SAN ANTONIO</city>
     </item>
   </channel>
 </rss>
