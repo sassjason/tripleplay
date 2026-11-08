@@ -2,16 +2,7 @@
 <rss version="2.0">
   <channel>
     <title>Moda Center / VMC Events</title>
-    <lastBuildDate>2026-11-06T00:33:45Z</lastBuildDate>
-    <item>
-      <name>Winterhawks vs. Spokane Chiefs</name>
-      <date>FRI NOV 6</date>
-      <time>7:00 PM</time>
-      <venue>Veterans Memorial Coliseum</venue>
-      <image>https://assets.leaguestat.com/whl/logos/215.png</image>
-      <dateiso>2026-11-06</dateiso>
-      <city>SPOKANE</city>
-    </item>
+    <lastBuildDate>2026-11-08T00:31:00Z</lastBuildDate>
     <item>
       <name>Winterhawks vs. Spokane Chiefs</name>
       <date>SAT NOV 7</date>
@@ -217,6 +208,15 @@
       <venue>Veterans Memorial Coliseum</venue>
       <image>https://assets.leaguestat.com/whl/logos/217.png</image>
       <dateiso>2026-12-18</dateiso>
+      <city>TRI-CITY</city>
+    </item>
+    <item>
+      <name>Winterhawks vs. Tri-City Americans</name>
+      <date>SUN DEC 27</date>
+      <time>4:00 PM</time>
+      <venue>Veterans Memorial Coliseum</venue>
+      <image>https://assets.leaguestat.com/whl/logos/217.png</image>
+      <dateiso>2026-12-27</dateiso>
       <city>TRI-CITY</city>
     </item>
   </channel>
