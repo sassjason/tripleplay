@@ -429,11 +429,13 @@
   function gameConfig(ev) {
     // The feed supplies the opponent's logo URL (ev.image) straight from ESPN / HockeyTech.
     // The name-based lookup below is only a fallback for rows that arrive without one.
+    // ev.image is normally a local cached copy (img-cache/...); ev.imageorig is the original
+    // remote url, used only if the local file is ever missing. Home logos work the same way.
     if (isBlazersGame(ev)) { var fb = nbaLogo(ev.city);
-                             return { home:BLZ, away:ev.image || fb, fallback:fb, homeColor:'198,17,65',
+                             return { home:'img-cache/home-blazers.png', homeRemote:BLZ, away:ev.image || ev.imageorig || fb, orig:ev.imageorig, fallback:fb, homeColor:'198,17,65',
                                       gameKey: ev.dateiso ? 'POR-'+ev.dateiso : '' }; }
     if (isWHGame(ev))      { var fw = whlLogo(ev.city);
-                             return { home:WH,  away:ev.image || fw, fallback:fw, homeColor:'0,40,104', gameKey:'' }; }
+                             return { home:'img-cache/home-winterhawks.png', homeRemote:WH, away:ev.image || ev.imageorig || fw, orig:ev.imageorig, fallback:fw, homeColor:'0,40,104', gameKey:'' }; }
     return null;
   }
 
@@ -465,7 +467,7 @@
     for (var i = 0; i < items.length; i++) {
       var it = items[i];
       out.push({ date:g(it,'date'), dateiso:g(it,'dateiso'), time:g(it,'time'),
-                 name:g(it,'name'), venue:g(it,'venue'), image:g(it,'image'), city:g(it,'city') });
+                 name:g(it,'name'), venue:g(it,'venue'), image:g(it,'image'), imageorig:g(it,'imageorig'), city:g(it,'city') });
     }
     return out;
   }
@@ -509,7 +511,10 @@
     lDiv.style.background = 'rgba(' + gc.homeColor + ',.22)';
     var lImg = document.createElement('img'); lImg.className = 'mlogo';
     lImg.src = gc.home; lImg.alt = 'Home';
-    lImg.onerror = function () { this.style.opacity = '0'; };
+    lImg.onerror = function () {                 // local home logo missing -> try the remote one, then hide
+      if (gc.homeRemote && this.src.indexOf(gc.homeRemote) === -1) { this.src = gc.homeRemote; }
+      else { this.style.opacity = '0'; }
+    };
     lDiv.appendChild(lImg);
 
     var vsDiv = document.createElement('div'); vsDiv.className = 'm-vs';
@@ -519,8 +524,10 @@
     var rDiv = document.createElement('div'); rDiv.className = 'm-right';
     var rImg = document.createElement('img'); rImg.className = 'mlogo';
     rImg.src = gc.away; rImg.alt = 'Away';
-    rImg.onerror = function () {                 // supplied logo failed -> try the name-based one, then hide
-      if (gc.fallback && this.src.indexOf(gc.fallback) === -1) { this.src = gc.fallback; }
+    var rTries = [gc.orig, gc.fallback].filter(Boolean);
+    rImg.onerror = function () {                 // local copy failed -> original url, then name-based logo, then hide
+      var nxt = rTries.shift();
+      if (nxt) { this.src = nxt; }
       else { this.style.opacity = '0'; }
     };
     rDiv.appendChild(rImg);
@@ -551,7 +558,10 @@
       imgEl = document.createElement('img');
       imgEl.className = 'eimg';
       imgEl.src = ev.image; imgEl.alt = ev.name;
-      imgEl.onerror = function () { this.style.background = '#3a3a3a'; this.style.visibility = 'hidden'; };
+      imgEl.onerror = function () {
+        if (ev.imageorig && !this._triedOrig) { this._triedOrig = true; this.src = ev.imageorig; return; }   // local copy missing -> original url
+        this.style.background = '#3a3a3a'; this.style.visibility = 'hidden';
+      };
     }
 
     var date = document.createElement('div');
@@ -775,7 +785,13 @@
     el.style.display = 'block';
   }
 
+  var lastXml  = null;   // last feed text rendered
+  var lastLoad = 0;      // time of last feed fetch
+  var inFlight = false;  // a fetch is already running
+
   function load() {
+    if (inFlight) return;
+    inFlight = true; lastLoad = Date.now();
     fetch(FEED + '?t=' + Date.now(), { cache: 'no-store' })
       .then(function (r) {
         if (!r.ok) throw new Error('HTTP ' + r.status);
@@ -783,21 +799,32 @@
       })
       .then(function (xml) {
         document.getElementById('err').style.display = 'none';
+        if (xml === lastXml) return;          // feed unchanged -> keep current DOM, no rebuild / image reload
+        lastXml = xml;
         render(parseFeed(xml));
       })
-      .catch(function (e) { showErr(e.message); });
+      .catch(function (e) { showErr(e.message); })
+      .then(function () { inFlight = false; });
   }
 
   load();
   setInterval(load, POLL);
 
-  window.addEventListener('message', function (e) {
-    if (e && e.data && e.data.sig === 'show') load();
-  });
-
-  if (document.fonts && document.fonts.ready) {
-    document.fonts.ready.then(load);
+  // The carousel says "show" every lap: only re-check the feed if it's been a while.
+  function restartCycle() {            // back to page 1 and restart the 15s page timer (no refetch, no rebuild)
+    if (!numPages) return;
+    clearInterval(pageTimer);
+    pageIdx = 0;
+    showPage(0, false);
+    if (numPages > 1) pageTimer = setInterval(advancePage, PAGE_MS);
   }
+  window.addEventListener('message', function (e) {
+    if (e && e.data && e.data.sig === 'show') {
+      restartCycle();
+      if (Date.now() - lastLoad > 60000) load();
+    }
+  });
+  // (fonts.ready -> load() removed: it caused a second full fetch + rebuild; render() already re-fits on fonts.ready)
 }());
 </script>
 </body>
