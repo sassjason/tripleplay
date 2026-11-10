@@ -1,41 +1,15 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <rss version="2.0">
   <channel>
     <title>Moda Center / VMC Events</title>
-    <lastBuildDate>2026-11-08T00:31:00Z</lastBuildDate>
-    <item>
-      <name>Winterhawks vs. Spokane Chiefs</name>
-      <date>SAT NOV 7</date>
-      <time>6:00 PM</time>
-      <venue>Veterans Memorial Coliseum</venue>
-      <image>https://assets.leaguestat.com/whl/logos/215.png</image>
-      <dateiso>2026-11-07</dateiso>
-      <city>SPOKANE</city>
-    </item>
-    <item>
-      <name>Trail Blazers vs. San Antonio Spurs</name>
-      <date>SAT NOV 7</date>
-      <time>7:00 PM</time>
-      <venue>Moda Center</venue>
-      <image>https://a.espncdn.com/i/teamlogos/nba/500/sa.png</image>
-      <dateiso>2026-11-07</dateiso>
-      <city>SAN ANTONIO</city>
-    </item>
-    <item>
-      <name>Teddy Swims</name>
-      <date>SUN NOV 8</date>
-      <time>7:00 PM</time>
-      <venue>Moda Center</venue>
-      <image>https://cdn.prod.website-files.com/62aa5d3f408f1681bc0ddb81/69e00ef48ecbdaef653bad60_teddy%20swims%20web%202.avif</image>
-      <dateiso>2026-11-08</dateiso>
-      <city>TEDDY SWIMS</city>
-    </item>
+    <lastBuildDate>2026-11-10T02:39:12Z</lastBuildDate>
     <item>
       <name>Trail Blazers vs. Oklahoma City Thunder</name>
       <date>TUE NOV 10</date>
       <time>8:00 PM</time>
       <venue>Moda Center</venue>
-      <image>https://a.espncdn.com/i/teamlogos/nba/500/okc.png</image>
+      <image>img-cache/1451c1367a65.png</image>
+      <imageorig>https://a.espncdn.com/i/teamlogos/nba/500/okc.png</imageorig>
       <dateiso>2026-11-10</dateiso>
       <city>OKLAHOMA CITY</city>
     </item>
@@ -44,7 +18,8 @@
       <date>WED NOV 11</date>
       <time>7:00 PM</time>
       <venue>Moda Center</venue>
-      <image>https://a.espncdn.com/i/teamlogos/nba/500/okc.png</image>
+      <image>img-cache/1451c1367a65.png</image>
+      <imageorig>https://a.espncdn.com/i/teamlogos/nba/500/okc.png</imageorig>
       <dateiso>2026-11-11</dateiso>
       <city>OKLAHOMA CITY</city>
     </item>
@@ -53,7 +28,8 @@
       <date>SUN NOV 15</date>
       <time>10:00 AM</time>
       <venue>Veterans Memorial Coliseum</venue>
-      <image>https://cdn.prod.website-files.com/62aa5d3f408f1681bc0ddb81/6ac7ef177493e4bbf655fddf_Add%20a%20heading%20(1200%20x%20628%20px)%20(3).jpg</image>
+      <image>img-cache/d6b944952b85.jpg</image>
+      <imageorig>https://cdn.prod.website-files.com/62aa5d3f408f1681bc0ddb81/6ac7ef177493e4bbf655fddf_Add%20a%20heading%20(1200%20x%20628%20px)%20(3).jpg</imageorig>
       <dateiso>2026-11-15</dateiso>
       <city>ROSE QUARTER GUITAR SHOW</city>
     </item>
@@ -62,7 +38,8 @@
       <date>THU NOV 19</date>
       <time>6:00 PM</time>
       <venue>Moda Center</venue>
-      <image>https://cdn.prod.website-files.com/62aa5d3f408f1681bc0ddb81/6ae7ed82074e037875c19067_West%20Coast%20Classic.jpg</image>
+      <image>img-cache/6736827cac2c.jpg</image>
+      <imageorig>https://cdn.prod.website-files.com/62aa5d3f408f1681bc0ddb81/6ae7ed82074e037875c19067_West%20Coast%20Classic.jpg</imageorig>
       <dateiso>2026-11-19</dateiso>
       <city>OREGON VS OREGON STATE</city>
     </item>
@@ -71,7 +48,8 @@
       <date>WED NOV 25</date>
       <time>7:00 PM</time>
       <venue>Moda Center</venue>
-      <image>https://a.espncdn.com/i/teamlogos/nba/500/sa.png</image>
+      <image>img-cache/823e64efc5fa.png</image>
+      <imageorig>https://a.espncdn.com/i/teamlogos/nba/500/sa.png</imageorig>
       <dateiso>2026-11-25</dateiso>
       <city>SAN ANTONIO</city>
     </item>
@@ -80,7 +58,8 @@
       <date>FRI NOV 27</date>
       <time>6:30 PM</time>
       <venue>Moda Center</venue>
-      <image>https://a.espncdn.com/i/teamlogos/nba/500/gs.png</image>
+      <image>img-cache/9c335286f005.png</image>
+      <imageorig>https://a.espncdn.com/i/teamlogos/nba/500/gs.png</imageorig>
       <dateiso>2026-11-27</dateiso>
       <city>GOLDEN STATE</city>
     </item>
@@ -89,7 +68,8 @@
       <date>FRI NOV 27</date>
       <time>8:30 PM</time>
       <venue>Veterans Memorial Coliseum</venue>
-      <image>https://cdn.prod.website-files.com/62aa5d3f408f1681bc0ddb81/69d3fea1895d9ae80c33bcd0_ramon%20ayala%20web.avif</image>
+      <image>img-cache/2d30175a1e69.jpg</image>
+      <imageorig>https://cdn.prod.website-files.com/62aa5d3f408f1681bc0ddb81/69d3fea1895d9ae80c33bcd0_ramon%20ayala%20web.avif</imageorig>
       <dateiso>2026-11-27</dateiso>
       <city>RAMON AYALA</city>
     </item>
@@ -98,7 +78,8 @@
       <date>SAT NOV 28</date>
       <time>3:30 PM</time>
       <venue>Moda Center</venue>
-      <image>https://cdn.prod.website-files.com/62aa5d3f408f1681bc0ddb81/6a99ed4c221ab17b19dbbbc8_TSO%20Web.jpg</image>
+      <image>img-cache/b8c7bde1b675.jpg</image>
+      <imageorig>https://cdn.prod.website-files.com/62aa5d3f408f1681bc0ddb81/6a99ed4c221ab17b19dbbbc8_TSO%20Web.jpg</imageorig>
       <dateiso>2026-11-28</dateiso>
       <city>TRANS-SIBERIAN ORCHESTRA</city>
     </item>
@@ -107,7 +88,8 @@
       <date>SAT NOV 28</date>
       <time>6:00 PM</time>
       <venue>Veterans Memorial Coliseum</venue>
-      <image>https://assets.leaguestat.com/whl/logos/226.png</image>
+      <image>img-cache/2ca0d11d439e.png</image>
+      <imageorig>https://assets.leaguestat.com/whl/logos/226.png</imageorig>
       <dateiso>2026-11-28</dateiso>
       <city>EVERETT</city>
     </item>
@@ -116,7 +98,8 @@
       <date>SUN NOV 29</date>
       <time>3:00 PM</time>
       <venue>Moda Center</venue>
-      <image>https://a.espncdn.com/i/teamlogos/nba/500/no.png</image>
+      <image>img-cache/3e1be0f5d927.png</image>
+      <imageorig>https://a.espncdn.com/i/teamlogos/nba/500/no.png</imageorig>
       <dateiso>2026-11-29</dateiso>
       <city>NEW ORLEANS</city>
     </item>
@@ -125,7 +108,8 @@
       <date>TUE DEC 1</date>
       <time>7:00 PM</time>
       <venue>Moda Center</venue>
-      <image>https://a.espncdn.com/i/teamlogos/nba/500/min.png</image>
+      <image>img-cache/03e49ad8c834.png</image>
+      <imageorig>https://a.espncdn.com/i/teamlogos/nba/500/min.png</imageorig>
       <dateiso>2026-12-01</dateiso>
       <city>MINNESOTA</city>
     </item>
@@ -134,7 +118,8 @@
       <date>THU DEC 3</date>
       <time>7:00 PM</time>
       <venue>Moda Center</venue>
-      <image>https://a.espncdn.com/i/teamlogos/nba/500/utah.png</image>
+      <image>img-cache/f341538794c3.png</image>
+      <imageorig>https://a.espncdn.com/i/teamlogos/nba/500/utah.png</imageorig>
       <dateiso>2026-12-03</dateiso>
       <city>UTAH</city>
     </item>
@@ -143,7 +128,8 @@
       <date>FRI DEC 4</date>
       <time>7:00 PM</time>
       <venue>Veterans Memorial Coliseum</venue>
-      <image>https://assets.leaguestat.com/whl/logos/227.png</image>
+      <image>img-cache/970dc5a5c85b.png</image>
+      <imageorig>https://assets.leaguestat.com/whl/logos/227.png</imageorig>
       <dateiso>2026-12-04</dateiso>
       <city>VICTORIA</city>
     </item>
@@ -152,7 +138,8 @@
       <date>SAT DEC 5</date>
       <time>6:00 PM</time>
       <venue>Veterans Memorial Coliseum</venue>
-      <image>https://assets.leaguestat.com/whl/logos/227.png</image>
+      <image>img-cache/970dc5a5c85b.png</image>
+      <imageorig>https://assets.leaguestat.com/whl/logos/227.png</imageorig>
       <dateiso>2026-12-05</dateiso>
       <city>VICTORIA</city>
     </item>
@@ -161,7 +148,8 @@
       <date>SUN DEC 6</date>
       <time>7:00 PM</time>
       <venue>Veterans Memorial Coliseum</venue>
-      <image>https://cdn.prod.website-files.com/62aa5d3f408f1681bc0ddb81/6a874353ce029f3c556bbafb_MaxMcNown%20Web.jpg</image>
+      <image>img-cache/5dae70b44777.jpg</image>
+      <imageorig>https://cdn.prod.website-files.com/62aa5d3f408f1681bc0ddb81/6a874353ce029f3c556bbafb_MaxMcNown%20Web.jpg</imageorig>
       <dateiso>2026-12-06</dateiso>
       <city>MAX MCNOWN</city>
     </item>
@@ -170,7 +158,8 @@
       <date>SAT DEC 12</date>
       <time>6:00 PM</time>
       <venue>Veterans Memorial Coliseum</venue>
-      <image>https://assets.leaguestat.com/whl/logos/202.png</image>
+      <image>img-cache/2e0ed6a52efe.png</image>
+      <imageorig>https://assets.leaguestat.com/whl/logos/202.png</imageorig>
       <dateiso>2026-12-12</dateiso>
       <city>CALGARY</city>
     </item>
@@ -179,7 +168,8 @@
       <date>SAT DEC 12</date>
       <time>7:00 PM</time>
       <venue>Moda Center</venue>
-      <image>https://a.espncdn.com/i/teamlogos/nba/500/atl.png</image>
+      <image>img-cache/d8b1c31db5d2.png</image>
+      <imageorig>https://a.espncdn.com/i/teamlogos/nba/500/atl.png</imageorig>
       <dateiso>2026-12-12</dateiso>
       <city>ATLANTA</city>
     </item>
@@ -188,7 +178,8 @@
       <date>SUN DEC 13</date>
       <time>4:00 PM</time>
       <venue>Veterans Memorial Coliseum</venue>
-      <image>https://assets.leaguestat.com/whl/logos/214.png</image>
+      <image>img-cache/1d9a59c42ce4.png</image>
+      <imageorig>https://assets.leaguestat.com/whl/logos/214.png</imageorig>
       <dateiso>2026-12-13</dateiso>
       <city>SEATTLE</city>
     </item>
@@ -197,7 +188,8 @@
       <date>TUE DEC 15</date>
       <time>8:00 PM</time>
       <venue>Moda Center</venue>
-      <image>https://a.espncdn.com/i/teamlogos/nba/500/den.png</image>
+      <image>img-cache/55a3568789e3.png</image>
+      <imageorig>https://a.espncdn.com/i/teamlogos/nba/500/den.png</imageorig>
       <dateiso>2026-12-15</dateiso>
       <city>DENVER</city>
     </item>
@@ -206,7 +198,8 @@
       <date>FRI DEC 18</date>
       <time>7:00 PM</time>
       <venue>Veterans Memorial Coliseum</venue>
-      <image>https://assets.leaguestat.com/whl/logos/217.png</image>
+      <image>img-cache/9f4f19248e8e.png</image>
+      <imageorig>https://assets.leaguestat.com/whl/logos/217.png</imageorig>
       <dateiso>2026-12-18</dateiso>
       <city>TRI-CITY</city>
     </item>
@@ -215,9 +208,40 @@
       <date>SUN DEC 27</date>
       <time>4:00 PM</time>
       <venue>Veterans Memorial Coliseum</venue>
-      <image>https://assets.leaguestat.com/whl/logos/217.png</image>
+      <image>img-cache/9f4f19248e8e.png</image>
+      <imageorig>https://assets.leaguestat.com/whl/logos/217.png</imageorig>
       <dateiso>2026-12-27</dateiso>
       <city>TRI-CITY</city>
+    </item>
+    <item>
+      <name>Trail Blazers vs. Brooklyn Nets</name>
+      <date>TUE DEC 29</date>
+      <time>7:00 PM</time>
+      <venue>Moda Center</venue>
+      <image>img-cache/53b335ea2d49.png</image>
+      <imageorig>https://a.espncdn.com/i/teamlogos/nba/500/bkn.png</imageorig>
+      <dateiso>2026-12-29</dateiso>
+      <city>BROOKLYN</city>
+    </item>
+    <item>
+      <name>Winterhawks vs. Edmonton Oil Kings</name>
+      <date>THU DEC 31</date>
+      <time>5:00 PM</time>
+      <venue>Veterans Memorial Coliseum</venue>
+      <image>img-cache/4639cb7416f0.png</image>
+      <imageorig>https://assets.leaguestat.com/whl/logos/228.png</imageorig>
+      <dateiso>2026-12-31</dateiso>
+      <city>EDMONTON</city>
+    </item>
+    <item>
+      <name>Trail Blazers vs. Boston Celtics</name>
+      <date>SAT JAN 2</date>
+      <time>7:00 PM</time>
+      <venue>Moda Center</venue>
+      <image>img-cache/a95b142850bd.png</image>
+      <imageorig>https://a.espncdn.com/i/teamlogos/nba/500/bos.png</imageorig>
+      <dateiso>2027-01-02</dateiso>
+      <city>BOSTON</city>
     </item>
   </channel>
 </rss>
