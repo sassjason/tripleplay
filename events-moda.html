@@ -359,7 +359,8 @@
   var PAGE_SIZE = 8;
   var PAGE_MS   = 15000;   // 15 seconds per page
 
-  var pageTimer = null;
+  var pageTimers = [];
+  var IN_CAROUSEL = (window.parent !== window);   // inside signage-carousel.html's iframe?
   var pageIdx   = 0;
   var numPages  = 0;
 
@@ -642,13 +643,33 @@
     updateDots(numPages, idx);
   }
 
-  function advancePage() {
-    pageIdx = (pageIdx + 1) % numPages;
+  function goPage(i) {
+    pageIdx = i;
     var track = document.getElementById('grid-track');
     var grid  = document.getElementById('grid');
     track.style.transform = 'translateY(-' + (pageIdx * grid.clientHeight) + 'px)';
     setTimeout(shrinkNames, 850);
     updateDots(numPages, pageIdx);
+  }
+
+  // One scroll sequence: down through each page, then ONE move back up to page 1, then it
+  // STOPS (nothing moves). Inside the carousel it restarts only when the carousel says
+  // "show", so the slide is perfectly still while it crossfades to the next layout.
+  // Standalone (own Tripleplay zone, no carousel) it repeats so the pages keep rotating.
+  function stopCycle() {
+    pageTimers.forEach(clearTimeout);
+    pageTimers = [];
+  }
+  function startCycle() {
+    stopCycle();
+    if (numPages < 2) return;
+    var seq = [];
+    for (var p = 1; p < numPages; p++) seq.push(p);
+    seq.push(0);
+    seq.forEach(function (p, n) {
+      pageTimers.push(setTimeout(function () { goPage(p); }, PAGE_MS * (n + 1)));
+    });
+    if (!IN_CAROUSEL) pageTimers.push(setTimeout(startCycle, PAGE_MS * seq.length));
   }
 
   // ── Render ───────────────────────────────────────────────────────────────
@@ -657,7 +678,7 @@
     var grid  = document.getElementById('grid');
     var hm    = document.getElementById('hmonth');
 
-    clearInterval(pageTimer);
+    stopCycle();
     track.innerHTML = '';
     pageIdx = 0; numPages = 0;
 
@@ -688,7 +709,7 @@
     shrinkNames();
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(shrinkNames);   // re-fit once the real font is loaded
 
-    if (numPages > 1) pageTimer = setInterval(advancePage, PAGE_MS);
+    startCycle();
 
     startScorePolling();
   }
@@ -813,15 +834,18 @@
   // The carousel says "show" every lap: only re-check the feed if it's been a while.
   function restartCycle() {            // back to page 1 and restart the 15s page timer (no refetch, no rebuild)
     if (!numPages) return;
-    clearInterval(pageTimer);
+    stopCycle();
     pageIdx = 0;
     showPage(0, false);
-    if (numPages > 1) pageTimer = setInterval(advancePage, PAGE_MS);
+    startCycle();
   }
   window.addEventListener('message', function (e) {
-    if (e && e.data && e.data.sig === 'show') {
+    if (!e || !e.data) return;
+    if (e.data.sig === 'show') {
       restartCycle();
       if (Date.now() - lastLoad > 60000) load();
+    } else if (e.data.sig === 'hide') {
+      stopCycle();                     // slide is fading out - freeze it, no movement
     }
   });
   // (fonts.ready -> load() removed: it caused a second full fetch + rebuild; render() already re-fits on fonts.ready)
