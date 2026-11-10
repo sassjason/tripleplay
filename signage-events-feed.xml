@@ -2,34 +2,7 @@
 <rss version="2.0">
   <channel>
     <title>Upcoming Events</title>
-    <lastBuildDate>2026-11-08T00:30:50Z</lastBuildDate>
-    <item>
-      <name>Winterhawks vs. Spokane Chiefs</name>
-      <date>SAT NOV 7</date>
-      <time>18:00:00</time>
-      <venue>Veterans Memorial Coliseum</venue>
-      <dateiso>2026-11-07</dateiso>
-      <home>true</home>
-      <city>SPOKANE</city>
-    </item>
-    <item>
-      <name>Trail Blazers vs. San Antonio Spurs</name>
-      <date>SAT NOV 7</date>
-      <time>7:00 PM</time>
-      <venue>Moda Center</venue>
-      <dateiso>2026-11-07</dateiso>
-      <home>true</home>
-      <city>SAN ANTONIO</city>
-    </item>
-    <item>
-      <name>Teddy Swims</name>
-      <date>SUN NOV 8</date>
-      <time></time>
-      <venue>Moda Center</venue>
-      <dateiso>2026-11-08</dateiso>
-      <home>true</home>
-      <city>TEDDY SWIMS</city>
-    </item>
+    <lastBuildDate>2026-11-10T02:38:49Z</lastBuildDate>
     <item>
       <name>Trail Blazers vs. Oklahoma City Thunder</name>
       <date>TUE NOV 10</date>
@@ -74,6 +47,33 @@
       <dateiso>2026-11-25</dateiso>
       <home>true</home>
       <city>SAN ANTONIO</city>
+    </item>
+    <item>
+      <name>Ramon Ayala</name>
+      <date>FRI NOV 27</date>
+      <time></time>
+      <venue>Veterans Memorial Coliseum</venue>
+      <dateiso>2026-11-27</dateiso>
+      <home>true</home>
+      <city>RAMON AYALA</city>
+    </item>
+    <item>
+      <name>Trail Blazers vs. Golden State Warriors</name>
+      <date>FRI NOV 27</date>
+      <time>6:30 PM</time>
+      <venue>Moda Center</venue>
+      <dateiso>2026-11-27</dateiso>
+      <home>true</home>
+      <city>GOLDEN STATE</city>
+    </item>
+    <item>
+      <name>Trans-Siberian Orchestra</name>
+      <date>SAT NOV 28</date>
+      <time></time>
+      <venue>Moda Center</venue>
+      <dateiso>2026-11-28</dateiso>
+      <home>true</home>
+      <city>TRANS-SIBERIAN ORCHESTRA</city>
     </item>
   </channel>
 </rss>
