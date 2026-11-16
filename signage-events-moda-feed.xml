@@ -2,37 +2,7 @@
 <rss version="2.0">
   <channel>
     <title>Moda Center / VMC Events</title>
-    <lastBuildDate>2026-11-10T22:33:10Z</lastBuildDate>
-    <item>
-      <name>Trail Blazers vs. Oklahoma City Thunder</name>
-      <date>TUE NOV 10</date>
-      <time>8:00 PM</time>
-      <venue>Moda Center</venue>
-      <image>img-cache/1451c1367a65.png</image>
-      <imageorig>https://a.espncdn.com/i/teamlogos/nba/500/okc.png</imageorig>
-      <dateiso>2026-11-10</dateiso>
-      <city>OKLAHOMA CITY</city>
-    </item>
-    <item>
-      <name>Trail Blazers vs. Oklahoma City Thunder</name>
-      <date>WED NOV 11</date>
-      <time>7:00 PM</time>
-      <venue>Moda Center</venue>
-      <image>img-cache/1451c1367a65.png</image>
-      <imageorig>https://a.espncdn.com/i/teamlogos/nba/500/okc.png</imageorig>
-      <dateiso>2026-11-11</dateiso>
-      <city>OKLAHOMA CITY</city>
-    </item>
-    <item>
-      <name>Rose Quarter Guitar Show</name>
-      <date>SUN NOV 15</date>
-      <time>10:00 AM</time>
-      <venue>Veterans Memorial Coliseum</venue>
-      <image>img-cache/d6b944952b85.jpg</image>
-      <imageorig>https://cdn.prod.website-files.com/62aa5d3f408f1681bc0ddb81/6ac7ef177493e4bbf655fddf_Add%20a%20heading%20(1200%20x%20628%20px)%20(3).jpg</imageorig>
-      <dateiso>2026-11-15</dateiso>
-      <city>ROSE QUARTER GUITAR SHOW</city>
-    </item>
+    <lastBuildDate>2026-11-16T19:15:41Z</lastBuildDate>
     <item>
       <name>Oregon vs Oregon State</name>
       <date>THU NOV 19</date>
@@ -242,6 +212,36 @@
       <imageorig>https://a.espncdn.com/i/teamlogos/nba/500/bos.png</imageorig>
       <dateiso>2027-01-02</dateiso>
       <city>BOSTON</city>
+    </item>
+    <item>
+      <name>Winterhawks vs. Everett Silvertips</name>
+      <date>SUN JAN 3</date>
+      <time>4:00 PM</time>
+      <venue>Veterans Memorial Coliseum</venue>
+      <image>img-cache/2ca0d11d439e.png</image>
+      <imageorig>https://assets.leaguestat.com/whl/logos/226.png</imageorig>
+      <dateiso>2027-01-03</dateiso>
+      <city>EVERETT</city>
+    </item>
+    <item>
+      <name>Trail Blazers vs. New York Knicks</name>
+      <date>MON JAN 4</date>
+      <time>7:00 PM</time>
+      <venue>Moda Center</venue>
+      <image>img-cache/2c01a6c4f9e5.png</image>
+      <imageorig>https://a.espncdn.com/i/teamlogos/nba/500/ny.png</imageorig>
+      <dateiso>2027-01-04</dateiso>
+      <city>NEW YORK</city>
+    </item>
+    <item>
+      <name>Trail Blazers vs. Charlotte Hornets</name>
+      <date>SAT JAN 9</date>
+      <time>7:00 PM</time>
+      <venue>Moda Center</venue>
+      <image>img-cache/d36a6ee9dfcf.png</image>
+      <imageorig>https://a.espncdn.com/i/teamlogos/nba/500/cha.png</imageorig>
+      <dateiso>2027-01-09</dateiso>
+      <city>CHARLOTTE</city>
     </item>
   </channel>
 </rss>
