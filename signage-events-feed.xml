@@ -2,34 +2,7 @@
 <rss version="2.0">
   <channel>
     <title>Upcoming Events</title>
-    <lastBuildDate>2026-11-10T22:32:57Z</lastBuildDate>
-    <item>
-      <name>Trail Blazers vs. Oklahoma City Thunder</name>
-      <date>TUE NOV 10</date>
-      <time>8:00 PM</time>
-      <venue>Moda Center</venue>
-      <dateiso>2026-11-10</dateiso>
-      <home>true</home>
-      <city>OKLAHOMA CITY</city>
-    </item>
-    <item>
-      <name>Trail Blazers vs. Oklahoma City Thunder</name>
-      <date>WED NOV 11</date>
-      <time>7:00 PM</time>
-      <venue>Moda Center</venue>
-      <dateiso>2026-11-11</dateiso>
-      <home>true</home>
-      <city>OKLAHOMA CITY</city>
-    </item>
-    <item>
-      <name>Rose Quarter Guitar Show</name>
-      <date>SUN NOV 15</date>
-      <time></time>
-      <venue>Veterans Memorial Coliseum</venue>
-      <dateiso>2026-11-15</dateiso>
-      <home>true</home>
-      <city>ROSE QUARTER GUITAR SHOW</city>
-    </item>
+    <lastBuildDate>2026-11-16T19:15:30Z</lastBuildDate>
     <item>
       <name>Oregon vs Oregon State</name>
       <date>THU NOV 19</date>
@@ -74,6 +47,24 @@
       <dateiso>2026-11-28</dateiso>
       <home>true</home>
       <city>TRANS-SIBERIAN ORCHESTRA</city>
+    </item>
+    <item>
+      <name>Winterhawks vs. Everett Silvertips</name>
+      <date>SAT NOV 28</date>
+      <time>18:00:00</time>
+      <venue>Veterans Memorial Coliseum</venue>
+      <dateiso>2026-11-28</dateiso>
+      <home>true</home>
+      <city>EVERETT</city>
+    </item>
+    <item>
+      <name>Trail Blazers vs. New Orleans Pelicans</name>
+      <date>SUN NOV 29</date>
+      <time>3:00 PM</time>
+      <venue>Moda Center</venue>
+      <dateiso>2026-11-29</dateiso>
+      <home>true</home>
+      <city>NEW ORLEANS</city>
     </item>
   </channel>
 </rss>
