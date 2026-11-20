@@ -810,26 +810,48 @@
   var lastLoad = 0;      // time of last feed fetch
   var inFlight = false;  // a fetch is already running
 
+  // ── Daily feed cache ────────────────────────────────────────────────────────
+  // The feed XML is saved in localStorage. Every page load draws from that saved copy
+  // immediately (no network wait, no blank screen) and only re-fetches when the saved
+  // copy is from a previous calendar day (or missing). Past events / month rollover are
+  // handled at render time, so a same-day cached copy is always safe to draw.
+  var CACHE_KEY = 'eventsFeed:' + FEED;
+  function dayStamp(t) { var d = new Date(t); return d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate(); }
+  function readCache() {
+    try { var c = JSON.parse(localStorage.getItem(CACHE_KEY)); return (c && c.xml && c.t) ? c : null; }
+    catch (e) { return null; }
+  }
+  function writeCache(xml) { try { localStorage.setItem(CACHE_KEY, JSON.stringify({ t: Date.now(), xml: xml })); } catch (e) {} }
+  function cacheIsFresh(c) { return !!c && dayStamp(c.t) === dayStamp(Date.now()); }
+
   function load() {
     if (inFlight) return;
-    inFlight = true; lastLoad = Date.now();
+    inFlight = true;
     fetch(FEED + '?t=' + Date.now(), { cache: 'no-store' })
       .then(function (r) {
         if (!r.ok) throw new Error('HTTP ' + r.status);
         return r.text();
       })
       .then(function (xml) {
+        lastLoad = Date.now();
         document.getElementById('err').style.display = 'none';
+        writeCache(xml);
         if (xml === lastXml) return;          // feed unchanged -> keep current DOM, no rebuild / image reload
         lastXml = xml;
         render(parseFeed(xml));
       })
-      .catch(function (e) { showErr(e.message); })
+      .catch(function (e) { if (!lastXml) showErr(e.message); })   // fetch failed: keep showing the cached copy silently
       .then(function () { inFlight = false; });
   }
 
-  load();
-  setInterval(load, POLL);
+  // Draw from cache right away; fetch only if the copy is missing or from an earlier day.
+  var cached = readCache();
+  if (cached) {
+    try { lastXml = cached.xml; lastLoad = cached.t; render(parseFeed(cached.xml)); }
+    catch (e) { lastXml = null; cached = null; }
+  }
+  if (!cacheIsFresh(cached)) load();
+  setInterval(function () { if (!cacheIsFresh(readCache())) load(); }, 600000);   // overnight rollover while left running
 
   // The carousel says "show" every lap: only re-check the feed if it's been a while.
   function restartCycle() {            // back to page 1 and restart the 15s page timer (no refetch, no rebuild)
@@ -843,7 +865,7 @@
     if (!e || !e.data) return;
     if (e.data.sig === 'show') {
       restartCycle();
-      if (Date.now() - lastLoad > 60000) load();
+      if (!cacheIsFresh(readCache())) load();
     } else if (e.data.sig === 'hide') {
       stopCycle();                     // slide is fading out - freeze it, no movement
     }
