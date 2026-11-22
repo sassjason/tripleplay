@@ -2,17 +2,7 @@
 <rss version="2.0">
   <channel>
     <title>Moda Center / VMC Events</title>
-    <lastBuildDate>2026-11-20T00:47:51Z</lastBuildDate>
-    <item>
-      <name>Oregon vs Oregon State</name>
-      <date>THU NOV 19</date>
-      <time>6:00 PM</time>
-      <venue>Moda Center</venue>
-      <image>img-cache/e21dbf0e3146.jpg</image>
-      <imageorig>https://cdn.prod.website-files.com/62aa5d3f408f1681bc0ddb81/6afc9f9d706f02a7e05a6db2_NES%20Web%201200x628.jpg</imageorig>
-      <dateiso>2026-11-19</dateiso>
-      <city>OREGON VS OREGON STATE</city>
-    </item>
+    <lastBuildDate>2026-11-22T03:42:27Z</lastBuildDate>
     <item>
       <name>Trail Blazers vs. San Antonio Spurs</name>
       <date>WED NOV 25</date>
@@ -76,7 +66,7 @@
     <item>
       <name>Trail Blazers vs. Minnesota Timberwolves</name>
       <date>TUE DEC 1</date>
-      <time>7:00 PM</time>
+      <time>8:00 PM</time>
       <venue>Moda Center</venue>
       <image>img-cache/03e49ad8c834.png</image>
       <imageorig>https://a.espncdn.com/i/teamlogos/nba/500/min.png</imageorig>
@@ -242,6 +232,16 @@
       <imageorig>https://a.espncdn.com/i/teamlogos/nba/500/cha.png</imageorig>
       <dateiso>2027-01-09</dateiso>
       <city>CHARLOTTE</city>
+    </item>
+    <item>
+      <name>Trail Blazers vs. Orlando Magic</name>
+      <date>TUE JAN 12</date>
+      <time>7:00 PM</time>
+      <venue>Moda Center</venue>
+      <image>img-cache/95d5f9f58ad2.png</image>
+      <imageorig>https://a.espncdn.com/i/teamlogos/nba/500/orl.png</imageorig>
+      <dateiso>2027-01-12</dateiso>
+      <city>ORLANDO</city>
     </item>
   </channel>
 </rss>
